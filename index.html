@@ -3,186 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concentrix Pro Platform</title>
+    <title>Concentrix | Official Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --main: #005a7d; --accent: #14b8a6; --bg: #f4f7f9; }
+        :root { --main: #005a7d; --accent: #14b8a6; --bg: #f3f6f9; }
         body { background: var(--bg); color: #333; font-family: sans-serif; margin: 0; }
-        .page { display: none; min-height: 100vh; padding-bottom: 90px; }
+        .page { display: none; min-height: 100vh; }
         .page.active { display: block; }
-        .dark-header { background: var(--main); color: white; padding: 25px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #ddd; z-index: 1000; }
-        .nav-item { color: #9ca3af; text-align: center; font-size: 10px; cursor: pointer; }
-        .nav-item.active { color: var(--main); }
-        .action-btn { background: white; color: var(--main); padding: 10px; border-radius: 12px; font-weight: bold; flex: 1; text-align: center; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .input-box { width: 100%; background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 10px; margin-bottom: 15px; outline: none; }
+        .auth-card { background: white; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 30px; width: 90%; max-width: 400px; margin: auto; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+        .auth-input { width: 100%; padding: 15px 15px 15px 45px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 15px; outline: none; }
+        .btn-auth { width: 100%; padding: 16px; background: var(--main); color: white; border-radius: 15px; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .btn-auth:active { transform: scale(0.98); opacity: 0.9; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
+        .nav-item { color: #9ca3af; text-align: center; font-size: 11px; cursor: pointer; }
+        .nav-item.active { color: var(--main); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div id="home-page" class="page active">
-        <div class="dark-header">
-            <div class="flex justify-between items-center mb-6">
+    <div id="register-page" class="page active bg-[#005a7d] flex items-center justify-center pt-20">
+        <div class="auth-card">
+            <h1 class="text-3xl font-black italic text-[#005a7d] text-center mb-8 uppercase tracking-tighter">concentrix</h1>
+            <h2 class="text-xl font-bold mb-6 text-gray-800">Create Account</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="reg-user" class="auth-input" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="reg-pass" class="auth-input" placeholder="Password">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-key"></i>
+                <input type="text" id="reg-code" class="auth-input" placeholder="Invitation Code">
+            </div>
+            
+            <button onclick="handleRegister()" class="btn-auth mb-4">Register</button>
+            <p class="text-center text-sm text-gray-500">Already have an account? <span class="text-[#005a7d] font-bold cursor-pointer" onclick="showPage('login-page')">Login</span></p>
+        </div>
+    </div>
+
+    <div id="login-page" class="page bg-[#005a7d] flex items-center justify-center pt-20">
+        <div class="auth-card">
+            <h1 class="text-3xl font-black italic text-[#005a7d] text-center mb-8 uppercase tracking-tighter">concentrix</h1>
+            <h2 class="text-xl font-bold mb-6 text-gray-800">Welcome Back</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="login-user" class="auth-input" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="login-pass" class="auth-input" placeholder="Password">
+            </div>
+            
+            <button onclick="handleLogin()" class="btn-auth mb-4">Login</button>
+            <p class="text-center text-sm text-gray-500">New user? <span class="text-[#005a7d] font-bold cursor-pointer" onclick="showPage('register-page')">Create account</span></p>
+        </div>
+    </div>
+
+    <div id="home-page" class="page">
+        <div class="p-6 bg-[#005a7d] text-white rounded-b-[40px] pb-12">
+            <div class="flex justify-between items-center mb-8">
                 <h1 class="text-2xl font-black italic">concentrix</h1>
                 <i class="fas fa-headset text-xl" onclick="showPage('cs-page')"></i>
             </div>
-            <div class="mb-6">
-                <p class="text-xs opacity-70">TOTAL BALANCE</p>
-                <p id="h-bal" class="text-4xl font-black text-white mt-1">$ 6000.00</p>
-            </div>
-            <div class="flex gap-4">
-                <div class="action-btn" onclick="showPage('deposit-page')"><i class="fas fa-plus-circle mr-2"></i>Deposit</div>
-                <div class="action-btn" onclick="showPage('withdraw-page')"><i class="fas fa-arrow-circle-up mr-2"></i>Withdraw</div>
-            </div>
-        </div>
-
-        <div class="p-5">
-            <h3 class="font-bold mb-4">Membership Levels</h3>
-            <div class="bg-white p-5 rounded-2xl shadow-sm mb-4 flex justify-between items-center border-l-4 border-yellow-400" onclick="showPage('optimize-page')">
-                <div><h4 class="font-bold">VIP 1</h4><p class="text-xs text-gray-400">40 Orders / 0.5% Commission</p></div>
-                <span class="text-xs font-bold text-teal-500">Working...</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="deposit-page" class="page bg-white">
-        <div class="p-5 bg-[#005a7d] text-white flex items-center gap-4">
-            <i class="fas fa-chevron-left" onclick="showPage('home-page')"></i><span class="font-bold">Deposit Funds</span>
-        </div>
-        <div class="p-6">
-            <p class="text-sm font-bold mb-3">Choose Currency</p>
-            <div class="flex gap-3 mb-6">
-                <button onclick="selectCrypto('USDT')" class="flex-1 border p-3 rounded-xl font-bold active:bg-teal-50">USDT</button>
-                <button onclick="selectCrypto('BTC')" class="flex-1 border p-3 rounded-xl font-bold active:bg-teal-50">BITCOIN</button>
-            </div>
-            <div id="addr-section" class="hidden">
-                <p class="text-xs text-gray-400 mb-2">Deposit Address:</p>
-                <div class="bg-gray-100 p-4 rounded-xl flex justify-between items-center break-all text-xs font-mono">
-                    <span id="crypto-addr">T9zE...89aX</span>
-                    <i class="fas fa-copy text-teal-500 ml-2"></i>
+            <div class="bg-white/10 p-6 rounded-3xl backdrop-blur-md">
+                <p class="text-xs opacity-70 mb-1 uppercase tracking-widest">Available Assets</p>
+                <h2 id="balance-display" class="text-4xl font-black">$ 6000.00</h2>
+                <div class="flex gap-4 mt-6">
+                    <button class="flex-1 bg-white text-[#005a7d] py-3 rounded-xl font-bold shadow-lg" onclick="alert('Deposit processing...')">Deposit</button>
+                    <button class="flex-1 bg-teal-500 text-white py-3 rounded-xl font-bold shadow-lg" onclick="alert('Withdraw processing...')">Withdraw</button>
                 </div>
-                <button onclick="alert('System processing...')" class="w-full bg-[#005a7d] text-white py-4 rounded-xl font-bold mt-8">Confirm Deposit</button>
             </div>
         </div>
-    </div>
 
-    <div id="withdraw-page" class="page bg-white">
-        <div class="p-5 bg-[#005a7d] text-white flex items-center gap-4">
-            <i class="fas fa-chevron-left" onclick="showPage('home-page')"></i><span class="font-bold">Withdraw Assets</span>
-        </div>
         <div class="p-6">
-            <div class="bg-gray-50 p-4 rounded-xl mb-6">
-                <p class="text-xs text-gray-400">Available to Withdraw</p>
-                <p class="text-2xl font-bold text-teal-600">$ 6000.00</p>
-            </div>
-            <input type="text" class="input-box" placeholder="Network (e.g. TRC20)">
-            <input type="text" class="input-box" placeholder="Enter Wallet Address">
-            <input type="number" id="w-amount" class="input-box" placeholder="Enter Amount">
-            <button onclick="handleWithdraw()" class="w-full bg-gray-800 text-white py-4 rounded-xl font-bold mt-4">Confirm Withdrawal</button>
-        </div>
-    </div>
-
-    <div id="optimize-page" class="page">
-        <div class="p-5 bg-white border-b font-bold">Optimization Center</div>
-        <div id="grid" class="grid grid-cols-2 gap-4 p-5"></div>
-        <div class="p-5">
-            <div class="bg-white p-6 rounded-3xl shadow-xl">
-                <div class="flex justify-between text-sm mb-4"><span>Progress</span> <span id="prog">0 / 40</span></div>
-                <div class="w-full bg-gray-100 h-2 rounded-full mb-4"><div id="bar" class="bg-teal-500 h-full w-0"></div></div>
-                <p class="text-xs text-gray-400">Profit: <span id="p-val" class="text-teal-600 font-bold">$ 0.00</span></p>
+            <h3 class="font-bold mb-4">Missions</h3>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-teal-500 mb-4 flex justify-between items-center" onclick="showPage('task-page')">
+                <div><h4 class="font-bold">VIP 1 Optimization</h4><p class="text-xs text-gray-400">Commission Rate: 0.5%</p></div>
+                <i class="fas fa-chevron-right text-gray-300"></i>
             </div>
         </div>
     </div>
 
-    <div id="records-page" class="page bg-white">
-        <div class="p-5 bg-white border-b font-bold">Order History</div>
-        <div id="order-list" class="p-4"></div>
-    </div>
-
-    <div id="profile-page" class="page">
-        <div class="dark-header text-center">
-            <div class="w-20 h-20 bg-white/20 rounded-full mx-auto mb-3 flex items-center justify-center text-3xl">👤</div>
-            <h2 class="text-xl font-bold">Lalolargo</h2>
+    <div id="task-page" class="page bg-gray-50 pb-24">
+        <div class="p-5 bg-white border-b flex justify-between items-center sticky top-0 z-10">
+            <span class="font-bold text-[#005a7d]">OPTIMIZATION CENTER</span>
+            <span class="text-xs font-bold bg-teal-100 text-teal-600 px-3 py-1 rounded-full">40 Orders</span>
         </div>
-        <div class="p-5 -mt-6">
-            <div class="bg-white p-5 rounded-2xl shadow flex justify-between items-center mb-4">
-                <span>Personal Data</span><i class="fas fa-chevron-right text-gray-300"></i>
+        
+        <div id="product-grid" class="grid grid-cols-2 gap-4 p-5">
             </div>
-            <div class="bg-white p-5 rounded-2xl shadow flex justify-between items-center mb-4" onclick="showPage('cs-page')">
-                <span>Contact Admin</span><i class="fas fa-chevron-right text-gray-300"></i>
+
+        <div class="px-5">
+            <div class="bg-white p-6 rounded-3xl shadow-xl border border-teal-50">
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-xs font-bold text-gray-400">PROGRESS</p>
+                    <span id="prog-count" class="text-sm font-black text-[#005a7d]">0 / 40</span>
+                </div>
+                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden mb-4">
+                    <div id="prog-bar" class="bg-teal-500 h-full w-0 transition-all duration-500"></div>
+                </div>
+                <div class="flex justify-between">
+                    <div><p class="text-[10px] text-gray-400 uppercase">Profit</p><p id="profit-display" class="font-black text-teal-600">$ 0.00</p></div>
+                    <div class="text-right"><p class="text-[10px] text-gray-400 uppercase">Status</p><p class="text-blue-500 font-bold text-xs italic">Running</p></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="cs-page" class="page bg-white text-center">
-        <div class="p-5 bg-[#005a7d] text-white flex items-center gap-4">
-            <i class="fas fa-chevron-left" onclick="showPage('home-page')"></i><span class="font-bold">Admin Support</span>
-        </div>
-        <div class="p-10">
-            <i class="fab fa-telegram text-6xl text-blue-500 mb-6"></i>
-            <h3 class="text-xl font-bold mb-4">Telegram Support</h3>
-            <p class="text-gray-400 text-sm mb-10">Any issues? Contact our official admin below.</p>
-            <a href="https://t.me/your_telegram_link" target="_blank" class="block w-full bg-[#005a7d] text-white py-4 rounded-xl font-bold">Open Telegram</a>
-        </div>
-    </div>
-
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('home-page')"><i class="fas fa-home text-xl"></i><p>Home</p></div>
-        <div class="nav-item" onclick="showPage('optimize-page')"><i class="fas fa-bolt text-xl"></i><p>Task</p></div>
-        <div class="nav-item" onclick="showPage('records-page')"><i class="fas fa-list text-xl"></i><p>Records</p></div>
-        <div class="nav-item" onclick="showPage('profile-page')"><i class="fas fa-user text-xl"></i><p>Profile</p></div>
+    <div class="bottom-nav" id="main-nav" style="display: none;">
+        <div class="nav-item active" onclick="showPage('home-page')"><i class="fas fa-home text-xl"></i><p class="mt-1">Home</p></div>
+        <div class="nav-item" onclick="showPage('task-page')"><i class="fas fa-bolt text-xl"></i><p class="mt-1">Task</p></div>
+        <div class="nav-item" onclick="alert('Records')"><i class="fas fa-list text-xl"></i><p class="mt-1">Records</p></div>
+        <div class="nav-item" onclick="alert('Profile')"><i class="fas fa-user-circle text-xl"></i><p class="mt-1">Profile</p></div>
     </div>
 
     <script>
-        let balance = 6000.00; let count = 0; let profit = 0; let orders = [];
+        // CONFIGURATION
+        const REQUIRED_CODE = "LUCKY777"; // သင်ပြောင်းလဲချင်သော Invitation Code
+        let storedUser = { name: "", pass: "" };
+        let balance = 6000.00;
+        let completed = 0;
+        let todayProfit = 0;
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(id === 'optimize-page') initGrid();
-            if(id === 'records-page') renderOrders();
+            
+            // Show/Hide bottom nav
+            const isAuth = (id === 'register-page' || id === 'login-page');
+            document.getElementById('main-nav').style.display = isAuth ? 'none' : 'flex';
+            
+            if(id === 'task-page') renderTaskItems();
         }
 
-        function selectCrypto(type) {
-            document.getElementById('addr-section').classList.remove('hidden');
-            document.getElementById('crypto-addr').innerText = (type === 'USDT') ? "TRC20_ADDRESS_EXAMPLE_123456" : "BTC_ADDRESS_EXAMPLE_123456";
+        function handleRegister() {
+            const user = document.getElementById('reg-user').value;
+            const pass = document.getElementById('reg-pass').value;
+            const code = document.getElementById('reg-code').value;
+
+            if(!user || !pass) return alert("Please enter Username and Password");
+            if(code !== REQUIRED_CODE) return alert("Invalid Invitation Code!");
+
+            storedUser.name = user;
+            storedUser.pass = pass;
+            alert("Registration Successful! Please Login.");
+            showPage('login-page');
         }
 
-        function handleWithdraw() {
-            const amt = parseFloat(document.getElementById('w-amount').value);
-            if(!amt || amt > balance) return alert("Insufficient Balance!");
-            balance -= amt;
-            document.getElementById('h-bal').innerText = `$ ${balance.toFixed(2)}`;
-            alert("Withdrawal submitted! Admin will check.");
-            showPage('home-page');
-        }
+        function handleLogin() {
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
 
-        function initGrid() {
-            const grid = document.getElementById('grid'); grid.innerHTML = "";
-            const imgs = ["https://m.media-amazon.com/images/I/61I2M+z6r+L._AC_SL1500_.jpg", "https://m.media-amazon.com/images/I/71YNDm6T8VL._AC_SL1500_.jpg"];
-            for(let i=0; i<4; i++) {
-                grid.innerHTML += `<div class="bg-white p-4 rounded-2xl text-center shadow-sm" onclick="doTask(this, ${i})"><img src="${imgs[i%2]}" class="h-24 mx-auto mb-2"><button class="bg-teal-500 text-white text-[10px] px-4 py-1 rounded-full">Optimize</button></div>`;
+            if(user === "" || pass === "") return alert("Please fill credentials");
+            
+            if(user === storedUser.name && pass === storedUser.pass) {
+                showPage('home-page');
+            } else {
+                alert("Login Failed! Incorrect username or password.");
             }
         }
 
-        function doTask(el, i) {
-            if(count >= 40) return;
-            el.style.opacity = '0.4'; el.style.pointerEvents = 'none';
-            count++; profit += 0.50; balance += 0.50;
-            orders.unshift({name: "Amazon Product #"+(i+1), comm: "0.50", time: new Date().toLocaleTimeString()});
-            document.getElementById('p-val').innerText = `$ ${profit.toFixed(2)}`;
-            document.getElementById('prog').innerText = `${count} / 40`;
-            document.getElementById('bar').style.width = `${(count/40)*100}%`;
-            document.getElementById('h-bal').innerText = `$ ${balance.toFixed(2)}`;
+        function renderTaskItems() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = "";
+            const sampleProds = [
+                { img: "https://m.media-amazon.com/images/I/61SUj2WCx4L._AC_SL1500_.jpg", name: "Apple AirPods", price: 249 },
+                { img: "https://m.media-amazon.com/images/I/71R3m59h21L._AC_SL1500_.jpg", name: "Samsung S24", price: 1200 },
+                { img: "https://m.media-amazon.com/images/I/61I2M+z6r+L._AC_SL1500_.jpg", name: "Gaming Headset", price: 150 },
+                { img: "https://m.media-amazon.com/images/I/71YNDm6T8VL._AC_SL1500_.jpg", name: "Smart Watch", price: 350 }
+            ];
+
+            sampleProds.forEach((p, i) => {
+                grid.innerHTML += `
+                    <div class="bg-white p-3 rounded-2xl shadow-sm text-center border border-gray-100">
+                        <img src="${p.img}" class="h-24 w-full object-contain mb-3">
+                        <p class="text-[10px] text-gray-400 truncate mb-1">${p.name}</p>
+                        <p class="font-black text-sm mb-3">$ ${p.price}</p>
+                        <button onclick="doOptimization(this, ${p.price})" class="w-full bg-[#005a7d] text-white py-2 rounded-xl text-[10px] font-bold active:scale-95 transition-all">OPTIMIZE</button>
+                    </div>
+                `;
+            });
         }
 
-        function renderOrders() {
-            const list = document.getElementById('order-list');
-            list.innerHTML = orders.length ? "" : "<p class='text-center mt-10 opacity-30'>No Orders</p>";
-            orders.forEach(o => {
-                list.innerHTML += `<div class="border-b py-3 flex justify-between"><div class="text-sm font-bold">${o.name}<br><span class="text-[10px] font-normal text-gray-400">${o.time}</span></div><div class="text-teal-500 font-bold">+$${o.comm}</div></div>`;
-            });
+        function doOptimization(btn, price) {
+            if(completed >= 40) return alert("Today's limit reached!");
+            
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+
+            setTimeout(() => {
+                completed++;
+                let comm = price * 0.005;
+                todayProfit += comm;
+                balance += comm;
+                
+                updateUI();
+                btn.innerText = "DONE ✓";
+                btn.style.backgroundColor = "#14b8a6";
+            }, 800);
+        }
+
+        function updateUI() {
+            document.getElementById('balance-display').innerText = `$ ${balance.toFixed(2)}`;
+            document.getElementById('profit-display').innerText = `$ ${todayProfit.toFixed(2)}`;
+            document.getElementById('prog-count').innerText = `${completed} / 40`;
+            document.getElementById('prog-bar').style.width = `${(completed/40)*100}%`;
         }
     </script>
 </body>
