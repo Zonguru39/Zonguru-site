@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zonguru - E-commerce Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #003366; color: white; font-family: sans-serif; }
+        .card { background: white; color: #333; border-radius: 15px; padding: 20px; margin: 15px; }
+        .grid-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #008080; display: flex; justify-content: space-around; padding: 10px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold italic">ZONGURU</h1>
+        <i class="fas fa-comment-dots text-xl"></i>
+    </div>
+
+    <div class="card shadow-lg text-center">
+        <div class="flex justify-center mb-2">
+            <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-2xl font-bold text-white">A</div>
+        </div>
+        <h2 class="font-bold text-lg">User ID: 102456</h2>
+        <div class="grid grid-cols-3 gap-2 mt-4 text-sm border-t pt-4">
+            <div><p class="text-gray-500">Today's Profit</p><p class="font-bold text-blue-600">0.00</p></div>
+            <div><p class="text-gray-500">Balance (USDT)</p><p id="user-balance" class="font-bold text-blue-600">6000.00</p></div>
+            <div><p class="text-gray-500">Freeze Amount</p><p class="font-bold text-blue-600">0.00</p></div>
+        </div>
+    </div>
+
+    <div class="grid-menu px-4 mt-6">
+        <div><i class="fas fa-wallet text-2xl text-cyan-400"></i><p class="text-xs mt-1">Deposit</p></div>
+        <div><i class="fas fa-money-check-alt text-2xl text-cyan-400"></i><p class="text-xs mt-1">Withdrawal</p></div>
+        <div><i class="fas fa-history text-2xl text-cyan-400"></i><p class="text-xs mt-1">Logs</p></div>
+        <div><i class="fas fa-headset text-2xl text-cyan-400"></i><p class="text-xs mt-1">CS</p></div>
+    </div>
+
+    <div class="m-4 bg-blue-900/50 p-4 rounded-lg border border-blue-400">
+        <div class="flex justify-between items-center">
+            <span>VIP Level</span>
+            <span class="text-cyan-300 text-xs cursor-pointer">View More ></span>
+        </div>
+        <div class="mt-2 font-bold">VIP-1</div>
+        <p class="text-xs text-gray-300">Daily Profit Expectation: 200 - 300 USDT</p>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="text-center"><i class="fas fa-home"></i><p class="text-[10px]">Home</p></div>
+        <div class="text-center text-yellow-400"><i class="fas fa-bolt"></i><p class="text-[10px]">Lucky Order</p></div>
+        <div class="text-center"><i class="fas fa-file-alt"></i><p class="text-[10px]">Records</p></div>
+        <div class="text-center"><i class="fas fa-user"></i><p class="text-[10px]">My</p></div>
+    </div>
+
+</body>
+</html>
