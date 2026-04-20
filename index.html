@@ -3,42 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concentrix | Digital Platform</title>
+    <title>Concentrix | Digital Assets</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --main: #005a7d; --accent: #14b8a6; --gold: #fbbf24; }
-        body { background: var(--main); color: white; font-family: 'Inter', sans-serif; margin: 0; }
-        .page { display: none; min-height: 100vh; padding-bottom: 90px; overflow-y: auto; }
+        body { background: var(--main); color: white; font-family: 'Inter', sans-serif; margin: 0; user-select: none; }
+        .page { display: none; min-height: 100vh; padding-bottom: 90px; }
         .page.active { display: block; }
-        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; }
-        .input-field { width: 100%; background: #f3f4f6; color: #111827; padding: 12px 15px; border-radius: 10px; margin-bottom: 12px; outline: none; border: 1px solid #e5e7eb; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #ddd; z-index: 100; }
+        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .input-field { width: 100%; background: #f3f4f6; color: #111827; padding: 14px; border-radius: 12px; margin-bottom: 12px; outline: none; border: 1px solid #ddd; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; z-index: 1000; }
         .nav-item { color: #9ca3af; text-align: center; font-size: 10px; cursor: pointer; }
         .nav-item.active { color: var(--accent); }
-        .product-box { background: white; border-radius: 12px; height: 80px; display: flex; align-items: center; justify-content: center; padding: 5px; cursor: pointer; transition: 0.2s; }
-        .product-box:active { transform: scale(0.9); }
-        .product-box.done { opacity: 0.3; pointer-events: none; border: 2px solid var(--accent); }
+        .prod-img { height: 75px; object-fit: contain; border-radius: 8px; }
+        .done { opacity: 0.3; pointer-events: none; }
+        #notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 15px 30px; border-radius: 50px; display: none; z-index: 5000; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
+    <div id="notification">Action Successful!</div>
+
     <div id="auth-page" class="page active bg-white text-gray-900">
         <div class="p-8">
             <h1 class="text-4xl font-black text-[#005a7d] italic mb-10 text-center">concentrix</h1>
-            <div class="glass-card bg-white shadow-2xl p-6 border border-gray-100">
-                <h2 class="text-2xl font-bold text-teal-500 mb-6">Create Account</h2>
+            <div class="bg-white shadow-2xl p-6 rounded-3xl border">
+                <h2 class="text-2xl font-bold text-teal-500 mb-6">Register</h2>
                 <input type="text" id="reg-user" class="input-field" placeholder="Username">
-                <div class="flex gap-2">
-                    <select class="input-field w-24 text-sm"><option>+1</option><option>+95</option></select>
-                    <input type="text" class="input-field" placeholder="Phone Number">
-                </div>
-                <input type="password" class="input-field" placeholder="Login Password">
-                <input type="password" class="input-field" placeholder="Withdrawal Password">
-                <input type="text" id="invite-code" class="input-field border-teal-200" placeholder="Invitation Code (Required)">
-                
-                <button onclick="handleRegister()" class="w-full bg-teal-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-teal-600">Register</button>
-                <p class="text-center mt-6 text-sm text-gray-400">Already have an account? <span class="text-teal-500 font-bold">Login</span></p>
+                <input type="password" class="input-field" placeholder="Password">
+                <input type="text" id="inv-code" class="input-field" placeholder="Invitation Code (ADMIN123)">
+                <button onclick="handleAuth()" class="w-full bg-teal-500 text-white py-4 rounded-xl font-bold text-lg">Sign Up</button>
             </div>
         </div>
     </div>
@@ -46,144 +41,156 @@
     <div id="home-page" class="page">
         <div class="p-5 flex justify-between items-center bg-[#004d6b]">
             <h1 class="text-2xl font-black italic">concentrix</h1>
-            <div class="flex gap-4">
-                <i class="fas fa-bell text-xl"></i>
-                <i class="fas fa-comment-dots text-xl" onclick="alert('Support Opening...')"></i>
-            </div>
+            <div class="flex gap-4"><i class="fas fa-headset" onclick="showPage('cs-page')"></i><i class="fas fa-bell"></i></div>
         </div>
-
         <div class="p-6">
-            <p class="text-lg opacity-80">Welcome back,</p>
-            <h2 class="text-2xl font-bold text-teal-400">Lalolargo <i class="fas fa-certificate text-xs"></i></h2>
-            
-            <div class="mt-6 glass-card p-6 flex justify-between items-center">
-                <div>
-                    <p class="text-xs uppercase opacity-60">Total Balance</p>
-                    <p class="text-3xl font-black">$ 6000.00</p>
+            <div class="glass-card p-6 mb-6">
+                <p class="text-xs opacity-60">AVAILABLE BALANCE</p>
+                <p id="main-bal" class="text-4xl font-black text-teal-400 mt-2">$ 6000.00</p>
+                <div class="flex gap-4 mt-6">
+                    <button onclick="showPage('dep-page')" class="flex-1 bg-white/20 py-3 rounded-xl font-bold">Deposit</button>
+                    <button onclick="showPage('with-page')" class="flex-1 bg-teal-500 py-3 rounded-xl font-bold">Withdraw</button>
                 </div>
-                <button onclick="showPage('deposit-page')" class="bg-teal-500 px-6 py-2 rounded-full font-bold text-sm">Top Up</button>
             </div>
-        </div>
-
-        <div class="grid grid-cols-4 gap-4 px-6 text-center">
-            <div onclick="showPage('deposit-page')"><div class="w-12 h-12 glass-card mx-auto flex items-center justify-center mb-1"><i class="fas fa-university text-teal-400"></i></div><p class="text-[10px]">Deposit</p></div>
-            <div onclick="alert('Company Profile')"><div class="w-12 h-12 glass-card mx-auto flex items-center justify-center mb-1"><i class="fas fa-file-alt text-teal-400"></i></div><p class="text-[10px]">About</p></div>
-            <div onclick="showPage('withdraw-page')"><div class="w-12 h-12 glass-card mx-auto flex items-center justify-center mb-1"><i class="fas fa-hand-holding-usd text-teal-400"></i></div><p class="text-[10px]">Withdraw</p></div>
-            <div onclick="alert('Referral System')"><div class="w-12 h-12 glass-card mx-auto flex items-center justify-center mb-1"><i class="fas fa-users text-teal-400"></i></div><p class="text-[10px]">Invite</p></div>
+            <div class="grid grid-cols-4 gap-4 text-center">
+                <div onclick="showPage('dep-page')"><i class="fas fa-coins text-2xl text-teal-400"></i><p class="text-[10px] mt-1">Recharge</p></div>
+                <div onclick="showPage('with-page')"><i class="fas fa-wallet text-2xl text-teal-400"></i><p class="text-[10px] mt-1">Cash Out</p></div>
+                <div onclick="showPage('cs-page')"><i class="fas fa-user-tie text-2xl text-teal-400"></i><p class="text-[10px] mt-1">Service</p></div>
+                <div onclick="showPage('prof-page')"><i class="fas fa-cog text-2xl text-teal-400"></i><p class="text-[10px] mt-1">Setting</p></div>
+            </div>
         </div>
     </div>
 
     <div id="optimize-page" class="page">
-        <div class="p-5 text-xl font-bold bg-[#004d6b] border-b border-white/10">Task Center</div>
-        
-        <div id="grid" class="product-grid grid grid-cols-4 gap-3 p-4">
-            </div>
-
-        <div class="p-5 grid grid-cols-2 gap-4">
-            <div class="bg-white text-gray-800 p-4 rounded-2xl shadow-xl">
-                <p class="text-[10px] text-gray-400 uppercase">Commission</p>
-                <p id="profit-text" class="text-2xl font-black text-teal-600">$ 0.00</p>
-            </div>
-            <div class="bg-white text-gray-800 p-4 rounded-2xl shadow-xl">
-                <p class="text-[10px] text-gray-400 uppercase">Completed</p>
-                <p id="stat-text" class="text-2xl font-black text-teal-600">0 / 40</p>
-            </div>
-        </div>
-
-        <div class="px-5">
-            <div class="glass-card p-6">
-                <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden mb-4">
-                    <div id="progress-bar" class="bg-teal-400 h-full transition-all" style="width: 0%"></div>
+        <div class="p-5 text-xl font-bold bg-[#004d6b]">Optimization Hub</div>
+        <div id="prod-grid" class="grid grid-cols-4 gap-3 p-4"></div>
+        <div class="p-5">
+            <div class="bg-white text-gray-900 rounded-3xl p-6 shadow-xl">
+                <div class="flex justify-between mb-4">
+                    <span>Today's Profit</span>
+                    <span id="prof-text" class="font-bold text-teal-600">$ 0.00</span>
                 </div>
-                <button class="w-full bg-teal-500 py-4 rounded-xl font-bold uppercase tracking-widest">Automatic Submit</button>
+                <div class="w-full bg-gray-200 h-2 rounded-full mb-4">
+                    <div id="p-bar" class="bg-teal-500 h-full w-0 transition-all"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-400">
+                    <span>Progress</span>
+                    <span id="stat-text">0 / 40</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="deposit-page" class="page bg-gray-50 text-gray-900">
+    <div id="dep-page" class="page bg-gray-50 text-gray-900">
         <div class="p-5 bg-[#005a7d] text-white flex items-center gap-4">
-            <i class="fas fa-arrow-left" onclick="showPage('home-page')"></i>
-            <span class="font-bold">Deposit Balance</span>
+            <i class="fas fa-chevron-left" onclick="showPage('home-page')"></i><span class="font-bold">Recharge Assets</span>
         </div>
         <div class="p-6">
-            <label class="text-sm font-bold text-gray-500">Select Amount</label>
-            <div class="grid grid-cols-3 gap-3 my-4">
-                <div class="border p-3 rounded-lg text-center font-bold" onclick="this.style.borderColor='teal'">$100</div>
-                <div class="border p-3 rounded-lg text-center font-bold" onclick="this.style.borderColor='teal'">$500</div>
-                <div class="border p-3 rounded-lg text-center font-bold" onclick="this.style.borderColor='teal'">$1000</div>
+            <h3 class="font-bold mb-4">Step 1: Choose Currency</h3>
+            <div class="flex gap-4 mb-6">
+                <button onclick="setCrypto('USDT')" class="flex-1 border-2 p-4 rounded-xl font-bold text-center active:border-teal-500 focus:border-teal-500">USDT (TRC20)</button>
+                <button onclick="setCrypto('BTC')" class="flex-1 border-2 p-4 rounded-xl font-bold text-center active:border-teal-500 focus:border-teal-500">BITCOIN</button>
             </div>
-            <button class="w-full bg-teal-500 text-white py-4 rounded-xl font-bold mt-10">Confirm Deposit</button>
+            <div id="crypto-addr-box" class="hidden">
+                <h3 class="font-bold mb-2">Step 2: Transfer to Address</h3>
+                <div class="bg-white border p-4 rounded-xl flex items-center justify-between">
+                    <span id="addr-text" class="text-xs font-mono">T9zE2...89aX</span>
+                    <i class="fas fa-copy text-teal-500" onclick="notify('Address Copied!')"></i>
+                </div>
+                <p class="text-xs text-red-500 mt-2">*Please upload receipt after transfer.</p>
+                <button onclick="notify('Deposit Request Submitted!')" class="w-full bg-teal-500 text-white py-4 rounded-xl font-bold mt-6">Confirm Deposit</button>
+            </div>
         </div>
     </div>
 
-    <div id="withdraw-page" class="page bg-gray-50 text-gray-900">
+    <div id="with-page" class="page bg-gray-50 text-gray-900">
         <div class="p-5 bg-[#005a7d] text-white flex items-center gap-4">
-            <i class="fas fa-arrow-left" onclick="showPage('home-page')"></i>
-            <span class="font-bold">Withdraw Funds</span>
+            <i class="fas fa-chevron-left" onclick="showPage('home-page')"></i><span class="font-bold">Withdraw Assets</span>
         </div>
         <div class="p-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border mb-6">
-                <p class="text-xs text-gray-400">Withdrawable Balance</p>
-                <p class="text-3xl font-black text-teal-600">$ 6000.00</p>
-            </div>
-            <input type="number" class="input-field" placeholder="Enter Amount">
-            <input type="password" class="input-field" placeholder="Withdrawal Password">
-            <button class="w-full bg-gray-800 text-white py-4 rounded-xl font-bold mt-4">Withdraw Now</button>
+            <select class="input-field"><option>USDT (TRC20)</option><option>BTC</option></select>
+            <input type="text" id="with-addr" class="input-field" placeholder="Enter Crypto Address">
+            <input type="number" id="with-amt" class="input-field" placeholder="Enter Amount">
+            <input type="password" class="input-field" placeholder="Security Password">
+            <button onclick="handleWithdraw()" class="w-full bg-[#005a7d] text-white py-4 rounded-xl font-bold mt-4">Confirm Withdrawal</button>
         </div>
     </div>
 
-    <div class="bottom-nav" id="footer-nav" style="display: none;">
+    <div id="prof-page" class="page bg-gray-50 text-gray-900">
+        <div class="p-10 text-center"><div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">👤</div><h2 class="font-bold text-xl">Lalolargo</h2><p class="text-gray-400">ID: 889201</p></div>
+        <div class="p-4"><div class="bg-white rounded-xl border p-4 flex justify-between items-center mb-2" onclick="showPage('auth-page')"><span>Logout</span><i class="fas fa-sign-out-alt text-red-500"></i></div></div>
+    </div>
+    
+    <div id="cs-page" class="page bg-white text-gray-900">
+        <div class="p-5 bg-[#005a7d] text-white flex items-center gap-4"><i class="fas fa-chevron-left" onclick="showPage('home-page')"></i><span class="font-bold">24/7 Live Support</span></div>
+        <div class="p-10 text-center"><i class="fas fa-headset text-6xl text-teal-500 mb-6"></i><p class="mb-6">Connect with our online agent for assistance.</p><button onclick="notify('Connecting to Server...')" class="bg-teal-500 text-white px-10 py-3 rounded-full font-bold">Start Chat</button></div>
+    </div>
+
+    <div class="bottom-nav" id="nav-bar" style="display: none;">
         <div class="nav-item active" onclick="showPage('home-page')"><i class="fas fa-home text-lg"></i><p>Home</p></div>
         <div class="nav-item" onclick="showPage('optimize-page')"><i class="fas fa-bolt text-lg"></i><p>Optimize</p></div>
-        <div class="nav-item" onclick="alert('Finance History')"><i class="fas fa-file-invoice-dollar text-lg"></i><p>Records</p></div>
-        <div class="nav-item" onclick="alert('Profile Page')"><i class="fas fa-user-circle text-lg"></i><p>Profile</p></div>
+        <div class="nav-item" onclick="alert('Records empty')"><i class="fas fa-history text-lg"></i><p>Records</p></div>
+        <div class="nav-item" onclick="showPage('prof-page')"><i class="fas fa-user text-lg"></i><p>Profile</p></div>
     </div>
 
     <script>
-        let pCount = 0;
-        let profit = 0;
+        let balance = 6000.00; let profit = 0.00; let count = 0;
+        const ADMIN_CODE = "ADMIN123";
 
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            
-            // Toggle Nav visibility
-            document.getElementById('footer-nav').style.display = (id === 'auth-page') ? 'none' : 'flex';
-            
-            if(id === 'optimize-page') initGrid();
-            
-            // Nav Highlighting
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(id === 'home-page') document.querySelectorAll('.nav-item')[0].classList.add('active');
-            if(id === 'optimize-page') document.querySelectorAll('.nav-item')[1].classList.add('active');
-        }
-
-        function handleRegister() {
-            const invite = document.getElementById('invite-code').value;
-            if(!invite) {
-                alert("Please enter a valid Invitation Code!");
-                return;
+        function handleAuth() {
+            if(document.getElementById('inv-code').value !== ADMIN_CODE) {
+                alert("Invalid Invitation Code!"); return;
             }
             showPage('home-page');
         }
 
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.getElementById('nav-bar').style.display = (id === 'auth-page') ? 'none' : 'flex';
+            if(id === 'optimize-page') initGrid();
+        }
+
+        function setCrypto(type) {
+            document.getElementById('crypto-addr-box').classList.remove('hidden');
+            document.getElementById('addr-text').innerText = (type === 'USDT') ? "T9zE2S6nQ4WvLp89aXqR7m" : "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa";
+        }
+
+        function handleWithdraw() {
+            let amt = parseFloat(document.getElementById('with-amt').value);
+            if(amt > balance) return alert("Insufficient Balance!");
+            balance -= amt;
+            document.getElementById('main-bal').innerText = `$ ${balance.toFixed(2)}`;
+            notify("Withdrawal Success! Processing...");
+            showPage('home-page');
+        }
+
         function initGrid() {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = "";
-            const imgs = ["https://m.media-amazon.com/images/I/71r38S-U-aL._AC_SL1500_.jpg", "https://m.media-amazon.com/images/I/61I2M+z6r+L._AC_SL1500_.jpg", "https://m.media-amazon.com/images/I/71YNDm6T8VL._AC_SL1500_.jpg", "https://m.media-amazon.com/images/I/81S6U8Z3E-L._AC_SL1500_.jpg"];
+            const grid = document.getElementById('prod-grid'); grid.innerHTML = "";
+            const imgs = [
+                "https://m.media-amazon.com/images/I/71r38S-U-aL._AC_SL1500_.jpg",
+                "https://m.media-amazon.com/images/I/61I2M+z6r+L._AC_SL1500_.jpg",
+                "https://m.media-amazon.com/images/I/71YNDm6T8VL._AC_SL1500_.jpg",
+                "https://m.media-amazon.com/images/I/81S6U8Z3E-L._AC_SL1500_.jpg"
+            ];
             for(let i=0; i<16; i++) {
-                grid.innerHTML += `<div class="product-box shadow-sm" onclick="doTask(this)"><img src="${imgs[i%4]}" class="h-full object-contain"></div>`;
+                grid.innerHTML += `<div class="bg-white p-2 rounded-xl flex items-center justify-center shadow-sm" onclick="doTask(this)"><img src="${imgs[i%4]}" class="prod-img"></div>`;
             }
         }
 
         function doTask(el) {
-            if(pCount >= 40) return;
+            if(count >= 40) return;
             el.classList.add('done');
-            pCount++;
-            profit += 0.50;
-            document.getElementById('profit-text').innerText = `$ ${profit.toFixed(2)}`;
-            document.getElementById('stat-text').innerText = `${pCount} / 40`;
-            document.getElementById('progress-bar').style.width = `${(pCount/40)*100}%`;
+            count++; profit += 0.50;
+            document.getElementById('prof-text').innerText = `$ ${profit.toFixed(2)}`;
+            document.getElementById('stat-text').innerText = `${count} / 40`;
+            document.getElementById('p-bar').style.width = `${(count/40)*100}%`;
+        }
+
+        function notify(msg) {
+            const n = document.getElementById('notification');
+            n.innerText = msg; n.style.display = 'block';
+            setTimeout(() => n.style.display = 'none', 3000);
         }
     </script>
 </body>
