@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Zonguru Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f6fb;
+      color: #222;
+    }
+
+    .top {
+      background: #7657d9;
+      color: white;
+      padding: 20px;
+    }
+
+    .top h2 {
+      margin: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .balance {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.08);
+      margin-bottom: 18px;
+    }
+
+    .balance-title {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .amount {
+      font-size: 34px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .currency {
+      color: #7657d9;
+      font-size: 15px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    button {
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .deposit {
+      background: #16a34a;
+      color: white;
+    }
+
+    .withdraw {
+      background: #dc2626;
+      color: white;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .logout {
+      width: 100%;
+      background: #222;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="top">
+    <h2>Zonguru</h2>
+    <div>Welcome to your dashboard</div>
+  </div>
+
+  <div class="container">
+
+    <div class="balance">
+
+      <div class="balance-title">
+        Available Balance
+      </div>
+
+      <div class="amount">
+        0.00
+        <span class="currency">USDT</span>
+      </div>
+
+    </div>
+
+
+    <div class="buttons">
+
+      <button
+        class="deposit"
+        onclick="deposit()">
+        Deposit
+      </button>
+
+      <button
+        class="withdraw"
+        onclick="withdraw()">
+        Withdraw
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>Account</h3>
+
+      <div class="row">
+        <span>Username</span>
+        <strong>Demo User</strong>
+      </div>
+
+      <div class="row">
+        <span>Status</span>
+        <strong>Active</strong>
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>Recent Transactions</h3>
+
+      <div class="row">
+        <span>No transactions</span>
+        <span>—</span>
+      </div>
+
+    </div>
+
+
+    <button
+      class="logout"
+      onclick="logout()">
+      Logout
+    </button>
+
+  </div>
+
+
+  <script>
+
+    function deposit() {
+      alert("Deposit request page will be connected next.");
+    }
+
+    function withdraw() {
+      alert("Withdrawal request page will be connected next.");
+    }
+
+    function logout() {
+      window.location.href = "login.html";
+    }
+
+  </script>
+
+</body>
+</html>
