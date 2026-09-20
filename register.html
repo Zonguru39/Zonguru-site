@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zonguru Register</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #eef2ff, #f8f9ff);
+    }
+
+    .box {
+      width: 92%;
+      max-width: 400px;
+      background: white;
+      padding: 28px 24px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.10);
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 15px;
+      border-radius: 18px;
+      background: #7657d9;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 5px 0 8px;
+    }
+
+    .sub {
+      text-align: center;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 7px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 22px;
+      border: none;
+      border-radius: 10px;
+      background: #7657d9;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .login {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .login a {
+      color: #7657d9;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+
+    <div class="logo">Z</div>
+
+    <h1>Create Account</h1>
+
+    <div class="sub">
+      Register your Zonguru account
+    </div>
+
+    <form onsubmit="registerUser(event)">
+
+      <label>Invitation Code</label>
+      <input
+        id="invite"
+        type="text"
+        placeholder="Invitation code"
+      >
+
+      <label>Username</label>
+      <input
+        id="username"
+        type="text"
+        placeholder="Choose username"
+        required
+      >
+
+      <label>Password</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="Create password"
+        required
+      >
+
+      <label>Confirm Password</label>
+      <input
+        id="confirm"
+        type="password"
+        placeholder="Confirm password"
+        required
+      >
+
+      <button type="submit">
+        Register
+      </button>
+
+    </form>
+
+    <div class="login">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </div>
+
+  </div>
+
+  <script>
+
+    function registerUser(event) {
+
+      event.preventDefault();
+
+      const username =
+        document.getElementById("username").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      const confirm =
+        document.getElementById("confirm").value;
+
+      if (password !== confirm) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      alert(
+        "Registration page is ready. " +
+        "Database registration will be connected next."
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>
