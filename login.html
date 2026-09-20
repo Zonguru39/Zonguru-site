@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Zonguru Login</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #eef2ff, #f8f9ff);
+    }
+
+    .login-box {
+      width: 92%;
+      max-width: 400px;
+      background: white;
+      padding: 30px 24px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 15px;
+      border-radius: 18px;
+      background: #7657d9;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 5px 0 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 16px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #7657d9;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #7657d9;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .register {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .register a {
+      color: #7657d9;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .admin {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13px;
+    }
+
+    .admin a {
+      color: #777;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+
+    <div class="logo">Z</div>
+
+    <h1>Welcome Back</h1>
+
+    <div class="subtitle">
+      Login to your Zonguru account
+    </div>
+
+    <form onsubmit="login(event)">
+
+      <label>Username</label>
+
+      <input
+        id="username"
+        type="text"
+        placeholder="Enter username"
+        required
+      >
+
+      <label>Password</label>
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter password"
+        required
+      >
+
+      <button type="submit">
+        Login
+      </button>
+
+    </form>
+
+    <div class="register">
+      Don't have an account?
+      <a href="register.html">Register</a>
+    </div>
+
+    <div class="admin">
+      <a href="admin.html">Admin Panel</a>
+    </div>
+
+  </div>
+
+
+  <script>
+
+    function login(event) {
+
+      event.preventDefault();
+
+      const username =
+        document.getElementById("username").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      if (!username || !password) {
+        alert("Please enter username and password.");
+        return;
+      }
+
+      /*
+        Demo login only.
+
+        Real authentication will be connected
+        to the backend/database in the next step.
+      */
+
+      if (
+        username === "demo_user" &&
+        password === "123456"
+      ) {
+
+        window.location.href =
+          "dashboard.html";
+
+      } else {
+
+        alert(
+          "Login system is currently in demo mode."
+        );
+
+      }
+
+    }
+
+  </script>
+
+</body>
+  </html>
