@@ -4,110 +4,133 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Zonguru Login</title>
+  <title>Zonguru - Login</title>
 
   <style>
     * {
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, #6d28d9 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #4c1d95 0%, transparent 40%),
+        linear-gradient(135deg, #12002b, #241047, #12002b);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #6d28d9, #9333ea, #c026d3);
       padding: 20px;
+      color: #fff;
     }
 
     .login-box {
       width: 100%;
-      max-width: 410px;
-      background: #ffffff;
-      padding: 32px 26px;
-      border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.20);
+      max-width: 430px;
+      background: rgba(255, 255, 255, 0.97);
+      color: #222;
+      border-radius: 24px;
+      padding: 35px 28px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
     }
 
     .logo {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 10px;
     }
 
     .logo-icon {
-      width: 70px;
-      height: 70px;
-      margin: auto;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #7c3aed, #a855f7);
-      color: white;
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 12px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 34px;
+      font-size: 32px;
       font-weight: bold;
-      box-shadow: 0 10px 25px rgba(124,58,237,0.30);
+      color: white;
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.35);
     }
 
-    .logo h1 {
-      margin: 15px 0 5px;
-      color: #1f2937;
+    h1 {
+      text-align: center;
       font-size: 28px;
+      margin-bottom: 8px;
+      color: #1f1235;
     }
 
-    .logo p {
-      margin: 0;
-      color: #6b7280;
+    .subtitle {
+      text-align: center;
+      color: #777;
       font-size: 14px;
+      margin-bottom: 28px;
     }
 
     .form-group {
-      margin-bottom: 17px;
+      margin-bottom: 18px;
     }
 
     label {
       display: block;
-      margin-bottom: 7px;
       font-size: 14px;
-      font-weight: bold;
-      color: #374151;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
     }
 
     input {
       width: 100%;
-      padding: 14px 15px;
-      border: 1px solid #d1d5db;
-      border-radius: 11px;
-      outline: none;
+      height: 50px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 0 15px;
       font-size: 15px;
-      background: #fff;
+      outline: none;
       transition: 0.2s;
+      background: #fafafa;
     }
 
     input:focus {
       border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.10);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+    }
+
+    .forgot {
+      text-align: right;
+      margin-top: -5px;
+      margin-bottom: 20px;
+    }
+
+    .forgot a {
+      color: #6d28d9;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
     }
 
     .login-btn {
       width: 100%;
-      border: 0;
-      padding: 14px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      height: 52px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
       color: white;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
-      margin-top: 5px;
       transition: 0.2s;
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.28);
     }
 
     .login-btn:hover {
-      opacity: 0.93;
       transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(99, 102, 241, 0.35);
     }
 
     .login-btn:disabled {
@@ -118,59 +141,60 @@
 
     .message {
       display: none;
-      margin-bottom: 15px;
-      padding: 12px;
+      padding: 12px 14px;
       border-radius: 10px;
+      margin-bottom: 18px;
       font-size: 14px;
-      text-align: center;
+      line-height: 1.5;
     }
 
     .message.error {
       display: block;
       background: #fee2e2;
-      color: #b91c1c;
+      color: #991b1b;
+      border: 1px solid #fecaca;
     }
 
     .message.success {
       display: block;
       background: #dcfce7;
       color: #166534;
+      border: 1px solid #bbf7d0;
     }
 
     .register-link {
       text-align: center;
       margin-top: 22px;
+      color: #777;
       font-size: 14px;
-      color: #6b7280;
     }
 
     .register-link a {
-      color: #7c3aed;
-      font-weight: bold;
+      color: #6d28d9;
       text-decoration: none;
+      font-weight: 700;
     }
 
-    .register-link a:hover {
-      text-decoration: underline;
-    }
-
-    .forgot {
-      text-align: right;
-      margin-top: 7px;
-    }
-
-    .forgot a {
-      color: #7c3aed;
-      text-decoration: none;
-      font-size: 13px;
-    }
-
-    .security-note {
-      margin-top: 22px;
+    .security {
       text-align: center;
-      color: #9ca3af;
+      margin-top: 22px;
       font-size: 12px;
-      line-height: 1.5;
+      color: #999;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 14px;
+      }
+
+      .login-box {
+        padding: 28px 20px;
+        border-radius: 20px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
     }
   </style>
 </head>
@@ -181,9 +205,13 @@
 
     <div class="logo">
       <div class="logo-icon">Z</div>
-      <h1>Zonguru</h1>
-      <p>Welcome back</p>
     </div>
+
+    <h1>Welcome back</h1>
+
+    <p class="subtitle">
+      Login to your Zonguru account
+    </p>
 
     <div id="message" class="message"></div>
 
@@ -191,6 +219,7 @@
 
       <div class="form-group">
         <label for="username">Username</label>
+
         <input
           type="text"
           id="username"
@@ -203,6 +232,7 @@
 
       <div class="form-group">
         <label for="password">Password</label>
+
         <input
           type="password"
           id="password"
@@ -211,18 +241,18 @@
           autocomplete="current-password"
           required
         >
+      </div>
 
-        <div class="forgot">
-          <a href="javascript:void(0)" onclick="showForgotMessage()">
-            Forgot password?
-          </a>
-        </div>
+      <div class="forgot">
+        <a href="#" id="forgotPassword">
+          Forgot password?
+        </a>
       </div>
 
       <button
         type="submit"
         class="login-btn"
-        id="loginButton"
+        id="loginBtn"
       >
         Login
       </button>
@@ -234,7 +264,7 @@
       <a href="register.html">Create Account</a>
     </div>
 
-    <div class="security-note">
+    <div class="security">
       🔒 Your account information is securely protected.
     </div>
 
@@ -242,72 +272,79 @@
 
 
   <script>
-    const API_URL = "https://zonguru-jack-api.onrender.com";
+    const API_URL =
+      "https://zonguru-jack-api.onrender.com";
 
-    const loginForm = document.getElementById("loginForm");
-    const loginButton = document.getElementById("loginButton");
-    const messageBox = document.getElementById("message");
+    const form =
+      document.getElementById("loginForm");
 
-    function showMessage(text, type = "error") {
-      messageBox.textContent = text;
-      messageBox.className = "message " + type;
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+    const message =
+      document.getElementById("message");
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "message " + type;
     }
 
-    function hideMessage() {
-      messageBox.textContent = "";
-      messageBox.className = "message";
-    }
+    form.addEventListener("submit", async function (event) {
 
-    function showForgotMessage() {
-      showMessage(
-        "Please contact Customer Service to reset your password.",
-        "error"
-      );
-    }
-
-    loginForm.addEventListener("submit", async function(event) {
       event.preventDefault();
 
-      hideMessage();
+      const username =
+        document.getElementById("username").value.trim();
 
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
+      const password =
+        document.getElementById("password").value;
 
       if (!username || !password) {
-        showMessage("Please enter username and password.");
+        showMessage(
+          "Please enter your username and password.",
+          "error"
+        );
         return;
       }
 
-      loginButton.disabled = true;
-      loginButton.textContent = "Logging in...";
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Logging in...";
+
+      message.className = "message";
+      message.textContent = "";
 
       try {
-        const response = await fetch(API_URL + "/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            username: username,
-            password: password
-          })
-        });
+
+        const response = await fetch(
+          API_URL + "/api/auth/login",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              username: username,
+              password: password
+            })
+          }
+        );
 
         const data = await response.json();
 
         if (!response.ok || !data.success) {
           throw new Error(
-            data.message ||
-            data.error ||
-            "Login failed. Please check your username and password."
+            data.message || "Login failed."
           );
         }
 
-        if (!data.token) {
-          throw new Error("Login successful but token was not received.");
+        if (data.token) {
+          localStorage.setItem(
+            "zonguru_token",
+            data.token
+          );
         }
-
-        localStorage.setItem("zonguru_token", data.token);
 
         if (data.user) {
           localStorage.setItem(
@@ -316,28 +353,45 @@
           );
         }
 
-        showMessage("Login successful. Redirecting...", "success");
+        showMessage(
+          "Login successful. Redirecting...",
+          "success"
+        );
 
-        setTimeout(function() {
+        setTimeout(function () {
           window.location.href = "dashboard.html";
         }, 700);
 
       } catch (error) {
-        console.error(error);
 
         showMessage(
-          error.message || "Unable to connect to the server."
+          error.message || "Unable to login.",
+          "error"
         );
 
-        loginButton.disabled = false;
-        loginButton.textContent = "Login";
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Login";
       }
+
     });
+
+
+    document
+      .getElementById("forgotPassword")
+      .addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        alert(
+          "Please contact Customer Service to reset your password."
+        );
+
+      });
   </script>
 
 
-  <!-- Customer Service + Language -->
+  <!-- Zonguru Customer Service + Language System -->
   <script src="support.js"></script>
 
 </body>
-          </html>
+</html>
