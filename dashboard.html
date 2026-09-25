@@ -16,16 +16,23 @@
       margin: 0;
       background: #f4f6fb;
       color: #222;
+      padding-bottom: 80px;
     }
 
     .top {
-      background: #7657d9;
+      background: linear-gradient(135deg, #7657d9, #6242c5);
       color: white;
-      padding: 20px;
+      padding: 25px 20px 30px;
     }
 
     .top h2 {
-      margin: 0 0 5px;
+      margin: 0 0 6px;
+      font-size: 28px;
+    }
+
+    .top p {
+      margin: 0;
+      opacity: .9;
     }
 
     .container {
@@ -36,10 +43,10 @@
 
     .balance {
       background: white;
-      padding: 22px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,.08);
-      margin-bottom: 18px;
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 5px 18px rgba(0,0,0,.08);
+      margin-bottom: 15px;
     }
 
     .balance-title {
@@ -48,14 +55,27 @@
     }
 
     .amount {
-      font-size: 34px;
+      font-size: 36px;
       font-weight: bold;
       margin-top: 8px;
     }
 
     .currency {
       color: #7657d9;
-      font-size: 15px;
+      font-size: 16px;
+    }
+
+    .profit-box {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .profit {
+      color: #16a34a;
+      font-weight: bold;
     }
 
     .buttons {
@@ -68,7 +88,7 @@
     button {
       padding: 14px;
       border: none;
-      border-radius: 10px;
+      border-radius: 11px;
       font-size: 15px;
       font-weight: bold;
       cursor: pointer;
@@ -87,7 +107,7 @@
     .card {
       background: white;
       padding: 20px;
-      border-radius: 16px;
+      border-radius: 18px;
       margin-bottom: 18px;
       box-shadow: 0 4px 15px rgba(0,0,0,.06);
     }
@@ -99,33 +119,272 @@
     .row {
       display: flex;
       justify-content: space-between;
-      padding: 12px 0;
+      gap: 15px;
+      padding: 13px 0;
       border-bottom: 1px solid #eee;
     }
 
-    .logout {
+    .row:last-child {
+      border-bottom: none;
+    }
+
+    .small {
+      color: #777;
+      font-size: 13px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 7px;
+      color: #555;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #7657d9;
+    }
+
+    .primary {
+      width: 100%;
+      background: #7657d9;
+      color: white;
+    }
+
+    .dark {
       width: 100%;
       background: #222;
       color: white;
     }
 
+    .back {
+      display: inline-block;
+      margin-bottom: 15px;
+      color: #7657d9;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 15px;
+      padding: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    }
+
+    .product-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .product-category {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .product-profit {
+      color: #16a34a;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .optimize {
+      width: 100%;
+      background: #7657d9;
+      color: white;
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    .tx {
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .tx:last-child {
+      border-bottom: none;
+    }
+
+    .tx-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .tx-type {
+      font-weight: bold;
+    }
+
+    .tx-amount {
+      font-weight: bold;
+    }
+
+    .tx-status {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      background: #eee;
+    }
+
+    .pending {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .approved,
+    .completed {
+      background: #ecfdf5;
+      color: #15803d;
+    }
+
+    .rejected {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    .message {
+      padding: 15px;
+      background: #f8f7ff;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    .message small {
+      color: #888;
+    }
+
+    .referral {
+      background: #f3efff;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .referral-code {
+      font-size: 22px;
+      font-weight: bold;
+      color: #7657d9;
+      letter-spacing: 1px;
+    }
+
+    .member {
+      padding: 13px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .empty {
+      text-align: center;
+      color: #999;
+      padding: 25px 5px;
+    }
+
     .loading {
-      color: #777;
-      font-size: 14px;
+      text-align: center;
+      color: #888;
+      padding: 25px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: white;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 -3px 15px rgba(0,0,0,.08);
+    }
+
+    .nav-item {
+      text-align: center;
+      color: #999;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .nav-item.active {
+      color: #7657d9;
+      font-weight: bold;
+    }
+
+    .nav-icon {
+      font-size: 22px;
+      margin-bottom: 3px;
+    }
+
+    .danger {
+      background: #dc2626;
+      color: white;
+      width: 100%;
+    }
+
+    @media (max-width: 450px) {
+      .product-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .amount {
+        font-size: 32px;
+      }
     }
   </style>
 </head>
 
 <body>
 
+<!-- ================= HOME ================= -->
+
+<div id="homePage" class="page active">
+
   <div class="top">
     <h2>Zonguru</h2>
-    <div id="welcomeText">Welcome to your dashboard</div>
+    <p id="welcomeText">Welcome, User</p>
   </div>
 
   <div class="container">
 
-    <!-- Balance -->
     <div class="balance">
 
       <div class="balance-title">
@@ -137,28 +396,31 @@
         <span id="currency" class="currency">USDT</span>
       </div>
 
+      <div class="profit-box">
+        <span>Total Profit</span>
+        <strong id="totalProfit" class="profit">
+          0.00 USDT
+        </strong>
+      </div>
+
     </div>
 
-
-    <!-- Deposit / Withdraw -->
     <div class="buttons">
 
       <button
         class="deposit"
-        onclick="deposit()">
+        onclick="showPage('depositPage')">
         Deposit
       </button>
 
       <button
         class="withdraw"
-        onclick="withdraw()">
+        onclick="showPage('withdrawPage')">
         Withdraw
       </button>
 
     </div>
 
-
-    <!-- Account -->
     <div class="card">
 
       <h3>Account</h3>
@@ -169,124 +431,884 @@
       </div>
 
       <div class="row">
-        <span>Email</span>
-        <strong id="email">Loading...</strong>
+        <span>Currency</span>
+        <strong id="accountCurrency">USDT</strong>
       </div>
 
       <div class="row">
         <span>Status</span>
-        <strong id="status">Active</strong>
+        <strong>Active</strong>
       </div>
 
     </div>
 
-
-    <!-- Transactions -->
     <div class="card">
 
       <h3>Recent Transactions</h3>
 
+      <div id="recentTransactions">
+        <div class="loading">
+          Loading...
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= DEPOSIT ================= -->
+
+<div id="depositPage" class="page">
+
+  <div class="container">
+
+    <div
+      class="back"
+      onclick="showPage('homePage')">
+      ← Back
+    </div>
+
+    <div class="card">
+
+      <h3>Deposit</h3>
+
+      <p class="small">
+        Submit a deposit request for admin review.
+      </p>
+
+      <div class="form-group">
+
+        <label>Amount (USDT)</label>
+
+        <input
+          id="depositAmount"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Enter amount">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Note</label>
+
+        <textarea
+          id="depositNote"
+          rows="4"
+          placeholder="Optional note"></textarea>
+
+      </div>
+
+      <button
+        class="primary"
+        onclick="submitDeposit()">
+        Submit Deposit Request
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= WITHDRAW ================= -->
+
+<div id="withdrawPage" class="page">
+
+  <div class="container">
+
+    <div
+      class="back"
+      onclick="showPage('homePage')">
+      ← Back
+    </div>
+
+    <div class="card">
+
+      <h3>Withdraw</h3>
+
+      <p class="small">
+        Available:
+        <strong id="withdrawBalance">
+          0.00 USDT
+        </strong>
+      </p>
+
+      <div class="form-group">
+
+        <label>Amount (USDT)</label>
+
+        <input
+          id="withdrawAmount"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Enter amount">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Wallet / Payment Details</label>
+
+        <textarea
+          id="withdrawNote"
+          rows="4"
+          placeholder="Enter wallet address or payment details"></textarea>
+
+      </div>
+
+      <button
+        class="primary"
+        onclick="submitWithdraw()">
+        Submit Withdrawal Request
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<div id="productsPage" class="page">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h3>Products</h3>
+
+      <p class="small">
+        Choose a product and optimize it.
+      </p>
+
+    </div>
+
+    <div
+      id="productGrid"
+      class="product-grid">
+
+      <div class="loading">
+        Loading products...
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= TRANSACTIONS ================= -->
+
+<div id="transactionsPage" class="page">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h3>Transaction History</h3>
+
+      <div id="transactionList">
+
+        <div class="loading">
+          Loading...
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= MESSAGES ================= -->
+
+<div id="messagesPage" class="page">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h3>Messages</h3>
+
+      <div id="messageList">
+
+        <div class="loading">
+          Loading...
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= TEAM ================= -->
+
+<div id="teamPage" class="page">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h3>Team & Referral</h3>
+
+      <div class="referral">
+
+        <div class="small">
+          Your Referral Code
+        </div>
+
+        <div
+          id="referralCode"
+          class="referral-code">
+          -
+        </div>
+
+        <button
+          style="margin-top:12px;background:#7657d9;color:white;width:100%;"
+          onclick="copyReferral()">
+          Copy Referral Code
+        </button>
+
+      </div>
+
+      <h3>Team Members</h3>
+
+      <div id="teamMembers">
+
+        <div class="loading">
+          Loading...
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= ACCOUNT ================= -->
+
+<div id="accountPage" class="page">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h3>Account Details</h3>
+
       <div class="row">
-        <span>No transactions</span>
-        <span>—</span>
+        <span>Username</span>
+        <strong id="accountUsername">-</strong>
+      </div>
+
+      <div class="row">
+        <span>Balance</span>
+        <strong id="accountBalance">0.00 USDT</strong>
+      </div>
+
+      <div class="row">
+        <span>Total Profit</span>
+        <strong id="accountProfit">0.00 USDT</strong>
+      </div>
+
+      <div class="row">
+        <span>Referral Code</span>
+        <strong id="accountReferral">-</strong>
+      </div>
+
+      <div class="row">
+        <span>Status</span>
+        <strong>Active</strong>
       </div>
 
     </div>
 
 
-    <button
-      class="logout"
-      onclick="logout()">
-      Logout
-    </button>
+    <div class="card">
+
+      <h3>Change Password</h3>
+
+      <div class="form-group">
+
+        <label>Current Password</label>
+
+        <input
+          id="oldPassword"
+          type="password"
+          placeholder="Current password">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>New Password</label>
+
+        <input
+          id="newPassword"
+          type="password"
+          placeholder="New password">
+
+      </div>
+
+      <button
+        class="primary"
+        onclick="changePassword()">
+        Change Password
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <button
+        class="danger"
+        onclick="logout()">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= NAV ================= -->
+
+<div class="bottom-nav">
+
+  <div
+    id="navHome"
+    class="nav-item active"
+    onclick="showPage('homePage')">
+
+    <div class="nav-icon">⌂</div>
+    Home
 
   </div>
 
 
-  <script>
+  <div
+    id="navProducts"
+    class="nav-item"
+    onclick="showPage('productsPage')">
 
-    const API_URL = "https://zonguru-jack-api.onrender.com";
+    <div class="nav-icon">▣</div>
+    Products
 
-    async function loadUser() {
+  </div>
 
-      const token = localStorage.getItem("zonguru_token");
 
-      if (!token) {
-        window.location.href = "login.html";
-        return;
-      }
+  <div
+    id="navTransactions"
+    class="nav-item"
+    onclick="showPage('transactionsPage')">
 
-      try {
+    <div class="nav-icon">☷</div>
+    History
 
-        const response = await fetch(API_URL + "/api/me", {
-          method: "GET",
-          headers: {
-            "Authorization": "Bearer " + token
-          }
-        });
+  </div>
 
-        const data = await response.json();
 
-        if (!response.ok || !data.success) {
+  <div
+    id="navMessages"
+    class="nav-item"
+    onclick="showPage('messagesPage')">
 
-          localStorage.removeItem("zonguru_token");
-          localStorage.removeItem("zonguru_user");
+    <div class="nav-icon">✉</div>
+    Messages
 
-          alert("Your session has expired. Please login again.");
+  </div>
 
-          window.location.href = "login.html";
-          return;
+
+  <div
+    id="navAccount"
+    class="nav-item"
+    onclick="showPage('accountPage')">
+
+    <div class="nav-icon">♙</div>
+    Account
+
+  </div>
+
+</div>
+
+
+<script>
+
+const API_URL =
+  "https://zonguru-jack-api.onrender.com";
+
+let currentUser = null;
+
+
+/* ================= AUTH ================= */
+
+function getToken() {
+
+  return localStorage.getItem(
+    "zonguru_token"
+  );
+
+}
+
+
+async function api(path, options = {}) {
+
+  const token = getToken();
+
+  if (!token) {
+
+    window.location.href = "login.html";
+
+    throw new Error("Not logged in");
+
+  }
+
+  const headers = {
+
+    "Content-Type": "application/json",
+
+    "Authorization":
+      "Bearer " + token
+
+  };
+
+  const response =
+    await fetch(
+      API_URL + path,
+      {
+        ...options,
+        headers: {
+          ...headers,
+          ...(options.headers || {})
         }
-
-        const user = data.user;
-
-        document.getElementById("username").textContent =
-          user.name || "User";
-
-        document.getElementById("email").textContent =
-          user.email || "-";
-
-        document.getElementById("balanceAmount").textContent =
-          Number(user.balance || 0).toFixed(2);
-
-        document.getElementById("currency").textContent =
-          user.currency || "USDT";
-
-        document.getElementById("welcomeText").textContent =
-          "Welcome, " + (user.name || "User");
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert("Cannot connect to Zonguru server.");
-
       }
-    }
+    );
+
+  const data =
+    await response.json();
+
+  if (
+    response.status === 401
+  ) {
+
+    localStorage.removeItem(
+      "zonguru_token"
+    );
+
+    localStorage.removeItem(
+      "zonguru_user"
+    );
+
+    window.location.href =
+      "login.html";
+
+    throw new Error(
+      "Session expired"
+    );
+
+  }
+
+  if (!response.ok || !data.success) {
+
+    throw new Error(
+      data.message ||
+      "Request failed"
+    );
+
+  }
+
+  return data;
+
+}
 
 
-    function deposit() {
-      alert("Deposit request page will be connected next.");
-    }
+/* ================= PAGE ================= */
+
+function showPage(id) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(
+      page =>
+        page.classList.remove("active")
+    );
+
+  document
+    .getElementById(id)
+    .classList.add("active");
 
 
-    function withdraw() {
-      alert("Withdrawal request page will be connected next.");
-    }
+  document
+    .querySelectorAll(".nav-item")
+    .forEach(
+      nav =>
+        nav.classList.remove("active")
+    );
 
 
-    function logout() {
+  if (id === "homePage") {
 
-      localStorage.removeItem("zonguru_token");
-      localStorage.removeItem("zonguru_user");
-
-      window.location.href = "login.html";
-    }
-
+    document
+      .getElementById("navHome")
+      .classList.add("active");
 
     loadUser();
 
-  </script>
+  }
 
-</body>
-</html>
+
+  if (id === "productsPage") {
+
+    document
+      .getElementById("navProducts")
+      .classList.add("active");
+
+    loadProducts();
+
+  }
+
+
+  if (id === "transactionsPage") {
+
+    document
+      .getElementById("navTransactions")
+      .classList.add("active");
+
+    loadTransactions();
+
+  }
+
+
+  if (id === "messagesPage") {
+
+    document
+      .getElementById("navMessages")
+      .classList.add("active");
+
+    loadMessages();
+
+  }
+
+
+  if (id === "accountPage") {
+
+    document
+      .getElementById("navAccount")
+      .classList.add("active");
+
+    loadUser();
+
+  }
+
+
+  if (id === "teamPage") {
+
+    loadTeam();
+
+  }
+
+}
+
+
+/* ================= USER ================= */
+
+async function loadUser() {
+
+  try {
+
+    const data =
+      await api("/api/me");
+
+    currentUser =
+      data.user;
+
+    const user =
+      data.user;
+
+
+    const balance =
+      Number(
+        user.balance || 0
+      ).toFixed(2);
+
+
+    const profit =
+      Number(
+        user.totalProfit || 0
+      ).toFixed(2);
+
+
+    const currency =
+      user.currency ||
+      "USDT";
+
+
+    document
+      .getElementById(
+        "balanceAmount"
+      )
+      .textContent =
+      balance;
+
+
+    document
+      .getElementById(
+        "currency"
+      )
+      .textContent =
+      currency;
+
+
+    document
+      .getElementById(
+        "totalProfit"
+      )
+      .textContent =
+      `${profit} ${currency}`;
+
+
+    document
+      .getElementById(
+        "welcomeText"
+      )
+      .textContent =
+      "Welcome, " +
+      user.username;
+
+
+    document
+      .getElementById(
+        "username"
+      )
+      .textContent =
+      user.username;
+
+
+    document
+      .getElementById(
+        "accountCurrency"
+      )
+      .textContent =
+      currency;
+
+
+    document
+      .getElementById(
+        "withdrawBalance"
+      )
+      .textContent =
+      `${balance} ${currency}`;
+
+
+    document
+      .getElementById(
+        "accountUsername"
+      )
+      .textContent =
+      user.username;
+
+
+    document
+      .getElementById(
+        "accountBalance"
+      )
+      .textContent =
+      `${balance} ${currency}`;
+
+
+    document
+      .getElementById(
+        "accountProfit"
+      )
+      .textContent =
+      `${profit} ${currency}`;
+
+
+    document
+      .getElementById(
+        "accountReferral"
+      )
+      .textContent =
+      user.referralCode ||
+      "-";
+
+
+    await loadTransactions();
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* ================= PRODUCTS ================= */
+
+async function loadProducts() {
+
+  const grid =
+    document.getElementById(
+      "productGrid"
+    );
+
+  grid.innerHTML =
+    `<div class="loading">
+      Loading products...
+    </div>`;
+
+  try {
+
+    const data =
+      await api(
+        "/api/products"
+      );
+
+
+    if (
+      !data.products ||
+      !data.products.length
+    ) {
+
+      grid.innerHTML =
+        `<div class="empty">
+          No products available.
+        </div>`;
+
+      return;
+
+    }
+
+
+    grid.innerHTML = "";
+
+
+    data.products.forEach(
+      product => {
+
+        const rate =
+          Number(
+            product.profitRate || 0
+          ) * 100;
+
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+        div.className =
+          "product";
+
+
+        div.innerHTML = `
+
+          <div class="product-name">
+            ${escapeHtml(product.name)}
+          </div>
+
+          <div class="product-category">
+            ${escapeHtml(product.category || "General")}
+          </div>
+
+          <div class="product-price">
+            ${Number(product.price).toFixed(2)}
+            USDT
+          </div>
+
+          <div class="product-profit">
+            Profit: ${rate.toFixed(2)}%
+          </div>
+
+          <button
+            class="optimize"
+            onclick="optimizeProduct('${product._id}', this)">
+            Optimize
+          </button>
+
+        `;
+
+
+        grid.appendChild(div);
+
+      }
+    );
+
+
+  } catch (error) {
+
+    grid.innerHTML =
+      `<div class="empty">
+        ${escapeHtml(error.message)}
+      </div>`;
+
+  }
+
+}
+
+
+/* ================= OPTIMIZE ================= */
+
+async function optimizeProduct(
+  id,
+  button
+) {
+
+  button.disabled = true;
+
+  button.textContent =
+    "Processing...";
+
+
+  try {
+
+    const data =
+      await api(
+        `/api/products/${id}/optimize`,
+        {
+          method: "POST"
+        }
+      );
+
+
+    alert(
+      `Optimization completed!\n\nProfit: ${Number(data.profit).toFixed(2)} USDT`
+    );
+
+
+    button.textContent =
+      "Completed";
+
+
+    await loadUser();
+
+    await loadTransactions();
+
+
+  } catch (error) {
+
+    alert(error.message);
+
+    button.disabled = false;
