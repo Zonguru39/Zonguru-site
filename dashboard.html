@@ -25,7 +25,7 @@
     }
 
     .top h2 {
-      margin: 0;
+      margin: 0 0 5px;
     }
 
     .container {
@@ -108,6 +108,11 @@
       background: #222;
       color: white;
     }
+
+    .loading {
+      color: #777;
+      font-size: 14px;
+    }
   </style>
 </head>
 
@@ -115,11 +120,12 @@
 
   <div class="top">
     <h2>Zonguru</h2>
-    <div>Welcome to your dashboard</div>
+    <div id="welcomeText">Welcome to your dashboard</div>
   </div>
 
   <div class="container">
 
+    <!-- Balance -->
     <div class="balance">
 
       <div class="balance-title">
@@ -127,13 +133,14 @@
       </div>
 
       <div class="amount">
-        0.00
-        <span class="currency">USDT</span>
+        <span id="balanceAmount">0.00</span>
+        <span id="currency" class="currency">USDT</span>
       </div>
 
     </div>
 
 
+    <!-- Deposit / Withdraw -->
     <div class="buttons">
 
       <button
@@ -151,23 +158,30 @@
     </div>
 
 
+    <!-- Account -->
     <div class="card">
 
       <h3>Account</h3>
 
       <div class="row">
         <span>Username</span>
-        <strong>Demo User</strong>
+        <strong id="username">Loading...</strong>
+      </div>
+
+      <div class="row">
+        <span>Email</span>
+        <strong id="email">Loading...</strong>
       </div>
 
       <div class="row">
         <span>Status</span>
-        <strong>Active</strong>
+        <strong id="status">Active</strong>
       </div>
 
     </div>
 
 
+    <!-- Transactions -->
     <div class="card">
 
       <h3>Recent Transactions</h3>
@@ -191,17 +205,86 @@
 
   <script>
 
+    const API_URL = "https://zonguru-jack-api.onrender.com";
+
+    async function loadUser() {
+
+      const token = localStorage.getItem("zonguru_token");
+
+      if (!token) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+
+        const response = await fetch(API_URL + "/api/me", {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + token
+          }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+
+          localStorage.removeItem("zonguru_token");
+          localStorage.removeItem("zonguru_user");
+
+          alert("Your session has expired. Please login again.");
+
+          window.location.href = "login.html";
+          return;
+        }
+
+        const user = data.user;
+
+        document.getElementById("username").textContent =
+          user.name || "User";
+
+        document.getElementById("email").textContent =
+          user.email || "-";
+
+        document.getElementById("balanceAmount").textContent =
+          Number(user.balance || 0).toFixed(2);
+
+        document.getElementById("currency").textContent =
+          user.currency || "USDT";
+
+        document.getElementById("welcomeText").textContent =
+          "Welcome, " + (user.name || "User");
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert("Cannot connect to Zonguru server.");
+
+      }
+    }
+
+
     function deposit() {
       alert("Deposit request page will be connected next.");
     }
+
 
     function withdraw() {
       alert("Withdrawal request page will be connected next.");
     }
 
+
     function logout() {
+
+      localStorage.removeItem("zonguru_token");
+      localStorage.removeItem("zonguru_user");
+
       window.location.href = "login.html";
     }
+
+
+    loadUser();
 
   </script>
 
