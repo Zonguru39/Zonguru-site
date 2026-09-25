@@ -1,444 +1,810 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Zonguru - Login</title>
+  <meta charset="UTF-8">
 
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-body {
-  min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
-  background:
-    radial-gradient(circle at top left, #7c3aed 0%, transparent 35%),
-    radial-gradient(circle at bottom right, #4f46e5 0%, transparent 40%),
-    linear-gradient(135deg, #12002b, #241047, #12002b);
-  color: #222;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  <title>Zonguru - Login</title>
 
-/* =========================
-   TOP RIGHT BUTTONS
-========================= */
 
-.zg-tools {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  z-index: 999999;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
+  <style>
 
-.zg-tool-btn {
-  border: 0;
-  background: rgba(255,255,255,.97);
-  color: #4c1d95;
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 5px 20px rgba(0,0,0,.25);
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.zg-tool-btn:hover {
-  transform: translateY(-1px);
-}
 
-.zg-language-btn {
-  width: 45px;
-  padding: 10px 0;
-  font-size: 18px;
-}
+    body {
+      min-height: 100vh;
 
-.zg-language-menu {
-  position: absolute;
-  right: 0;
-  top: 52px;
-  width: 180px;
-  display: none;
-  background: white;
-  border-radius: 15px;
-  padding: 8px;
-  box-shadow: 0 15px 40px rgba(0,0,0,.3);
-}
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-.zg-language-menu.show {
-  display: block;
-}
+      background:
+        radial-gradient(
+          circle at top left,
+          #7c3aed 0%,
+          transparent 35%
+        ),
 
-.zg-language-menu button {
-  width: 100%;
-  border: 0;
-  background: white;
-  padding: 11px 12px;
-  border-radius: 10px;
-  text-align: left;
-  font-size: 14px;
-  cursor: pointer;
-  color: #333;
-}
+        radial-gradient(
+          circle at bottom right,
+          #4f46e5 0%,
+          transparent 40%
+        ),
 
-.zg-language-menu button:hover {
-  background: #f3e8ff;
-  color: #6d28d9;
-}
+        linear-gradient(
+          135deg,
+          #12002b,
+          #241047,
+          #12002b
+        );
 
-/* =========================
-   LOGIN BOX
-========================= */
+      color: #222;
 
-.login-box {
-  width: 100%;
-  max-width: 430px;
-  background: rgba(255,255,255,.97);
-  border-radius: 24px;
-  padding: 35px 28px;
-  box-shadow: 0 25px 70px rgba(0,0,0,.35);
-}
+      padding: 20px;
 
-.logo {
-  text-align: center;
-  margin-bottom: 12px;
-}
+      display: flex;
 
-.logo-icon {
-  width: 65px;
-  height: 65px;
-  margin: 0 auto 12px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg,#7c3aed,#4f46e5);
-  color: white;
-  font-size: 32px;
-  font-weight: 800;
-  box-shadow: 0 10px 30px rgba(124,58,237,.35);
-}
+      align-items: center;
 
-h1 {
-  text-align: center;
-  color: #211333;
-  font-size: 28px;
-  margin-bottom: 8px;
-}
+      justify-content: center;
+    }
 
-.subtitle {
-  text-align: center;
-  color: #777;
-  font-size: 14px;
-  margin-bottom: 28px;
-}
 
-.form-group {
-  margin-bottom: 18px;
-}
+    /* =========================
+       TOP TOOLS
+    ========================= */
 
-label {
-  display: block;
-  color: #333;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
+    .zg-tools {
 
-input {
-  width: 100%;
-  height: 50px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 0 15px;
-  background: #fafafa;
-  font-size: 15px;
-  outline: none;
-}
+      position: fixed;
 
-input:focus {
-  border-color: #7c3aed;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(124,58,237,.10);
-}
+      top: 15px;
 
-.forgot {
-  text-align: right;
-  margin-top: -5px;
-  margin-bottom: 20px;
-}
+      right: 15px;
 
-.forgot a {
-  color: #6d28d9;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-}
+      z-index: 999999;
 
-.login-btn {
-  width: 100%;
-  height: 52px;
-  border: 0;
-  border-radius: 13px;
-  background: linear-gradient(135deg,#7c3aed,#4f46e5);
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 10px 25px rgba(99,102,241,.28);
-}
+      display: flex;
 
-.login-btn:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
+      gap: 8px;
 
-.message {
-  display: none;
-  padding: 12px 14px;
-  border-radius: 10px;
-  margin-bottom: 18px;
-  font-size: 14px;
-  line-height: 1.5;
-}
+      align-items: center;
+    }
 
-.message.error {
-  display: block;
-  background: #fee2e2;
-  color: #991b1b;
-}
 
-.message.success {
-  display: block;
-  background: #dcfce7;
-  color: #166534;
-}
+    .zg-tool-btn {
 
-.register-link {
-  text-align: center;
-  margin-top: 22px;
-  color: #777;
-  font-size: 14px;
-}
+      border: 0;
 
-.register-link a {
-  color: #6d28d9;
-  text-decoration: none;
-  font-weight: 700;
-}
+      background: rgba(
+        255,
+        255,
+        255,
+        0.97
+      );
 
-.security {
-  text-align: center;
-  margin-top: 22px;
-  color: #999;
-  font-size: 12px;
-}
+      color: #4c1d95;
 
-/* =========================
-   CHAT MODAL
-========================= */
+      padding: 10px 14px;
 
-.chat-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000000;
-  padding: 20px;
-}
+      border-radius: 12px;
 
-.chat-overlay.show {
-  display: flex;
-}
+      font-size: 13px;
 
-.chat-box {
-  width: 100%;
-  max-width: 420px;
-  height: 600px;
-  max-height: 90vh;
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 25px 70px rgba(0,0,0,.35);
-}
+      font-weight: 700;
 
-.chat-header {
-  padding: 16px;
-  background: linear-gradient(135deg,#7c3aed,#4f46e5);
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+      cursor: pointer;
 
-.chat-header strong {
-  font-size: 16px;
-}
+      box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.25);
+    }
 
-.chat-close {
-  border: 0;
-  background: transparent;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-}
 
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 15px;
-  background: #f8f7fb;
-}
+    .zg-tool-btn:hover {
 
-.chat-message {
-  margin-bottom: 12px;
-  max-width: 82%;
-}
+      transform:
+        translateY(-1px);
+    }
 
-.chat-message.user {
-  margin-left: auto;
-  text-align: right;
-}
 
-.chat-bubble {
-  display: inline-block;
-  padding: 10px 13px;
-  border-radius: 14px;
-  font-size: 14px;
-  line-height: 1.5;
-  background: white;
-  color: #333;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
-}
+    .zg-language-btn {
 
-.chat-message.user .chat-bubble {
-  background: #7c3aed;
-  color: white;
-}
+      width: 46px;
 
-.chat-input-area {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
-  border-top: 1px solid #eee;
-}
+      padding: 10px 0;
 
-.chat-input {
-  flex: 1;
-  height: 44px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 0 12px;
-}
+      font-size: 18px;
+    }
 
-.chat-send {
-  width: 48px;
-  border: 0;
-  border-radius: 10px;
-  background: #7c3aed;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-}
 
-/* =========================
-   MOBILE
-========================= */
+    .zg-language-menu {
 
-@media (max-width:600px) {
+      position: absolute;
 
-  body {
-    padding: 14px;
-  }
+      right: 0;
 
-  .login-box {
-    padding: 28px 20px;
-  }
+      top: 52px;
 
-  .zg-tools {
-    top: 10px;
-    right: 10px;
-  }
+      width: 190px;
 
-  .zg-tool-btn {
-    padding: 9px 10px;
-    font-size: 12px;
-  }
+      display: none;
 
-  .zg-language-btn {
-    width: 42px;
-  }
+      background: white;
 
-  .chat-box {
-    height: 90vh;
-  }
-}
-</style>
+      border-radius: 15px;
+
+      padding: 8px;
+
+      box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.30);
+    }
+
+
+    .zg-language-menu.show {
+
+      display: block;
+    }
+
+
+    .zg-language-menu button {
+
+      width: 100%;
+
+      border: 0;
+
+      background: white;
+
+      padding: 12px;
+
+      border-radius: 10px;
+
+      text-align: left;
+
+      font-size: 14px;
+
+      cursor: pointer;
+
+      color: #333;
+    }
+
+
+    .zg-language-menu button:hover {
+
+      background: #f3e8ff;
+
+      color: #6d28d9;
+    }
+
+
+    /* =========================
+       LOGIN BOX
+    ========================= */
+
+    .login-box {
+
+      width: 100%;
+
+      max-width: 430px;
+
+      background:
+        rgba(255,255,255,.97);
+
+      border-radius: 24px;
+
+      padding: 35px 28px;
+
+      box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.35);
+    }
+
+
+    .logo {
+
+      text-align: center;
+
+      margin-bottom: 12px;
+    }
+
+
+    .logo-icon {
+
+      width: 65px;
+
+      height: 65px;
+
+      margin:
+        0 auto 12px;
+
+      border-radius: 18px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4f46e5
+        );
+
+      color: white;
+
+      font-size: 32px;
+
+      font-weight: 800;
+
+      box-shadow:
+        0 10px 30px
+        rgba(124,58,237,.35);
+    }
+
+
+    h1 {
+
+      text-align: center;
+
+      color: #211333;
+
+      font-size: 28px;
+
+      margin-bottom: 8px;
+    }
+
+
+    .subtitle {
+
+      text-align: center;
+
+      color: #777;
+
+      font-size: 14px;
+
+      margin-bottom: 28px;
+    }
+
+
+    .form-group {
+
+      margin-bottom: 18px;
+    }
+
+
+    label {
+
+      display: block;
+
+      color: #333;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      margin-bottom: 8px;
+    }
+
+
+    input {
+
+      width: 100%;
+
+      height: 50px;
+
+      border:
+        1px solid #ddd;
+
+      border-radius: 12px;
+
+      padding: 0 15px;
+
+      background: #fafafa;
+
+      font-size: 15px;
+
+      outline: none;
+    }
+
+
+    input:focus {
+
+      border-color: #7c3aed;
+
+      background: white;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(124,58,237,.10);
+    }
+
+
+    .forgot {
+
+      text-align: right;
+
+      margin-top: -5px;
+
+      margin-bottom: 20px;
+    }
+
+
+    .forgot a {
+
+      color: #6d28d9;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      text-decoration: none;
+    }
+
+
+    .login-btn {
+
+      width: 100%;
+
+      height: 52px;
+
+      border: 0;
+
+      border-radius: 13px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4f46e5
+        );
+
+      color: white;
+
+      font-size: 16px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 25px
+        rgba(99,102,241,.28);
+    }
+
+
+    .login-btn:disabled {
+
+      opacity: .6;
+
+      cursor: not-allowed;
+    }
+
+
+    .message {
+
+      display: none;
+
+      padding: 12px 14px;
+
+      border-radius: 10px;
+
+      margin-bottom: 18px;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+
+    .message.error {
+
+      display: block;
+
+      background: #fee2e2;
+
+      color: #991b1b;
+    }
+
+
+    .message.success {
+
+      display: block;
+
+      background: #dcfce7;
+
+      color: #166534;
+    }
+
+
+    .register-link {
+
+      text-align: center;
+
+      margin-top: 22px;
+
+      color: #777;
+
+      font-size: 14px;
+    }
+
+
+    .register-link a {
+
+      color: #6d28d9;
+
+      text-decoration: none;
+
+      font-weight: 700;
+    }
+
+
+    .security {
+
+      text-align: center;
+
+      margin-top: 22px;
+
+      color: #999;
+
+      font-size: 12px;
+    }
+
+
+    /* =========================
+       CHAT
+    ========================= */
+
+    .chat-overlay {
+
+      position: fixed;
+
+      inset: 0;
+
+      background:
+        rgba(0,0,0,.55);
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      z-index: 1000000;
+
+      padding: 20px;
+    }
+
+
+    .chat-overlay.show {
+
+      display: flex;
+    }
+
+
+    .chat-box {
+
+      width: 100%;
+
+      max-width: 420px;
+
+      height: 600px;
+
+      max-height: 90vh;
+
+      background: white;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      display: flex;
+
+      flex-direction: column;
+
+      box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.35);
+    }
+
+
+    .chat-header {
+
+      padding: 16px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4f46e5
+        );
+
+      color: white;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+    }
+
+
+    .chat-header strong {
+
+      font-size: 16px;
+    }
+
+
+    .chat-close {
+
+      border: 0;
+
+      background: transparent;
+
+      color: white;
+
+      font-size: 25px;
+
+      cursor: pointer;
+    }
+
+
+    .chat-messages {
+
+      flex: 1;
+
+      overflow-y: auto;
+
+      padding: 15px;
+
+      background: #f8f7fb;
+    }
+
+
+    .chat-message {
+
+      margin-bottom: 12px;
+
+      max-width: 82%;
+    }
+
+
+    .chat-message.user {
+
+      margin-left: auto;
+
+      text-align: right;
+    }
+
+
+    .chat-bubble {
+
+      display: inline-block;
+
+      padding: 10px 13px;
+
+      border-radius: 14px;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+
+      background: white;
+
+      color: #333;
+
+      box-shadow:
+        0 2px 8px
+        rgba(0,0,0,.08);
+    }
+
+
+    .chat-message.user
+    .chat-bubble {
+
+      background: #7c3aed;
+
+      color: white;
+    }
+
+
+    .chat-input-area {
+
+      display: flex;
+
+      gap: 8px;
+
+      padding: 12px;
+
+      border-top:
+        1px solid #eee;
+    }
+
+
+    .chat-input {
+
+      flex: 1;
+
+      height: 44px;
+
+      border:
+        1px solid #ddd;
+
+      border-radius: 10px;
+
+      padding: 0 12px;
+    }
+
+
+    .chat-send {
+
+      width: 48px;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background: #7c3aed;
+
+      color: white;
+
+      cursor: pointer;
+
+      font-size: 18px;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media(max-width:600px) {
+
+      body {
+
+        padding: 14px;
+      }
+
+
+      .login-box {
+
+        padding: 28px 20px;
+      }
+
+
+      .zg-tools {
+
+        top: 10px;
+
+        right: 10px;
+      }
+
+
+      .zg-tool-btn {
+
+        padding:
+          9px 10px;
+
+        font-size: 12px;
+      }
+
+
+      .zg-language-btn {
+
+        width: 42px;
+      }
+
+
+      .chat-box {
+
+        height: 90vh;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
+
 <!-- =========================
-     TOP TOOLS
+     TOP BUTTONS
 ========================= -->
 
 <div class="zg-tools">
+
 
   <button
     type="button"
     class="zg-tool-btn"
     id="customerServiceBtn">
+
     💬 Customer Service
+
   </button>
+
 
   <button
     type="button"
     class="zg-tool-btn zg-language-btn"
     id="languageBtn">
+
     🌐
+
   </button>
+
 
   <div
     class="zg-language-menu"
     id="languageMenu">
 
-    <button type="button" data-lang="en">
+
+    <button
+      type="button"
+      data-lang="en">
+
       🇬🇧 English
+
     </button>
 
-    <button type="button" data-lang="es">
+
+    <button
+      type="button"
+      data-lang="es">
+
       🇪🇸 Español
+
     </button>
 
-    <button type="button" data-lang="ar">
+
+    <button
+      type="button"
+      data-lang="ar">
+
       🇸🇦 العربية
+
     </button>
 
-    <button type="button" data-lang="pt">
+
+    <button
+      type="button"
+      data-lang="pt">
+
       🇵🇹 Português
+
     </button>
 
-    <button type="button" data-lang="my">
+
+    <button
+      type="button"
+      data-lang="my">
+
       🇲🇲 မြန်မာ
+
     </button>
+
 
   </div>
 
 </div>
+
 
 
 <!-- =========================
@@ -447,30 +813,53 @@ input:focus {
 
 <div class="login-box">
 
+
   <div class="logo">
-    <div class="logo-icon">Z</div>
+
+    <div class="logo-icon">
+      Z
+    </div>
+
   </div>
 
+
   <h1 id="pageTitle">
+
     Welcome back
+
   </h1>
 
-  <p class="subtitle" id="pageSubtitle">
+
+  <p
+    class="subtitle"
+    id="pageSubtitle">
+
     Login to your Zonguru account
+
   </p>
+
 
   <div
     id="message"
     class="message">
   </div>
 
+
+
   <form id="loginForm">
+
 
     <div class="form-group">
 
-      <label id="usernameLabel">
+
+      <label
+        id="usernameLabel"
+        for="username">
+
         Username
+
       </label>
+
 
       <input
         type="text"
@@ -479,14 +868,22 @@ input:focus {
         autocomplete="username"
         required>
 
+
     </div>
+
 
 
     <div class="form-group">
 
-      <label id="passwordLabel">
+
+      <label
+        id="passwordLabel"
+        for="password">
+
         Password
+
       </label>
+
 
       <input
         type="password"
@@ -495,18 +892,25 @@ input:focus {
         autocomplete="current-password"
         required>
 
+
     </div>
+
 
 
     <div class="forgot">
 
+
       <a
         href="#"
         id="forgotPassword">
+
         Forgot password?
+
       </a>
 
+
     </div>
+
 
 
     <button
@@ -518,7 +922,9 @@ input:focus {
 
     </button>
 
+
   </form>
+
 
 
   <div
@@ -526,11 +932,13 @@ input:focus {
     id="registerText">
 
     Don't have an account?
+
     <a href="register.html">
       Create Account
     </a>
 
   </div>
+
 
 
   <div
@@ -541,7 +949,9 @@ input:focus {
 
   </div>
 
+
 </div>
+
 
 
 <!-- =========================
@@ -552,40 +962,58 @@ input:focus {
   class="chat-overlay"
   id="chatOverlay">
 
+
   <div class="chat-box">
+
 
     <div class="chat-header">
 
+
       <strong id="chatTitle">
+
         Customer Service
+
       </strong>
+
 
       <button
         type="button"
         class="chat-close"
         id="chatClose">
+
         ×
+
       </button>
 
+
     </div>
+
 
 
     <div
       class="chat-messages"
       id="chatMessages">
 
+
       <div class="chat-message">
 
+
         <div class="chat-bubble">
+
           Hello! How can we help you?
+
         </div>
 
+
       </div>
+
 
     </div>
 
 
+
     <div class="chat-input-area">
+
 
       <input
         type="text"
@@ -593,18 +1021,25 @@ input:focus {
         id="chatInput"
         placeholder="Type your message...">
 
+
       <button
         type="button"
         class="chat-send"
         id="chatSend">
+
         ➤
+
       </button>
+
 
     </div>
 
+
   </div>
 
+
 </div>
+
 
 
 <script>
@@ -617,287 +1052,329 @@ const API_URL =
   "https://zonguru-jack-api.onrender.com";
 
 
+
 /* =========================================
-   LOGIN
+   ELEMENTS
 ========================================= */
 
 const loginForm =
-  document.getElementById("loginForm");
-
-const loginBtn =
-  document.getElementById("loginBtn");
-
-const messageBox =
-  document.getElementById("message");
-
-
-function showMessage(text, type) {
-
-  messageBox.textContent = text;
-
-  messageBox.className =
-    "message " + type;
-}
-
-
-loginForm.addEventListener(
-  "submit",
-  async function(event) {
-
-    event.preventDefault();
-
-    const username =
-      document
-        .getElementById("username")
-        .value
-        .trim();
-
-    const password =
-      document
-        .getElementById("password")
-        .value;
-
-    if (!username || !password) {
-
-      showMessage(
-        "Please enter your username and password.",
-        "error"
-      );
-
-      return;
-    }
-
-    loginBtn.disabled = true;
-    loginBtn.textContent = "Logging in...";
-
-    try {
-
-      const response =
-        await fetch(
-          API_URL + "/api/auth/login",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-              username: username,
-              password: password
-            })
-          }
-        );
-
-
-      const data =
-        await response.json();
-
-
-      if (!response.ok || !data.success) {
-
-        throw new Error(
-          data.message ||
-          "Login failed."
-        );
-
-      }
-
-
-      if (data.token) {
-
-        localStorage.setItem(
-          "zonguru_token",
-          data.token
-        );
-
-      }
-
-
-      if (data.user) {
-
-        localStorage.setItem(
-          "zonguru_user",
-          JSON.stringify(data.user)
-        );
-
-      }
-
-
-      showMessage(
-        "Login successful. Redirecting...",
-        "success"
-      );
-
-
-      setTimeout(
-        function() {
-
-          window.location.href =
-            "dashboard.html";
-
-        },
-        700
-      );
-
-
-    } catch(error) {
-
-      showMessage(
-        error.message ||
-        "Unable to login.",
-        "error"
-      );
-
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Login";
-
-    }
-
-  }
-);
-
-
-/* =========================================
-   FORGOT PASSWORD
-========================================= */
-
-document
-  .getElementById("forgotPassword")
-  .addEventListener(
-    "click",
-    function(event) {
-
-      event.preventDefault();
-
-      openChat();
-
-    }
+  document.getElementById(
+    "loginForm"
   );
 
 
+const loginBtn =
+  document.getElementById(
+    "loginBtn"
+  );
+
+
+const messageBox =
+  document.getElementById(
+    "message"
+  );
+
+
+const languageBtn =
+  document.getElementById(
+    "languageBtn"
+  );
+
+
+const languageMenu =
+  document.getElementById(
+    "languageMenu"
+  );
+
+
+const customerServiceBtn =
+  document.getElementById(
+    "customerServiceBtn"
+  );
+
+
+const chatOverlay =
+  document.getElementById(
+    "chatOverlay"
+  );
+
+
+const chatClose =
+  document.getElementById(
+    "chatClose"
+  );
+
+
+const chatInput =
+  document.getElementById(
+    "chatInput"
+  );
+
+
+const chatSend =
+  document.getElementById(
+    "chatSend"
+  );
+
+
+const chatMessages =
+  document.getElementById(
+    "chatMessages"
+  );
+
+
+
 /* =========================================
-   LANGUAGE SYSTEM
+   TRANSLATIONS
 ========================================= */
 
 const translations = {
 
+
   en: {
-    title: "Welcome back",
-    subtitle: "Login to your Zonguru account",
-    username: "Username",
-    usernamePlaceholder: "Enter your username",
-    password: "Password",
-    passwordPlaceholder: "Enter your password",
-    forgot: "Forgot password?",
-    login: "Login",
-    registerBefore: "Don't have an account?",
-    registerLink: "Create Account",
+
+    title:
+      "Welcome back",
+
+    subtitle:
+      "Login to your Zonguru account",
+
+    username:
+      "Username",
+
+    usernamePlaceholder:
+      "Enter your username",
+
+    password:
+      "Password",
+
+    passwordPlaceholder:
+      "Enter your password",
+
+    forgot:
+      "Forgot password?",
+
+    login:
+      "Login",
+
+    registerBefore:
+      "Don't have an account?",
+
+    registerLink:
+      "Create Account",
+
     security:
       "🔒 Your account information is securely protected.",
-    customerService: "💬 Customer Service",
-    chatTitle: "Customer Service",
-    chatPlaceholder: "Type your message..."
-  },
 
-  es: {
-    title: "Bienvenido de nuevo",
-    subtitle: "Inicia sesión en tu cuenta de Zonguru",
-    username: "Nombre de usuario",
-    usernamePlaceholder:
-      "Introduce tu nombre de usuario",
-    password: "Contraseña",
-    passwordPlaceholder:
-      "Introduce tu contraseña",
-    forgot: "¿Olvidaste tu contraseña?",
-    login: "Iniciar sesión",
-    registerBefore: "¿No tienes una cuenta?",
-    registerLink: "Crear cuenta",
-    security:
-      "🔒 Tu información está protegida de forma segura.",
-    customerService: "💬 Atención al cliente",
-    chatTitle: "Atención al cliente",
-    chatPlaceholder: "Escribe tu mensaje..."
-  },
-
-  pt: {
-    title: "Bem-vindo de volta",
-    subtitle: "Entre na sua conta Zonguru",
-    username: "Nome de usuário",
-    usernamePlaceholder:
-      "Digite seu nome de usuário",
-    password: "Senha",
-    passwordPlaceholder:
-      "Digite sua senha",
-    forgot: "Esqueceu sua senha?",
-    login: "Entrar",
-    registerBefore: "Não tem uma conta?",
-    registerLink: "Criar conta",
-    security:
-      "🔒 Suas informações estão protegidas com segurança.",
-    customerService: "💬 Atendimento ao cliente",
-    chatTitle: "Atendimento ao cliente",
-    chatPlaceholder: "Digite sua mensagem..."
-  },
-
-  my: {
-    title: "ပြန်လည်ကြိုဆိုပါတယ်",
-    subtitle:
-      "သင့် Zonguru အကောင့်သို့ ဝင်ရောက်ပါ",
-    username: "အသုံးပြုသူအမည်",
-    usernamePlaceholder:
-      "အသုံးပြုသူအမည် ထည့်ပါ",
-    password: "စကားဝှက်",
-    passwordPlaceholder:
-      "စကားဝှက် ထည့်ပါ",
-    forgot:
-      "စကားဝှက် မေ့နေပါသလား?",
-    login: "ဝင်ရောက်မည်",
-    registerBefore:
-      "အကောင့်မရှိသေးပါသလား?",
-    registerLink:
-      "အကောင့်ဖွင့်ရန်",
-    security:
-      "🔒 သင့်အကောင့်အချက်အလက်များကို လုံခြုံစွာ ကာကွယ်ထားပါသည်။",
     customerService:
       "💬 Customer Service",
+
     chatTitle:
       "Customer Service",
+
     chatPlaceholder:
-      "စာရေးပါ..."
+      "Type your message..."
+
   },
 
+
+  es: {
+
+    title:
+      "Bienvenido de nuevo",
+
+    subtitle:
+      "Inicia sesión en tu cuenta de Zonguru",
+
+    username:
+      "Nombre de usuario",
+
+    usernamePlaceholder:
+      "Introduce tu nombre de usuario",
+
+    password:
+      "Contraseña",
+
+    passwordPlaceholder:
+      "Introduce tu contraseña",
+
+    forgot:
+      "¿Olvidaste tu contraseña?",
+
+    login:
+      "Iniciar sesión",
+
+    registerBefore:
+      "¿No tienes una cuenta?",
+
+    registerLink:
+      "Crear cuenta",
+
+    security:
+      "🔒 Tu información está protegida de forma segura.",
+
+    customerService:
+      "💬 Atención al cliente",
+
+    chatTitle:
+      "Atención al cliente",
+
+    chatPlaceholder:
+      "Escribe tu mensaje..."
+
+  },
+
+
+  pt: {
+
+    title:
+      "Bem-vindo de volta",
+
+    subtitle:
+      "Entre na sua conta Zonguru",
+
+    username:
+      "Nome de usuário",
+
+    usernamePlaceholder:
+      "Digite seu nome de usuário",
+
+    password:
+      "Senha",
+
+    passwordPlaceholder:
+      "Digite sua senha",
+
+    forgot:
+      "Esqueceu sua senha?",
+
+    login:
+      "Entrar",
+
+    registerBefore:
+      "Não tem uma conta?",
+
+    registerLink:
+      "Criar conta",
+
+    security:
+      "🔒 Suas informações estão protegidas com segurança.",
+
+    customerService:
+      "💬 Atendimento ao cliente",
+
+    chatTitle:
+      "Atendimento ao cliente",
+
+    chatPlaceholder:
+      "Digite sua mensagem..."
+
+  },
+
+
+  my: {
+
+    title:
+      "ပြန်လည်ကြိုဆိုပါတယ်",
+
+    subtitle:
+      "သင့် Zonguru အကောင့်သို့ ဝင်ရောက်ပါ",
+
+    username:
+      "အသုံးပြုသူအမည်",
+
+    usernamePlaceholder:
+      "အသုံးပြုသူအမည် ထည့်ပါ",
+
+    password:
+      "စကားဝှက်",
+
+    passwordPlaceholder:
+      "စကားဝှက် ထည့်ပါ",
+
+    forgot:
+      "စကားဝှက် မေ့နေပါသလား?",
+
+    login:
+      "ဝင်ရောက်မည်",
+
+    registerBefore:
+      "အကောင့်မရှိသေးပါသလား?",
+
+    registerLink:
+      "အကောင့်ဖွင့်ရန်",
+
+    security:
+      "🔒 သင့်အကောင့်အချက်အလက်များကို လုံခြုံစွာ ကာကွယ်ထားပါသည်။",
+
+    customerService:
+      "💬 Customer Service",
+
+    chatTitle:
+      "Customer Service",
+
+    chatPlaceholder:
+      "စာရေးပါ..."
+
+  },
+
+
   ar: {
-    title: "مرحباً بعودتك",
+
+    title:
+      "مرحباً بعودتك",
+
     subtitle:
       "قم بتسجيل الدخول إلى حساب Zonguru الخاص بك",
-    username: "اسم المستخدم",
+
+    username:
+      "اسم المستخدم",
+
     usernamePlaceholder:
       "أدخل اسم المستخدم",
-    password: "كلمة المرور",
+
+    password:
+      "كلمة المرور",
+
     passwordPlaceholder:
       "أدخل كلمة المرور",
+
     forgot:
       "هل نسيت كلمة المرور؟",
-    login: "تسجيل الدخول",
+
+    login:
+      "تسجيل الدخول",
+
     registerBefore:
       "ليس لديك حساب؟",
+
     registerLink:
       "إنشاء حساب",
+
     security:
       "🔒 معلومات حسابك محمية بشكل آمن.",
+
     customerService:
       "💬 خدمة العملاء",
+
     chatTitle:
       "خدمة العملاء",
+
     chatPlaceholder:
       "اكتب رسالتك..."
+
   }
 
 };
 
 
+
+/* =========================================
+   APPLY LANGUAGE
+========================================= */
+
 function applyLanguage(lang) {
+
 
   const t =
     translations[lang] ||
@@ -909,30 +1386,40 @@ function applyLanguage(lang) {
 
 
   if (lang === "ar") {
-    document.body.dir = "rtl";
+
+    document.body.dir =
+      "rtl";
+
   } else {
-    document.body.dir = "ltr";
+
+    document.body.dir =
+      "ltr";
+
   }
 
 
   document.getElementById(
     "pageTitle"
-  ).textContent = t.title;
+  ).textContent =
+    t.title;
 
 
   document.getElementById(
     "pageSubtitle"
-  ).textContent = t.subtitle;
+  ).textContent =
+    t.subtitle;
 
 
   document.getElementById(
     "usernameLabel"
-  ).textContent = t.username;
+  ).textContent =
+    t.username;
 
 
   document.getElementById(
     "passwordLabel"
-  ).textContent = t.password;
+  ).textContent =
+    t.password;
 
 
   document.getElementById(
@@ -949,12 +1436,14 @@ function applyLanguage(lang) {
 
   document.getElementById(
     "forgotPassword"
-  ).textContent = t.forgot;
+  ).textContent =
+    t.forgot;
 
 
   document.getElementById(
     "loginBtn"
-  ).textContent = t.login;
+  ).textContent =
+    t.login;
 
 
   document.getElementById(
@@ -998,20 +1487,11 @@ function applyLanguage(lang) {
 }
 
 
+
 /* =========================================
    LANGUAGE BUTTON
+   ONLY ONE CLICK EVENT
 ========================================= */
-
-const languageBtn =
-  document.getElementById(
-    "languageBtn"
-  );
-
-const languageMenu =
-  document.getElementById(
-    "languageMenu"
-  );
-
 
 languageBtn.addEventListener(
   "click",
@@ -1027,41 +1507,241 @@ languageBtn.addEventListener(
 );
 
 
-document
-  .querySelectorAll(
-    "#languageMenu button"
-  )
-  .forEach(
-    function(button) {
 
-      button.addEventListener(
-        "click",
-        function() {
+/* =========================================
+   LANGUAGE OPTIONS
+========================================= */
 
-          applyLanguage(
-            button.dataset.lang
-          );
-
-          languageMenu.classList.remove(
-            "show"
-          );
-
-        }
-      );
-
-    }
+const languageButtons =
+  languageMenu.querySelectorAll(
+    "button"
   );
 
 
-document.addEventListener(
-  "click",
-  function() {
+languageButtons.forEach(
+  function(button) {
 
-    languageMenu.classList.remove(
-      "show"
+    button.addEventListener(
+      "click",
+      function(event) {
+
+        event.stopPropagation();
+
+        const lang =
+          button.getAttribute(
+            "data-lang"
+          );
+
+
+        applyLanguage(
+          lang
+        );
+
+
+        languageMenu.classList.remove(
+          "show"
+        );
+
+      }
     );
 
   }
+);
+
+
+
+/* =========================================
+   CLOSE LANGUAGE MENU
+   ONLY WHEN CLICKING OUTSIDE
+========================================= */
+
+document.addEventListener(
+  "click",
+  function(event) {
+
+    if (
+      !languageMenu.contains(
+        event.target
+      ) &&
+      event.target !== languageBtn
+    ) {
+
+      languageMenu.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+);
+
+
+
+/* =========================================
+   SHOW MESSAGE
+========================================= */
+
+function showMessage(
+  text,
+  type
+) {
+
+  messageBox.textContent =
+    text;
+
+  messageBox.className =
+    "message " + type;
+
+}
+
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+loginForm.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+
+    const username =
+      document.getElementById(
+        "username"
+      ).value.trim();
+
+
+    const password =
+      document.getElementById(
+        "password"
+      ).value;
+
+
+    if (
+      !username ||
+      !password
+    ) {
+
+      showMessage(
+        "Please enter your username and password.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    loginBtn.disabled =
+      true;
+
+
+    loginBtn.textContent =
+      "Logging in...";
+
+
+    messageBox.className =
+      "message";
+
+
+    try {
+
+  const response =
+    await fetch(
+      API_URL +
+      "/api/auth/login",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+      }
+    );
+
+
+  const data =
+    await response.json();
+
+
+  if (
+    !response.ok ||
+    !data.success
+  ) {
+
+    throw new Error(
+      data.message ||
+      "Login failed."
+    );
+
+  }
+
+
+  if (data.token) {
+
+    localStorage.setItem(
+      "zonguru_token",
+      data.token
+    );
+
+  }
+
+
+  if (data.user) {
+
+    localStorage.setItem(
+      "zonguru_user",
+      JSON.stringify(
+        data.user
+      )
+    );
+
+  }
+
+
+  showMessage(
+    "Login successful. Redirecting...",
+    "success"
+  );
+
+
+  setTimeout(
+    function() {
+
+      window.location.href =
+        "dashboard.html";
+
+    },
+    700
+  );
+
+
+} catch (error) {
+
+  showMessage(
+    error.message ||
+    "Unable to login.",
+    "error"
+  );
+
+
+  loginBtn.disabled =
+    false;
+
+
+  loginBtn.textContent =
+    "Login";
+
+  }
+
 );
 
 
@@ -1069,21 +1749,20 @@ document.addEventListener(
    CUSTOMER SERVICE
 ========================================= */
 
-const chatOverlay =
-  document.getElementById(
-    "chatOverlay"
-  );
-
-
 function openChat() {
 
   chatOverlay.classList.add(
     "show"
   );
 
-  document
-    .getElementById("chatInput")
-    .focus();
+  setTimeout(
+    function() {
+
+      chatInput.focus();
+
+    },
+    100
+  );
 
 }
 
@@ -1097,23 +1776,60 @@ function closeChat() {
 }
 
 
+customerServiceBtn.addEventListener(
+  "click",
+  function() {
+
+    openChat();
+
+  }
+);
+
+
+chatClose.addEventListener(
+  "click",
+  function() {
+
+    closeChat();
+
+  }
+);
+
+
+chatOverlay.addEventListener(
+  "click",
+  function(event) {
+
+    if (
+      event.target ===
+      chatOverlay
+    ) {
+
+      closeChat();
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
 document
   .getElementById(
-    "customerServiceBtn"
+    "forgotPassword"
   )
   .addEventListener(
     "click",
-    openChat
-  );
+    function(event) {
 
+      event.preventDefault();
 
-document
-  .getElementById(
-    "chatClose"
-  )
-  .addEventListener(
-    "click",
-    closeChat
+      openChat();
+
+    }
   );
 
 
@@ -1121,33 +1837,28 @@ document
    CHAT MESSAGE
 ========================================= */
 
-const chatInput =
-  document.getElementById(
-    "chatInput"
-  );
-
-const chatMessages =
-  document.getElementById(
-    "chatMessages"
-  );
-
-
 function addChatMessage(
   text,
   sender
 ) {
 
   const wrapper =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   wrapper.className =
     "chat-message " +
-    (sender === "user"
-      ? "user"
-      : "");
+    (
+      sender === "user"
+        ? "user"
+        : ""
+    );
 
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   bubble.className =
     "chat-bubble";
@@ -1169,12 +1880,21 @@ function addChatMessage(
 }
 
 
+/* =========================================
+   SEND CHAT MESSAGE
+========================================= */
+
 async function sendChatMessage() {
 
   const text =
     chatInput.value.trim();
 
-  if (!text) return;
+
+  if (!text) {
+
+    return;
+
+  }
 
 
   addChatMessage(
@@ -1182,13 +1902,9 @@ async function sendChatMessage() {
     "user"
   );
 
+
   chatInput.value = "";
 
-
-  /*
-    Login users have a token.
-    Guest users may not have one yet.
-  */
 
   const token =
     localStorage.getItem(
@@ -1204,6 +1920,7 @@ async function sendChatMessage() {
     );
 
     return;
+
   }
 
 
@@ -1214,19 +1931,23 @@ async function sendChatMessage() {
         API_URL +
         "/api/chat/send",
         {
+
           method: "POST",
 
           headers: {
+
             "Content-Type":
               "application/json",
 
             "Authorization":
               "Bearer " + token
+
           },
 
           body: JSON.stringify({
             text: text
           })
+
         }
       );
 
@@ -1245,7 +1966,7 @@ async function sendChatMessage() {
     }
 
 
-  } catch(error) {
+  } catch (error) {
 
     addChatMessage(
       error.message ||
@@ -1258,25 +1979,31 @@ async function sendChatMessage() {
 }
 
 
-document
-  .getElementById(
-    "chatSend"
-  )
-  .addEventListener(
-    "click",
-    sendChatMessage
-  );
+/* =========================================
+   CHAT SEND BUTTON
+========================================= */
+
+chatSend.addEventListener(
+  "click",
+  function() {
+
+    sendChatMessage();
+
+  }
+);
 
 
 /* =========================================
-   ENTER KEY SEND
+   ENTER KEY
 ========================================= */
 
 chatInput.addEventListener(
   "keydown",
   function(event) {
 
-    if (event.key === "Enter") {
+    if (
+      event.key === "Enter"
+    ) {
 
       event.preventDefault();
 
@@ -1289,7 +2016,7 @@ chatInput.addEventListener(
 
 
 /* =========================================
-   LOAD SAVED LANGUAGE
+   INITIAL LANGUAGE
 ========================================= */
 
 const savedLanguage =
@@ -1302,146 +2029,8 @@ applyLanguage(
   savedLanguage
 );
 
-
-/* =========================================
-   CLOSE CHAT WHEN CLICKING OUTSIDE
-========================================= */
-
-chatOverlay.addEventListener(
-  "click",
-  function(event) {
-
-    if (
-      event.target === chatOverlay
-    ) {
-
-      closeChat();
-
-    }
-
-  }
-);
-
-
-/* =========================================
-   CUSTOMER SERVICE BUTTON
-========================================= */
-
-document
-  .getElementById(
-    "customerServiceBtn"
-  )
-  .addEventListener(
-    "click",
-    function() {
-
-      openChat();
-
-    }
-  );
-
-
-/* =========================================
-   LANGUAGE MENU
-========================================= */
-
-document
-  .getElementById(
-    "languageBtn"
-  )
-  .addEventListener(
-    "click",
-    function(event) {
-
-      event.stopPropagation();
-
-      languageMenu.classList.toggle(
-        "show"
-      );
-
-    }
-  );
-
-
-/* =========================================
-   LANGUAGE SELECTION
-========================================= */
-
-document
-  .querySelectorAll(
-    "#languageMenu button"
-  )
-  .forEach(
-    function(button) {
-
-      button.addEventListener(
-        "click",
-        function(event) {
-
-          event.stopPropagation();
-
-          const lang =
-            button.getAttribute(
-              "data-lang"
-            );
-
-          applyLanguage(
-            lang
-          );
-
-          languageMenu.classList.remove(
-            "show"
-          );
-
-        }
-      );
-
-    }
-  );
-
-
-/* =========================================
-   CLOSE LANGUAGE MENU
-========================================= */
-
-document.addEventListener(
-  "click",
-  function() {
-
-    languageMenu.classList.remove(
-      "show"
-    );
-
-  }
-);
-
-
-/* =========================================
-   INITIAL LANGUAGE
-========================================= */
-
-(function() {
-
-  const lang =
-    localStorage.getItem(
-      "zonguru_lang"
-    ) || "en";
-
-  applyLanguage(
-    lang
-  );
-
-})();
-
 </script>
 
-
-<!--
-  Zonguru Support System
-  Keep this at the very bottom.
--->
-
-<script src="support.js"></script>
-
 </body>
+
 </html>
