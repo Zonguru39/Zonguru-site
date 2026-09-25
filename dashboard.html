@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0"
+>
+
 <title>Zonguru Dashboard</title>
 
+<!-- CUSTOMER SERVICE + LANGUAGE -->
+<script src="support.js"></script>
+
 <style>
+
 *{
   box-sizing:border-box;
-  font-family:Arial,sans-serif
+  font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
   margin:0;
   background:#f4f6fb;
   color:#222;
-  padding-bottom:80px
+  padding-bottom:80px;
 }
 
 .top{
   background:linear-gradient(135deg,#7657d9,#6242c5);
   color:#fff;
-  padding:25px 20px 30px
+  padding:25px 20px 30px;
 }
 
 .top h2{
   margin:0 0 6px;
-  font-size:28px
+  font-size:28px;
 }
 
 .top p{
   margin:0;
-  opacity:.9
+  opacity:.9;
 }
 
 .container{
   max-width:700px;
   margin:auto;
-  padding:18px
+  padding:18px;
 }
 
 .balance,
@@ -45,34 +55,34 @@ body{
 .product{
   background:#fff;
   border-radius:18px;
-  box-shadow:0 4px 15px rgba(0,0,0,.06)
+  box-shadow:0 4px 15px rgba(0,0,0,.06);
 }
 
 .balance{
   padding:24px;
-  margin-bottom:15px
+  margin-bottom:15px;
 }
 
 .card{
   padding:20px;
-  margin-bottom:18px
+  margin-bottom:18px;
 }
 
 .balance-title,
 .small{
   color:#777;
-  font-size:13px
+  font-size:13px;
 }
 
 .amount{
   font-size:36px;
   font-weight:bold;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .currency{
   color:#7657d9;
-  font-size:16px
+  font-size:16px;
 }
 
 .profit-box{
@@ -80,19 +90,19 @@ body{
   padding-top:15px;
   border-top:1px solid #eee;
   display:flex;
-  justify-content:space-between
+  justify-content:space-between;
 }
 
 .profit{
   color:#16a34a;
-  font-weight:bold
+  font-weight:bold;
 }
 
 .buttons{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-bottom:18px
+  margin-bottom:18px;
 }
 
 button{
@@ -101,51 +111,52 @@ button{
   border-radius:11px;
   font-size:15px;
   font-weight:bold;
-  cursor:pointer
+  cursor:pointer;
 }
 
 button:disabled{
-  opacity:.6
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 .deposit{
   background:#16a34a;
-  color:#fff
+  color:#fff;
 }
 
 .withdraw{
   background:#dc2626;
-  color:#fff
+  color:#fff;
 }
 
 .primary{
   width:100%;
   background:#7657d9;
-  color:#fff
+  color:#fff;
 }
 
 .danger{
   background:#dc2626;
   color:#fff;
-  width:100%
+  width:100%;
 }
 
 .dark{
   width:100%;
   background:#222;
-  color:#fff
+  color:#fff;
 }
 
 .page{
-  display:none
+  display:none;
 }
 
 .page.active{
-  display:block
+  display:block;
 }
 
 .form-group{
-  margin-bottom:14px
+  margin-bottom:14px;
 }
 
 label{
@@ -153,7 +164,7 @@ label{
   font-size:13px;
   font-weight:bold;
   margin-bottom:7px;
-  color:#555
+  color:#555;
 }
 
 input,
@@ -165,13 +176,13 @@ select{
   border-radius:10px;
   font-size:15px;
   outline:none;
-  background:#fff
+  background:#fff;
 }
 
 input:focus,
 textarea:focus,
 select:focus{
-  border-color:#7657d9
+  border-color:#7657d9;
 }
 
 .back{
@@ -179,7 +190,7 @@ select:focus{
   margin-bottom:15px;
   color:#7657d9;
   font-weight:bold;
-  cursor:pointer
+  cursor:pointer;
 }
 
 .row{
@@ -187,44 +198,44 @@ select:focus{
   justify-content:space-between;
   gap:15px;
   padding:13px 0;
-  border-bottom:1px solid #eee
+  border-bottom:1px solid #eee;
 }
 
 .row:last-child{
-  border-bottom:0
+  border-bottom:0;
 }
 
 .product-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px
+  gap:12px;
 }
 
 .product{
-  padding:16px
+  padding:16px;
 }
 
 .product-name{
   font-weight:bold;
-  margin-bottom:5px
+  margin-bottom:5px;
 }
 
 .product-category{
   font-size:12px;
   color:#888;
-  margin-bottom:10px
+  margin-bottom:10px;
 }
 
 .product-price{
   font-size:20px;
   font-weight:bold;
-  margin-bottom:5px
+  margin-bottom:5px;
 }
 
 .product-profit{
   color:#16a34a;
   font-size:13px;
-  margin-bottom:12px
+  margin-bottom:12px;
 }
 
 .optimize{
@@ -232,27 +243,27 @@ select:focus{
   background:#7657d9;
   color:#fff;
   padding:10px;
-  font-size:13px
+  font-size:13px;
 }
 
 .tx{
   padding:14px 0;
-  border-bottom:1px solid #eee
+  border-bottom:1px solid #eee;
 }
 
 .tx:last-child{
-  border-bottom:0
+  border-bottom:0;
 }
 
 .tx-top{
   display:flex;
   justify-content:space-between;
-  gap:10px
+  gap:10px;
 }
 
 .tx-type,
 .tx-amount{
-  font-weight:bold
+  font-weight:bold;
 }
 
 .tx-status{
@@ -261,60 +272,60 @@ select:focus{
   padding:4px 8px;
   border-radius:8px;
   font-size:11px;
-  background:#eee
+  background:#eee;
 }
 
 .pending{
   background:#fff7ed;
-  color:#c2410c
+  color:#c2410c;
 }
 
 .approved,
 .completed{
   background:#ecfdf5;
-  color:#15803d
+  color:#15803d;
 }
 
 .rejected{
   background:#fef2f2;
-  color:#dc2626
+  color:#dc2626;
 }
 
 .message{
   padding:15px;
   background:#f8f7ff;
   border-radius:12px;
-  margin-bottom:10px
+  margin-bottom:10px;
 }
 
 .message small{
-  color:#888
+  color:#888;
 }
 
 .referral{
   background:#f3efff;
   padding:15px;
   border-radius:12px;
-  margin-bottom:15px
+  margin-bottom:15px;
 }
 
 .referral-code{
   font-size:22px;
   font-weight:bold;
   color:#7657d9;
-  letter-spacing:1px
+  letter-spacing:1px;
 }
 
 .member{
   padding:13px 0;
-  border-bottom:1px solid #eee
+  border-bottom:1px solid #eee;
 }
 
 .empty,
 .loading{
   text-align:center;
   color:#999;
-  padding:25px 5px
+  padding:25px 5px;
 }
 
 .success{
@@ -324,7 +335,7 @@ select:focus{
   padding:12px;
   border-radius:10px;
   margin-top:12px;
-  font-weight:bold
+  font-weight:bold;
 }
 
 .error{
@@ -334,25 +345,25 @@ select:focus{
   padding:12px;
   border-radius:10px;
   margin-top:12px;
-  font-weight:bold
+  font-weight:bold;
 }
 
 .choice-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px
+  gap:10px;
 }
 
 .choice{
   border:2px solid #ddd;
   background:#fff;
-  color:#555
+  color:#555;
 }
 
 .choice.selected{
   border-color:#7657d9;
   background:#f3efff;
-  color:#7657d9
+  color:#7657d9;
 }
 
 .bottom-nav{
@@ -367,47 +378,76 @@ select:focus{
   justify-content:space-around;
   align-items:center;
   z-index:1000;
-  box-shadow:0 -3px 15px rgba(0,0,0,.08)
+  box-shadow:0 -3px 15px rgba(0,0,0,.08);
 }
 
 .nav-item{
   text-align:center;
   color:#999;
   font-size:11px;
-  cursor:pointer
+  cursor:pointer;
+  min-width:55px;
 }
 
 .nav-item.active{
   color:#7657d9;
-  font-weight:bold
+  font-weight:bold;
 }
 
 .nav-icon{
   font-size:22px;
-  margin-bottom:3px
+  margin-bottom:3px;
+}
+
+.notice{
+  background:#f3efff;
+  color:#6242c5;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:15px;
+  font-size:13px;
 }
 
 @media(max-width:450px){
+
   .product-grid{
-    grid-template-columns:1fr 1fr
+    grid-template-columns:1fr 1fr;
   }
 
   .amount{
-    font-size:32px
+    font-size:32px;
   }
+
+  .nav-item{
+    font-size:10px;
+  }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
-<!-- HOME -->
-<div id="homePage" class="page active">
+
+<!-- ================= HOME ================= -->
+
+<div
+  id="homePage"
+  class="page active"
+>
 
   <div class="top">
+
     <h2>Zonguru</h2>
-    <p id="welcomeText">Welcome, User</p>
+
+    <p id="welcomeText">
+      Welcome, User
+    </p>
+
   </div>
+
 
   <div class="container">
 
@@ -418,15 +458,34 @@ select:focus{
       </div>
 
       <div class="amount">
-        <span id="balanceAmount">0.00</span>
-        <span id="currency" class="currency">USDT</span>
+
+        <span id="balanceAmount">
+          0.00
+        </span>
+
+        <span
+          id="currency"
+          class="currency"
+        >
+          USDT
+        </span>
+
       </div>
 
+
       <div class="profit-box">
-        <span>Total Profit</span>
-        <strong id="totalProfit" class="profit">
+
+        <span>
+          Total Profit
+        </span>
+
+        <strong
+          id="totalProfit"
+          class="profit"
+        >
           0.00 USDT
         </strong>
+
       </div>
 
     </div>
@@ -436,13 +495,15 @@ select:focus{
 
       <button
         class="deposit"
-        onclick="showPage('depositPage')">
+        onclick="showPage('depositPage')"
+      >
         Deposit
       </button>
 
       <button
         class="withdraw"
-        onclick="showPage('withdrawPage')">
+        onclick="showPage('withdrawPage')"
+      >
         Withdraw
       </button>
 
@@ -451,21 +512,46 @@ select:focus{
 
     <div class="card">
 
-      <h3>Account</h3>
+      <h3>
+        Account
+      </h3>
 
       <div class="row">
-        <span>Username</span>
-        <strong id="username">Loading...</strong>
+
+        <span>
+          Username
+        </span>
+
+        <strong id="username">
+          Loading...
+        </strong>
+
       </div>
 
-      <div class="row">
-        <span>Currency</span>
-        <strong id="accountCurrency">USDT</strong>
-      </div>
 
       <div class="row">
-        <span>Status</span>
-        <strong>Active</strong>
+
+        <span>
+          Currency
+        </span>
+
+        <strong id="accountCurrency">
+          USDT
+        </strong>
+
+      </div>
+
+
+      <div class="row">
+
+        <span>
+          Status
+        </span>
+
+        <strong>
+          Active
+        </strong>
+
       </div>
 
     </div>
@@ -473,12 +559,16 @@ select:focus{
 
     <div class="card">
 
-      <h3>Recent Transactions</h3>
+      <h3>
+        Recent Transactions
+      </h3>
 
       <div id="recentTransactions">
+
         <div class="loading">
           Loading...
         </div>
+
       </div>
 
     </div>
@@ -488,48 +578,67 @@ select:focus{
 </div>
 
 
-<!-- DEPOSIT -->
-<div id="depositPage" class="page">
+<!-- ================= DEPOSIT ================= -->
+
+<div
+  id="depositPage"
+  class="page"
+>
 
   <div class="container">
 
     <div
       class="back"
-      onclick="showPage('homePage')">
+      onclick="showPage('homePage')"
+    >
       ← Back
     </div>
 
+
     <div class="card">
 
-      <h3>Deposit</h3>
+      <h3>
+        Deposit
+      </h3>
 
       <p class="small">
         Submit a deposit request for admin review.
       </p>
 
 
+      <div class="notice">
+        After submitting, an administrator will review your request.
+      </div>
+
+
       <div class="form-group">
 
-        <label>Amount (USDT)</label>
+        <label>
+          Amount (USDT)
+        </label>
 
         <input
           id="depositAmount"
           type="number"
           min="0"
           step="0.01"
-          placeholder="Enter amount">
+          placeholder="Enter amount"
+        >
 
       </div>
 
 
       <div class="form-group">
 
-        <label>Note</label>
+        <label>
+          Note
+        </label>
 
         <textarea
           id="depositNote"
           rows="4"
-          placeholder="Optional note"></textarea>
+          placeholder="Optional note"
+        ></textarea>
 
       </div>
 
@@ -537,26 +646,24 @@ select:focus{
       <button
         class="primary"
         id="depositButton"
-        onclick="submitDeposit()">
-
+        onclick="submitDeposit()"
+      >
         Submit Deposit Request
-
       </button>
 
 
       <div
         id="depositSuccess"
-        class="success">
-
+        class="success"
+      >
         Deposit submitted successfully.
-
       </div>
 
 
       <div
         id="depositError"
-        class="error">
-      </div>
+        class="error"
+      ></div>
 
     </div>
 
@@ -565,46 +672,63 @@ select:focus{
 </div>
 
 
-<!-- WITHDRAW -->
-<div id="withdrawPage" class="page">
+<!-- ================= WITHDRAW ================= -->
+
+<div
+  id="withdrawPage"
+  class="page"
+>
 
   <div class="container">
 
     <div
       class="back"
-      onclick="showPage('homePage')">
+      onclick="showPage('homePage')"
+    >
       ← Back
     </div>
 
+
     <div class="card">
 
-      <h3>Withdraw</h3>
+      <h3>
+        Withdraw
+      </h3>
 
       <p class="small">
+
         Available:
+
         <strong id="withdrawBalance">
           0.00 USDT
         </strong>
+
       </p>
 
 
       <div class="form-group">
 
-        <label>Amount (USDT)</label>
+        <label>
+          Amount (USDT)
+        </label>
 
         <input
           id="withdrawAmount"
           type="number"
           min="0"
           step="0.01"
-          placeholder="Enter amount">
+          placeholder="Enter amount"
+        >
 
       </div>
 
 
       <div class="form-group">
 
-        <label>Withdrawal Method</label>
+        <label>
+          Withdrawal Method
+        </label>
+
 
         <div class="choice-grid">
 
@@ -612,10 +736,9 @@ select:focus{
             type="button"
             id="cryptoChoice"
             class="choice selected"
-            onclick="selectWithdrawMethod('crypto')">
-
+            onclick="selectWithdrawMethod('crypto')"
+          >
             ₿ Crypto
-
           </button>
 
 
@@ -623,10 +746,9 @@ select:focus{
             type="button"
             id="bankChoice"
             class="choice"
-            onclick="selectWithdrawMethod('bank')">
-
+            onclick="selectWithdrawMethod('bank')"
+          >
             🏦 Bank
-
           </button>
 
         </div>
@@ -640,19 +762,24 @@ select:focus{
 
         <div class="form-group">
 
-          <label>Wallet Address</label>
+          <label>
+            Wallet Address
+          </label>
 
           <input
             id="cryptoWallet"
             type="text"
-            placeholder="Enter crypto wallet address">
+            placeholder="Enter crypto wallet address"
+          >
 
         </div>
 
 
         <div class="form-group">
 
-          <label>Network</label>
+          <label>
+            Network
+          </label>
 
           <select id="cryptoNetwork">
 
@@ -683,40 +810,50 @@ select:focus{
 
       <div
         id="bankFields"
-        style="display:none">
+        style="display:none"
+      >
 
         <div class="form-group">
 
-          <label>Bank Name</label>
+          <label>
+            Bank Name
+          </label>
 
           <input
             id="bankName"
             type="text"
-            placeholder="Enter bank name">
+            placeholder="Enter bank name"
+          >
 
         </div>
 
 
         <div class="form-group">
 
-          <label>Account Name</label>
+          <label>
+            Account Name
+          </label>
 
           <input
             id="accountName"
             type="text"
-            placeholder="Enter account name">
+            placeholder="Enter account name"
+          >
 
         </div>
 
 
         <div class="form-group">
 
-          <label>Account Number</label>
+          <label>
+            Account Number
+          </label>
 
           <input
             id="accountNumber"
             type="text"
-            placeholder="Enter account number">
+            placeholder="Enter account number"
+          >
 
         </div>
 
@@ -730,7 +867,8 @@ select:focus{
           <input
             id="bankBranch"
             type="text"
-            placeholder="Optional">
+            placeholder="Optional"
+          >
 
         </div>
 
@@ -739,12 +877,15 @@ select:focus{
 
       <div class="form-group">
 
-        <label>Note</label>
+        <label>
+          Note
+        </label>
 
         <textarea
           id="withdrawNote"
           rows="3"
-          placeholder="Optional note"></textarea>
+          placeholder="Optional note"
+        ></textarea>
 
       </div>
 
@@ -752,26 +893,24 @@ select:focus{
       <button
         class="primary"
         id="withdrawButton"
-        onclick="submitWithdraw()">
-
+        onclick="submitWithdraw()"
+      >
         Submit Withdrawal Request
-
       </button>
 
 
       <div
         id="withdrawSuccess"
-        class="success">
-
+        class="success"
+      >
         Withdrawal submitted successfully.
-
       </div>
 
 
       <div
         id="withdrawError"
-        class="error">
-      </div>
+        class="error"
+      ></div>
 
     </div>
 
@@ -780,14 +919,20 @@ select:focus{
 </div>
 
 
-<!-- PRODUCTS -->
-<div id="productsPage" class="page">
+<!-- ================= PRODUCTS ================= -->
+
+<div
+  id="productsPage"
+  class="page"
+>
 
   <div class="container">
 
     <div class="card">
 
-      <h3>Products</h3>
+      <h3>
+        Products
+      </h3>
 
       <p class="small">
         Choose a product and optimize it.
@@ -798,7 +943,8 @@ select:focus{
 
     <div
       id="productGrid"
-      class="product-grid">
+      class="product-grid"
+    >
 
       <div class="loading">
         Loading products...
@@ -811,14 +957,21 @@ select:focus{
 </div>
 
 
-<!-- TRANSACTIONS -->
-<div id="transactionsPage" class="page">
+<!-- ================= TRANSACTIONS ================= -->
+
+<div
+  id="transactionsPage"
+  class="page"
+>
 
   <div class="container">
 
     <div class="card">
 
-      <h3>Transaction History</h3>
+      <h3>
+        Transaction History
+      </h3>
+
 
       <div id="transactionList">
 
@@ -835,14 +988,21 @@ select:focus{
 </div>
 
 
-<!-- MESSAGES -->
-<div id="messagesPage" class="page">
+<!-- ================= MESSAGES ================= -->
+
+<div
+  id="messagesPage"
+  class="page"
+>
 
   <div class="container">
 
     <div class="card">
 
-      <h3>Messages</h3>
+      <h3>
+        Messages
+      </h3>
+
 
       <div id="messageList">
 
@@ -859,14 +1019,21 @@ select:focus{
 </div>
 
 
-<!-- TEAM -->
-<div id="teamPage" class="page">
+<!-- ================= TEAM ================= -->
+
+<div
+  id="teamPage"
+  class="page"
+>
 
   <div class="container">
 
     <div class="card">
 
-      <h3>Team & Referral</h3>
+      <h3>
+        Team & Referral
+      </h3>
+
 
       <div class="referral">
 
@@ -874,24 +1041,34 @@ select:focus{
           Your Referral Code
         </div>
 
+
         <div
           id="referralCode"
-          class="referral-code">
+          class="referral-code"
+        >
           -
         </div>
 
+
         <button
-          style="margin-top:12px;background:#7657d9;color:white;width:100%"
-          onclick="copyReferral()">
-
+          style="
+            margin-top:12px;
+            background:#7657d9;
+            color:white;
+            width:100%;
+          "
+          onclick="copyReferral()"
+        >
           Copy Referral Code
-
         </button>
 
       </div>
 
 
-      <h3>Team Members</h3>
+      <h3>
+        Team Members
+      </h3>
+
 
       <div id="teamMembers">
 
@@ -908,42 +1085,84 @@ select:focus{
 </div>
 
 
-<!-- ACCOUNT -->
-<div id="accountPage" class="page">
+<!-- ================= ACCOUNT ================= -->
+
+<div
+  id="accountPage"
+  class="page"
+>
 
   <div class="container">
 
     <div class="card">
 
-      <h3>Account Details</h3>
+      <h3>
+        Account Details
+      </h3>
+
 
       <div class="row">
-        <span>Username</span>
-        <strong id="accountUsername">-</strong>
+
+        <span>
+          Username
+        </span>
+
+        <strong id="accountUsername">
+          -
+        </strong>
+
       </div>
 
+
       <div class="row">
-        <span>Balance</span>
+
+        <span>
+          Balance
+        </span>
+
         <strong id="accountBalance">
           0.00 USDT
         </strong>
+
       </div>
 
+
       <div class="row">
-        <span>Total Profit</span>
+
+        <span>
+          Total Profit
+        </span>
+
         <strong id="accountProfit">
           0.00 USDT
         </strong>
+
       </div>
 
-      <div class="row">
-        <span>Referral Code</span>
-        <strong id="accountReferral">-</strong>
-      </div>
 
       <div class="row">
-        <span>Status</span>
-        <strong>Active</strong>
+
+        <span>
+          Referral Code
+        </span>
+
+        <strong id="accountReferral">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="row">
+
+        <span>
+          Status
+        </span>
+
+        <strong>
+          Active
+        </strong>
+
       </div>
 
     </div>
@@ -951,38 +1170,46 @@ select:focus{
 
     <div class="card">
 
-      <h3>Change Password</h3>
+      <h3>
+        Change Password
+      </h3>
+
 
       <div class="form-group">
 
-        <label>Current Password</label>
+        <label>
+          Current Password
+        </label>
 
         <input
           id="oldPassword"
           type="password"
-          placeholder="Current password">
+          placeholder="Current password"
+        >
 
       </div>
 
 
       <div class="form-group">
 
-        <label>New Password</label>
+        <label>
+          New Password
+        </label>
 
         <input
           id="newPassword"
           type="password"
-          placeholder="New password">
+          placeholder="New password"
+        >
 
       </div>
 
 
       <button
         class="primary"
-        onclick="changePassword()">
-
+        onclick="changePassword()"
+      >
         Change Password
-
       </button>
 
     </div>
@@ -992,10 +1219,9 @@ select:focus{
 
       <button
         class="danger"
-        onclick="logout()">
-
+        onclick="logout()"
+      >
         Logout
-
       </button>
 
     </div>
@@ -1005,15 +1231,20 @@ select:focus{
 </div>
 
 
-<!-- BOTTOM NAV -->
+<!-- ================= BOTTOM NAV ================= -->
+
 <div class="bottom-nav">
 
   <div
     id="navHome"
     class="nav-item active"
-    onclick="showPage('homePage')">
+    onclick="showPage('homePage')"
+  >
 
-    <div class="nav-icon">⌂</div>
+    <div class="nav-icon">
+      ⌂
+    </div>
+
     Home
 
   </div>
@@ -1022,9 +1253,13 @@ select:focus{
   <div
     id="navProducts"
     class="nav-item"
-    onclick="showPage('productsPage')">
+    onclick="showPage('productsPage')"
+  >
 
-    <div class="nav-icon">▣</div>
+    <div class="nav-icon">
+      ▣
+    </div>
+
     Products
 
   </div>
@@ -1033,9 +1268,13 @@ select:focus{
   <div
     id="navTransactions"
     class="nav-item"
-    onclick="showPage('transactionsPage')">
+    onclick="showPage('transactionsPage')"
+  >
 
-    <div class="nav-icon">☷</div>
+    <div class="nav-icon">
+      ☷
+    </div>
+
     History
 
   </div>
@@ -1044,9 +1283,13 @@ select:focus{
   <div
     id="navMessages"
     class="nav-item"
-    onclick="showPage('messagesPage')">
+    onclick="showPage('messagesPage')"
+  >
 
-    <div class="nav-icon">✉</div>
+    <div class="nav-icon">
+      ✉
+    </div>
+
     Messages
 
   </div>
@@ -1055,9 +1298,13 @@ select:focus{
   <div
     id="navAccount"
     class="nav-item"
-    onclick="showPage('accountPage')">
+    onclick="showPage('accountPage')"
+  >
 
-    <div class="nav-icon">♙</div>
+    <div class="nav-icon">
+      ♙
+    </div>
+
     Account
 
   </div>
@@ -1067,15 +1314,22 @@ select:focus{
 
 <script>
 
+/* =====================================================
+   API
+===================================================== */
+
 const API_URL =
   "https://zonguru-jack-api.onrender.com";
+
 
 let currentUser = null;
 
 let withdrawMethod = "crypto";
 
 
-/* ================= AUTH ================= */
+/* =====================================================
+   TOKEN
+===================================================== */
 
 function getToken(){
 
@@ -1086,22 +1340,35 @@ function getToken(){
 }
 
 
-async function api(path, options = {}){
+/* =====================================================
+   API REQUEST
+===================================================== */
 
-  const token = getToken();
+async function api(
+  path,
+  options = {}
+){
+
+  const token =
+    getToken();
+
 
   if(!token){
 
-    window.location.href = "login.html";
+    window.location.href =
+      "login.html";
 
-    throw new Error("Not logged in");
+    throw new Error(
+      "Not logged in"
+    );
 
   }
 
 
   const headers = {
 
-    "Content-Type":"application/json",
+    "Content-Type":
+      "application/json",
 
     "Authorization":
       "Bearer " + token
@@ -1128,9 +1395,11 @@ async function api(path, options = {}){
 
   let data = {};
 
+
   try{
 
-    data = await response.json();
+    data =
+      await response.json();
 
   }catch(e){
 
@@ -1139,7 +1408,9 @@ async function api(path, options = {}){
   }
 
 
-  if(response.status === 401){
+  if(
+    response.status === 401
+  ){
 
     localStorage.removeItem(
       "zonguru_token"
@@ -1177,23 +1448,29 @@ async function api(path, options = {}){
 }
 
 
-/* ================= PAGE ================= */
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
 
 function showPage(id){
 
   document
     .querySelectorAll(".page")
-    .forEach(page => {
+    .forEach(
+      page => {
 
-      page.classList.remove(
-        "active"
-      );
+        page.classList.remove(
+          "active"
+        );
 
-    });
+      }
+    );
 
 
   const page =
-    document.getElementById(id);
+    document.getElementById(
+      id
+    );
 
 
   if(page){
@@ -1207,71 +1484,104 @@ function showPage(id){
 
   document
     .querySelectorAll(".nav-item")
-    .forEach(nav => {
+    .forEach(
+      nav => {
 
-      nav.classList.remove(
-        "active"
-      );
+        nav.classList.remove(
+          "active"
+        );
 
-    });
+      }
+    );
 
 
-  if(id === "homePage"){
+  if(
+    id === "homePage"
+  ){
 
     document
-      .getElementById("navHome")
-      .classList.add("active");
+      .getElementById(
+        "navHome"
+      )
+      .classList.add(
+        "active"
+      );
 
     loadUser();
 
   }
 
 
-  if(id === "productsPage"){
+  if(
+    id === "productsPage"
+  ){
 
     document
-      .getElementById("navProducts")
-      .classList.add("active");
+      .getElementById(
+        "navProducts"
+      )
+      .classList.add(
+        "active"
+      );
 
     loadProducts();
 
   }
 
 
-  if(id === "transactionsPage"){
+  if(
+    id === "transactionsPage"
+  ){
 
     document
-      .getElementById("navTransactions")
-      .classList.add("active");
+      .getElementById(
+        "navTransactions"
+      )
+      .classList.add(
+        "active"
+      );
 
     loadTransactions();
 
   }
 
 
-  if(id === "messagesPage"){
+  if(
+    id === "messagesPage"
+  ){
 
     document
-      .getElementById("navMessages")
-      .classList.add("active");
+      .getElementById(
+        "navMessages"
+      )
+      .classList.add(
+        "active"
+      );
 
     loadMessages();
 
   }
 
 
-  if(id === "accountPage"){
+  if(
+    id === "accountPage"
+  ){
 
     document
-      .getElementById("navAccount")
-      .classList.add("active");
+      .getElementById(
+        "navAccount"
+      )
+       .classList
+      .add("active");
 
     loadUser();
 
   }
 
 
-  if(id === "teamPage"){
+  if(
+    id === "teamPage"
+  ){
 
     loadTeam();
 
@@ -1295,101 +1605,162 @@ async function loadUser(){
     const user =
       data.user;
 
-
     const balance =
       Number(
         user.balance || 0
       ).toFixed(2);
-
 
     const profit =
       Number(
         user.totalProfit || 0
       ).toFixed(2);
 
-
     const currency =
       user.currency || "USDT";
 
 
-    document
-      .getElementById("balanceAmount")
-      .textContent =
-      balance;
+    const balanceAmount =
+      document.getElementById(
+        "balanceAmount"
+      );
+
+    if(balanceAmount){
+      balanceAmount.textContent =
+        balance;
+    }
 
 
-    document
-      .getElementById("currency")
-      .textContent =
-      currency;
+    const currencyEl =
+      document.getElementById(
+        "currency"
+      );
+
+    if(currencyEl){
+      currencyEl.textContent =
+        currency;
+    }
 
 
-    document
-      .getElementById("totalProfit")
-      .textContent =
-      profit + " " + currency;
+    const totalProfit =
+      document.getElementById(
+        "totalProfit"
+      );
+
+    if(totalProfit){
+      totalProfit.textContent =
+        profit + " " + currency;
+    }
 
 
-    document
-      .getElementById("welcomeText")
-      .textContent =
-      "Welcome, " +
-      user.username;
+    const welcomeText =
+      document.getElementById(
+        "welcomeText"
+      );
+
+    if(welcomeText){
+      welcomeText.textContent =
+        "Welcome, " +
+        user.username;
+    }
 
 
-    document
-      .getElementById("username")
-      .textContent =
-      user.username;
+    const username =
+      document.getElementById(
+        "username"
+      );
+
+    if(username){
+      username.textContent =
+        user.username;
+    }
 
 
-    document
-      .getElementById("accountCurrency")
-      .textContent =
-      currency;
+    const accountCurrency =
+      document.getElementById(
+        "accountCurrency"
+      );
+
+    if(accountCurrency){
+      accountCurrency.textContent =
+        currency;
+    }
 
 
-    document
-      .getElementById("withdrawBalance")
-      .textContent =
-      balance + " " + currency;
+    const withdrawBalance =
+      document.getElementById(
+        "withdrawBalance"
+      );
+
+    if(withdrawBalance){
+      withdrawBalance.textContent =
+        balance + " " + currency;
+    }
 
 
-    document
-      .getElementById("accountUsername")
-      .textContent =
-      user.username;
+    const accountUsername =
+      document.getElementById(
+        "accountUsername"
+      );
+
+    if(accountUsername){
+      accountUsername.textContent =
+        user.username;
+    }
 
 
-    document
-      .getElementById("accountBalance")
-      .textContent =
-      balance + " " + currency;
+    const accountBalance =
+      document.getElementById(
+        "accountBalance"
+      );
+
+    if(accountBalance){
+      accountBalance.textContent =
+        balance + " " + currency;
+    }
 
 
-    document
-      .getElementById("accountProfit")
-      .textContent =
-      profit + " " + currency;
+    const accountProfit =
+      document.getElementById(
+        "accountProfit"
+      );
+
+    if(accountProfit){
+      accountProfit.textContent =
+        profit + " " + currency;
+    }
 
 
-    document
-      .getElementById("accountReferral")
-      .textContent =
-      user.referralCode || "-";
+    const accountReferral =
+      document.getElementById(
+        "accountReferral"
+      );
+
+    if(accountReferral){
+      accountReferral.textContent =
+        user.referralCode || "-";
+    }
 
 
-    document
-      .getElementById("referralCode")
-      .textContent =
-      user.referralCode || "-";
+    const referralCode =
+      document.getElementById(
+        "referralCode"
+      );
+
+    if(referralCode){
+      referralCode.textContent =
+        user.referralCode || "-";
+    }
 
 
     await loadTransactions();
 
+
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "loadUser:",
+      error
+    );
 
   }
 
@@ -1402,35 +1773,25 @@ async function submitDeposit(){
 
   const amount =
     Number(
-      document
-        .getElementById(
-          "depositAmount"
-        )
-        .value
+      document.getElementById(
+        "depositAmount"
+      ).value
     );
 
-
   const note =
-    document
-      .getElementById(
-        "depositNote"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "depositNote"
+    ).value.trim();
 
   const success =
-    document
-      .getElementById(
-        "depositSuccess"
-      );
-
+    document.getElementById(
+      "depositSuccess"
+    );
 
   const errorBox =
-    document
-      .getElementById(
-        "depositError"
-      );
+    document.getElementById(
+      "depositError"
+    );
 
 
   success.style.display =
@@ -1457,11 +1818,9 @@ async function submitDeposit(){
 
 
   const button =
-    document
-      .getElementById(
-        "depositButton"
-      );
-
+    document.getElementById(
+      "depositButton"
+    );
 
   button.disabled = true;
 
@@ -1472,76 +1831,65 @@ async function submitDeposit(){
   try{
 
     const data =
-  await api(
+      await api(
+        "/api/deposits",
+        {
+          method:"POST",
 
-  "/api/deposits",
+          body:JSON.stringify({
+            amount,
+            note
+          })
+        }
+      );
 
-  {
-    method:"POST",
 
-    body:JSON.stringify({
+    success.textContent =
+      data.message ||
+      "Deposit submitted successfully.";
 
-      amount,
+    success.style.display =
+      "block";
 
-      note
 
-    })
+    document.getElementById(
+      "depositAmount"
+    ).value = "";
+
+    document.getElementById(
+      "depositNote"
+    ).value = "";
+
+
+    await loadTransactions();
+
+
+  }catch(error){
+
+    errorBox.textContent =
+      error.message ||
+      "Deposit failed.";
+
+    errorBox.style.display =
+      "block";
+
+  }finally{
+
+    button.disabled = false;
+
+    button.textContent =
+      "Submit Deposit Request";
 
   }
-
-);
-
-
-success.textContent =
-  data.message ||
-  "Deposit submitted successfully.";
-
-
-success.style.display =
-  "block";
-
-
-document
-  .getElementById(
-    "depositAmount"
-  )
-  .value = "";
-
-
-document
-  .getElementById(
-    "depositNote"
-  )
-  .value = "";
-
-
-await loadUser();
-
-
-}catch(error){
-
-  errorBox.textContent =
-    error.message;
-
-  errorBox.style.display =
-    "block";
-
-}finally{
-
-  button.disabled =
-    false;
-
-  button.textContent =
-    "Submit Deposit Request";
-
-}
 
 }
 
 
 /* ================= WITHDRAW METHOD ================= */
 
-function selectWithdrawMethod(method){
+function selectWithdrawMethod(
+  method
+){
 
   withdrawMethod =
     method;
@@ -1552,18 +1900,15 @@ function selectWithdrawMethod(method){
       "cryptoChoice"
     );
 
-
   const bankChoice =
     document.getElementById(
       "bankChoice"
     );
 
-
   const cryptoFields =
     document.getElementById(
       "cryptoFields"
     );
-
 
   const bankFields =
     document.getElementById(
@@ -1573,14 +1918,13 @@ function selectWithdrawMethod(method){
 
   if(method === "crypto"){
 
-    cryptoChoice
-      .classList
-      .add("selected");
+    cryptoChoice.classList.add(
+      "selected"
+    );
 
-    bankChoice
-      .classList
-      .remove("selected");
-
+    bankChoice.classList.remove(
+      "selected"
+    );
 
     cryptoFields.style.display =
       "block";
@@ -1590,14 +1934,13 @@ function selectWithdrawMethod(method){
 
   }else{
 
-    bankChoice
-      .classList
-      .add("selected");
+    bankChoice.classList.add(
+      "selected"
+    );
 
-    cryptoChoice
-      .classList
-      .remove("selected");
-
+    cryptoChoice.classList.remove(
+      "selected"
+    );
 
     cryptoFields.style.display =
       "none";
@@ -1616,35 +1959,25 @@ async function submitWithdraw(){
 
   const amount =
     Number(
-      document
-        .getElementById(
-          "withdrawAmount"
-        )
-        .value
+      document.getElementById(
+        "withdrawAmount"
+      ).value
     );
 
-
   const note =
-    document
-      .getElementById(
-        "withdrawNote"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "withdrawNote"
+    ).value.trim();
 
   const success =
-    document
-      .getElementById(
-        "withdrawSuccess"
-      );
-
+    document.getElementById(
+      "withdrawSuccess"
+    );
 
   const errorBox =
-    document
-      .getElementById(
-        "withdrawError"
-      );
+    document.getElementById(
+      "withdrawError"
+    );
 
 
   success.style.display =
@@ -1673,23 +2006,20 @@ async function submitWithdraw(){
   let details = {};
 
 
-  if(withdrawMethod === "crypto"){
+  if(
+    withdrawMethod ===
+    "crypto"
+  ){
 
     const wallet =
-      document
-        .getElementById(
-          "cryptoWallet"
-        )
-        .value
-        .trim();
-
+      document.getElementById(
+        "cryptoWallet"
+      ).value.trim();
 
     const network =
-      document
-        .getElementById(
-          "cryptoNetwork"
-        )
-        .value;
+      document.getElementById(
+        "cryptoNetwork"
+      ).value;
 
 
     if(!wallet){
@@ -1708,7 +2038,7 @@ async function submitWithdraw(){
     if(!network){
 
       errorBox.textContent =
-        "Please select a crypto network.";
+        "Please select a network.";
 
       errorBox.style.display =
         "block";
@@ -1719,62 +2049,64 @@ async function submitWithdraw(){
 
 
     details = {
-
-      walletAddress:
-        wallet,
-
-      network:
-        network
-
+      walletAddress: wallet,
+      network: network
     };
 
 
   }else{
 
     const bankName =
-      document
-        .getElementById(
-          "bankName"
-        )
-        .value
-        .trim();
-
+      document.getElementById(
+        "bankName"
+      ).value.trim();
 
     const accountName =
-      document
-        .getElementById(
-          "accountName"
-        )
-        .value
-        .trim();
-
+      document.getElementById(
+        "accountName"
+      ).value.trim();
 
     const accountNumber =
-      document
-        .getElementById(
-          "accountNumber"
-        )
-        .value
-        .trim();
-
+      document.getElementById(
+        "accountNumber"
+      ).value.trim();
 
     const bankBranch =
-      document
-        .getElementById(
-          "bankBranch"
-        )
-        .value
-        .trim();
+      document.getElementById(
+        "bankBranch"
+      ).value.trim();
 
 
-    if(
-      !bankName ||
-      !accountName ||
-      !accountNumber
-    ){
+    if(!bankName){
 
       errorBox.textContent =
-        "Please enter bank name, account name and account number.";
+        "Please enter bank name.";
+
+      errorBox.style.display =
+        "block";
+
+      return;
+
+    }
+
+
+    if(!accountName){
+
+      errorBox.textContent =
+        "Please enter account name.";
+
+      errorBox.style.display =
+        "block";
+
+      return;
+
+    }
+
+
+    if(!accountNumber){
+
+      errorBox.textContent =
+        "Please enter account number.";
 
       errorBox.style.display =
         "block";
@@ -1786,17 +2118,13 @@ async function submitWithdraw(){
 
     details = {
 
-      bankName:
-        bankName,
+      bankName,
 
-      accountName:
-        accountName,
+      accountName,
 
-      accountNumber:
-        accountNumber,
+      accountNumber,
 
-      bankBranch:
-        bankBranch
+      branch: bankBranch
 
     };
 
@@ -1804,14 +2132,11 @@ async function submitWithdraw(){
 
 
   const button =
-    document
-      .getElementById(
-        "withdrawButton"
-      );
+    document.getElementById(
+      "withdrawButton"
+    );
 
-
-  button.disabled =
-    true;
+  button.disabled = true;
 
   button.textContent =
     "Submitting...";
@@ -1821,11 +2146,8 @@ async function submitWithdraw(){
 
     const data =
       await api(
-
         "/api/withdrawals",
-
         {
-
           method:"POST",
 
           body:JSON.stringify({
@@ -1842,7 +2164,6 @@ async function submitWithdraw(){
           })
 
         }
-
       );
 
 
@@ -1850,65 +2171,17 @@ async function submitWithdraw(){
       data.message ||
       "Withdrawal submitted successfully.";
 
-
     success.style.display =
       "block";
 
 
-    document
-      .getElementById(
-        "withdrawAmount"
-      )
-      .value = "";
+    document.getElementById(
+      "withdrawAmount"
+    ).value = "";
 
-
-    document
-      .getElementById(
-        "withdrawNote"
-      )
-      .value = "";
-
-
-    document
-      .getElementById(
-        "cryptoWallet"
-      )
-      .value = "";
-
-
-    document
-      .getElementById(
-        "cryptoNetwork"
-      )
-      .value = "";
-
-
-    document
-      .getElementById(
-        "bankName"
-      )
-      .value = "";
-
-
-    document
-      .getElementById(
-        "accountName"
-      )
-      .value = "";
-
-
-    document
-      .getElementById(
-        "accountNumber"
-      )
-      .value = "";
-
-
-    document
-      .getElementById(
-        "bankBranch"
-      )
-      .value = "";
+    document.getElementById(
+      "withdrawNote"
+    ).value = "";
 
 
     await loadUser();
@@ -1919,15 +2192,15 @@ async function submitWithdraw(){
   }catch(error){
 
     errorBox.textContent =
-      error.message;
+      error.message ||
+      "Withdrawal failed.";
 
     errorBox.style.display =
       "block";
 
   }finally{
 
-    button.disabled =
-      false;
+    button.disabled = false;
 
     button.textContent =
       "Submit Withdrawal Request";
@@ -1942,10 +2215,14 @@ async function submitWithdraw(){
 async function loadProducts(){
 
   const grid =
-    document
-      .getElementById(
-        "productGrid"
-      );
+    document.getElementById(
+      "productGrid"
+    );
+
+
+  if(!grid){
+    return;
+  }
 
 
   grid.innerHTML =
@@ -1959,11 +2236,11 @@ async function loadProducts(){
         "/api/products"
       );
 
+    const products =
+      data.products || [];
 
-    if(
-      !data.products ||
-      !data.products.length
-    ){
+
+    if(!products.length){
 
       grid.innerHTML =
         '<div class="empty">No products available.</div>';
@@ -1974,72 +2251,62 @@ async function loadProducts(){
 
 
     grid.innerHTML =
-      "";
+      products.map(
+        product => {
 
+          const name =
+            product.name ||
+            "Product";
 
-    data.products.forEach(
-      product => {
+          const category =
+            product.category ||
+            "General";
 
-        const rate =
-          Number(
-            product.profitRate || 0
-          ) * 100;
-
-
-        const div =
-          document.createElement(
-            "div"
-          );
-
-
-        div.className =
-          "product";
-
-
-        div.innerHTML = `
-
-          <div class="product-name">
-            ${escapeHtml(product.name)}
-          </div>
-
-          <div class="product-category">
-            ${escapeHtml(
-              product.category ||
-              "General"
-            )}
-          </div>
-
-          <div class="product-price">
-            ${Number(
+          const price =
+            Number(
               product.price || 0
-            ).toFixed(2)} USDT
-          </div>
+            ).toFixed(2);
 
-          <div class="product-profit">
-            Profit:
-            ${rate.toFixed(2)}%
-          </div>
-
-          <button
-            class="optimize"
-            onclick="optimizeProduct(
-              '${product._id}',
-              this
-            )">
-
-            Optimize
-
-          </button>
-
-        `;
+          const profit =
+            Number(
+              product.profit || 0
+            ).toFixed(2);
 
 
-        grid.appendChild(
-          div
-        );
+          return `
 
-      }
-    );
+            <div class="product">
+
+              <div class="product-name">
+                ${escapeHtml(name)}
+              </div>
+
+              <div class="product-category">
+                ${escapeHtml(category)}
+              </div>
+
+              <div class="product-price">
+                ${price} USDT
+              </div>
+
+              <div class="product-profit">
+                Profit: ${profit} USDT
+              </div>
+
+              <button
+                class="optimize"
+                onclick="optimizeProduct('${escapeHtml(product._id || product.id)}',this)">
+
+                Optimize
+
+              </button>
+
+            </div>
+
+          `;
+
+        }
+      ).join("");
 
 
   }catch(error){
@@ -2053,23 +2320,18 @@ async function loadProducts(){
 
   }
 
-  }    
-  /* ================= OPTIMIZE PRODUCT ================= */
+}
 
-async function optimizeProduct(id, button){
 
-  if(!id){
-
-    alert("Product ID is missing.");
-
-    return;
-
-  }
-
+async function optimizeProduct(
+  id,
+  button
+){
 
   button.disabled = true;
 
-  button.textContent = "Optimizing...";
+  button.textContent =
+    "Optimizing...";
 
 
   try{
@@ -2110,7 +2372,8 @@ async function optimizeProduct(id, button){
 
     button.disabled = false;
 
-    button.textContent = "Optimize";
+    button.textContent =
+      "Optimize";
 
   }
 
@@ -2125,7 +2388,6 @@ async function loadTransactions(){
     document.getElementById(
       "transactionList"
     );
-
 
   const recent =
     document.getElementById(
@@ -2156,7 +2418,6 @@ async function loadTransactions(){
         "/api/transactions"
       );
 
-
     const transactions =
       data.transactions || [];
 
@@ -2178,7 +2439,6 @@ async function loadTransactions(){
 
       }
 
-
       return;
 
     }
@@ -2194,19 +2454,16 @@ async function loadTransactions(){
               "transaction"
             );
 
-
           const amount =
             Number(
               tx.amount || 0
             ).toFixed(2);
-
 
           const status =
             String(
               tx.status ||
               "pending"
             );
-
 
           const date =
             tx.createdAt
@@ -2263,7 +2520,8 @@ async function loadTransactions(){
 
     if(list){
 
-      list.innerHTML = html;
+      list.innerHTML =
+        html;
 
     }
 
@@ -2281,12 +2539,10 @@ async function loadTransactions(){
                 "transaction"
               );
 
-
             const amount =
               Number(
                 tx.amount || 0
               ).toFixed(2);
-
 
             const status =
               String(
@@ -2345,16 +2601,17 @@ async function loadTransactions(){
     if(recent){
 
       recent.innerHTML =
-        '<div class="empty">Unable to load transactions.</div>';
+        '<div class="empty">' +
+        escapeHtml(
+          error.message
+        ) +
+        '</div>';
 
     }
 
   }
 
-}
-
-
-/* ================= MESSAGES ================= */
+  }/* ================= MESSAGES ================= */
 
 async function loadMessages(){
 
@@ -2363,10 +2620,12 @@ async function loadMessages(){
       "messageList"
     );
 
+  if(!list){
+    return;
+  }
 
   list.innerHTML =
     '<div class="loading">Loading...</div>';
-
 
   try{
 
@@ -2375,10 +2634,8 @@ async function loadMessages(){
         "/api/messages"
       );
 
-
     const messages =
       data.messages || [];
-
 
     if(!messages.length){
 
@@ -2386,9 +2643,7 @@ async function loadMessages(){
         '<div class="empty">No messages yet.</div>';
 
       return;
-
     }
-
 
     list.innerHTML =
       messages
@@ -2400,7 +2655,6 @@ async function loadMessages(){
                   message.createdAt
                 ).toLocaleString()
               : "";
-
 
           return `
 
@@ -2432,7 +2686,6 @@ async function loadMessages(){
         })
         .join("");
 
-
   }catch(error){
 
     list.innerHTML =
@@ -2456,10 +2709,12 @@ async function loadTeam(){
       "teamMembers"
     );
 
+  if(!list){
+    return;
+  }
 
   list.innerHTML =
     '<div class="loading">Loading...</div>';
-
 
   try{
 
@@ -2468,12 +2723,10 @@ async function loadTeam(){
         "/api/team"
       );
 
-
     const members =
       data.members ||
       data.team ||
       [];
-
 
     if(!members.length){
 
@@ -2481,9 +2734,7 @@ async function loadTeam(){
         '<div class="empty">No team members yet.</div>';
 
       return;
-
     }
-
 
     list.innerHTML =
       members
@@ -2517,7 +2768,6 @@ async function loadTeam(){
         })
         .join("");
 
-
   }catch(error){
 
     list.innerHTML =
@@ -2536,13 +2786,17 @@ async function loadTeam(){
 
 function copyReferral(){
 
-  const code =
-    document
-      .getElementById(
-        "referralCode"
-      )
-      .textContent;
+  const element =
+    document.getElementById(
+      "referralCode"
+    );
 
+  if(!element){
+    return;
+  }
+
+  const code =
+    element.textContent;
 
   if(
     !code ||
@@ -2554,9 +2808,7 @@ function copyReferral(){
     );
 
     return;
-
   }
-
 
   if(navigator.clipboard){
 
@@ -2590,21 +2842,29 @@ function copyReferral(){
 
 async function changePassword(){
 
-  const oldPassword =
-    document
-      .getElementById(
-        "oldPassword"
-      )
-      .value;
+  const oldInput =
+    document.getElementById(
+      "oldPassword"
+    );
 
+  const newInput =
+    document.getElementById(
+      "newPassword"
+    );
+
+  if(
+    !oldInput ||
+    !newInput
+  ){
+
+    return;
+  }
+
+  const oldPassword =
+    oldInput.value.trim();
 
   const newPassword =
-    document
-      .getElementById(
-        "newPassword"
-      )
-      .value;
-
+    newInput.value.trim();
 
   if(
     !oldPassword ||
@@ -2616,9 +2876,16 @@ async function changePassword(){
     );
 
     return;
-
   }
 
+  if(newPassword.length < 6){
+
+    alert(
+      "New password must be at least 6 characters."
+    );
+
+    return;
+  }
 
   try{
 
@@ -2632,9 +2899,11 @@ async function changePassword(){
 
           body:JSON.stringify({
 
-            oldPassword,
+            oldPassword:
+              oldPassword,
 
-            newPassword
+            newPassword:
+              newPassword
 
           })
 
@@ -2642,26 +2911,13 @@ async function changePassword(){
 
       );
 
-
     alert(
       data.message ||
       "Password changed successfully."
     );
 
-
-    document
-      .getElementById(
-        "oldPassword"
-      )
-      .value = "";
-
-
-    document
-      .getElementById(
-        "newPassword"
-      )
-      .value = "";
-
+    oldInput.value = "";
+    newInput.value = "";
 
   }catch(error){
 
@@ -2682,11 +2938,9 @@ function logout(){
     "zonguru_token"
   );
 
-
   localStorage.removeItem(
     "zonguru_user"
   );
-
 
   window.location.href =
     "login.html";
