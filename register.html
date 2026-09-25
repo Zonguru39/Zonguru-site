@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Zonguru Register</title>
 
   <style>
@@ -66,6 +67,11 @@
       border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #7657d9;
     }
 
     button {
@@ -78,6 +84,11 @@
       color: white;
       font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
     }
 
     .login {
@@ -123,11 +134,20 @@
         required
       >
 
+      <label>Email</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="Enter email"
+        required
+      >
+
       <label>Password</label>
       <input
         id="password"
         type="password"
         placeholder="Create password"
+        minlength="6"
         required
       >
 
@@ -139,7 +159,7 @@
         required
       >
 
-      <button type="submit">
+      <button id="registerBtn" type="submit">
         Register
       </button>
 
@@ -152,14 +172,22 @@
 
   </div>
 
+
   <script>
 
-    function registerUser(event) {
+    const API_URL =
+      "https://zonguru-jack-api.onrender.com";
+
+
+    async function registerUser(event) {
 
       event.preventDefault();
 
       const username =
         document.getElementById("username").value.trim();
+
+      const email =
+        document.getElementById("email").value.trim();
 
       const password =
         document.getElementById("password").value;
@@ -167,15 +195,105 @@
       const confirm =
         document.getElementById("confirm").value;
 
+      const button =
+        document.getElementById("registerBtn");
+
+
       if (password !== confirm) {
+
         alert("Passwords do not match.");
+
         return;
       }
 
-      alert(
-        "Registration page is ready. " +
-        "Database registration will be connected next."
-      );
+
+      if (password.length < 6) {
+
+        alert("Password must contain at least 6 characters.");
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.textContent = "Creating account...";
+
+
+      try {
+
+        const response = await fetch(
+          API_URL + "/api/auth/register",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              name: username,
+              email: email,
+              password: password
+            })
+          }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+
+          alert(
+            data.message ||
+            "Registration failed."
+          );
+
+          button.disabled = false;
+          button.textContent = "Register";
+
+          return;
+        }
+
+
+        if (data.success) {
+
+          // Save login token
+          localStorage.setItem(
+            "zonguru_token",
+            data.token
+          );
+
+          // Save user information
+          localStorage.setItem(
+            "zonguru_user",
+            JSON.stringify(data.user)
+          );
+
+
+          alert(
+            "Registration successful!"
+          );
+
+
+          // Go to dashboard
+          window.location.href =
+            "dashboard.html";
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Cannot connect to Zonguru server."
+        );
+
+        button.disabled = false;
+        button.textContent = "Register";
+      }
 
     }
 
