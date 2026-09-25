@@ -1,1319 +1,1693 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Zonguru Dashboard</title>
 
-  <title>Zonguru Dashboard</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      margin: 0;
-      background: #f4f6fb;
-      color: #222;
-      padding-bottom: 80px;
-    }
-
-    .top {
-      background: linear-gradient(135deg, #7657d9, #6242c5);
-      color: white;
-      padding: 25px 20px 30px;
-    }
-
-    .top h2 {
-      margin: 0 0 6px;
-      font-size: 28px;
-    }
-
-    .top p {
-      margin: 0;
-      opacity: .9;
-    }
-
-    .container {
-      max-width: 700px;
-      margin: auto;
-      padding: 18px;
-    }
-
-    .balance {
-      background: white;
-      padding: 24px;
-      border-radius: 18px;
-      box-shadow: 0 5px 18px rgba(0,0,0,.08);
-      margin-bottom: 15px;
-    }
-
-    .balance-title {
-      color: #777;
-      font-size: 14px;
-    }
-
-    .amount {
-      font-size: 36px;
-      font-weight: bold;
-      margin-top: 8px;
-    }
-
-    .currency {
-      color: #7657d9;
-      font-size: 16px;
-    }
-
-    .profit-box {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .profit {
-      color: #16a34a;
-      font-weight: bold;
-    }
-
-    .buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    button {
-      padding: 14px;
-      border: none;
-      border-radius: 11px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .deposit {
-      background: #16a34a;
-      color: white;
-    }
-
-    .withdraw {
-      background: #dc2626;
-      color: white;
-    }
-
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,.06);
-    }
-
-    .card h3 {
-      margin-top: 0;
-    }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 13px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .row:last-child {
-      border-bottom: none;
-    }
-
-    .small {
-      color: #777;
-      font-size: 13px;
-    }
-
-    .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 7px;
-      color: #555;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: #7657d9;
-    }
-
-    .primary {
-      width: 100%;
-      background: #7657d9;
-      color: white;
-    }
-
-    .dark {
-      width: 100%;
-      background: #222;
-      color: white;
-    }
-
-    .back {
-      display: inline-block;
-      margin-bottom: 15px;
-      color: #7657d9;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .product {
-      background: white;
-      border-radius: 15px;
-      padding: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.06);
-    }
-
-    .product-name {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .product-category {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 10px;
-    }
-
-    .product-price {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .product-profit {
-      color: #16a34a;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .optimize {
-      width: 100%;
-      background: #7657d9;
-      color: white;
-      padding: 10px;
-      font-size: 13px;
-    }
-
-    .tx {
-      padding: 14px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .tx:last-child {
-      border-bottom: none;
-    }
-
-    .tx-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .tx-type {
-      font-weight: bold;
-    }
-
-    .tx-amount {
-      font-weight: bold;
-    }
-
-    .tx-status {
-      display: inline-block;
-      margin-top: 5px;
-      padding: 4px 8px;
-      border-radius: 8px;
-      font-size: 11px;
-      background: #eee;
-    }
-
-    .pending {
-      background: #fff7ed;
-      color: #c2410c;
-    }
-
-    .approved,
-    .completed {
-      background: #ecfdf5;
-      color: #15803d;
-    }
-
-    .rejected {
-      background: #fef2f2;
-      color: #dc2626;
-    }
-
-    .message {
-      padding: 15px;
-      background: #f8f7ff;
-      border-radius: 12px;
-      margin-bottom: 10px;
-    }
-
-    .message small {
-      color: #888;
-    }
-
-    .referral {
-      background: #f3efff;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-    }
-
-    .referral-code {
-      font-size: 22px;
-      font-weight: bold;
-      color: #7657d9;
-      letter-spacing: 1px;
-    }
-
-    .member {
-      padding: 13px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .empty {
-      text-align: center;
-      color: #999;
-      padding: 25px 5px;
-    }
-
-    .loading {
-      text-align: center;
-      color: #888;
-      padding: 25px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 68px;
-      background: white;
-      border-top: 1px solid #ddd;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: 0 -3px 15px rgba(0,0,0,.08);
-    }
-
-    .nav-item {
-      text-align: center;
-      color: #999;
-      font-size: 11px;
-      cursor: pointer;
-    }
-
-    .nav-item.active {
-      color: #7657d9;
-      font-weight: bold;
-    }
-
-    .nav-icon {
-      font-size: 22px;
-      margin-bottom: 3px;
-    }
-
-    .danger {
-      background: #dc2626;
-      color: white;
-      width: 100%;
-    }
-
-    @media (max-width: 450px) {
-      .product-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .amount {
-        font-size: 32px;
-      }
-    }
-  </style>
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f4f6fb;color:#222;padding-bottom:80px}
+.top{background:linear-gradient(135deg,#7657d9,#6242c5);color:#fff;padding:25px 20px 30px}
+.top h2{margin:0 0 6px;font-size:28px}
+.top p{margin:0;opacity:.9}
+.container{max-width:700px;margin:auto;padding:18px}
+.balance,.card,.product{background:#fff;border-radius:18px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.balance{padding:24px;margin-bottom:15px}
+.card{padding:20px;margin-bottom:18px}
+.balance-title,.small{color:#777;font-size:13px}
+.amount{font-size:36px;font-weight:bold;margin-top:8px}
+.currency{color:#7657d9;font-size:16px}
+.profit-box{margin-top:15px;padding-top:15px;border-top:1px solid #eee;display:flex;justify-content:space-between}
+.profit{color:#16a34a;font-weight:bold}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+button{padding:14px;border:0;border-radius:11px;font-size:15px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.6}
+.deposit{background:#16a34a;color:#fff}
+.withdraw{background:#dc2626;color:#fff}
+.primary{width:100%;background:#7657d9;color:#fff}
+.danger{background:#dc2626;color:#fff;width:100%}
+.dark{width:100%;background:#222;color:#fff}
+.page{display:none}
+.page.active{display:block}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px;color:#555}
+input,textarea,select{width:100%;padding:13px;border:1px solid #ddd;border-radius:10px;font-size:15px;outline:none;background:#fff}
+input:focus,textarea:focus,select:focus{border-color:#7657d9}
+.back{display:inline-block;margin-bottom:15px;color:#7657d9;font-weight:bold;cursor:pointer}
+.row{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid #eee}
+.row:last-child{border-bottom:0}
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.product{padding:16px}
+.product-name{font-weight:bold;margin-bottom:5px}
+.product-category{font-size:12px;color:#888;margin-bottom:10px}
+.product-price{font-size:20px;font-weight:bold;margin-bottom:5px}
+.product-profit{color:#16a34a;font-size:13px;margin-bottom:12px}
+.optimize{width:100%;background:#7657d9;color:#fff;padding:10px;font-size:13px}
+.tx{padding:14px 0;border-bottom:1px solid #eee}
+.tx:last-child{border-bottom:0}
+.tx-top{display:flex;justify-content:space-between;gap:10px}
+.tx-type,.tx-amount{font-weight:bold}
+.tx-status{display:inline-block;margin-top:5px;padding:4px 8px;border-radius:8px;font-size:11px;background:#eee}
+.pending{background:#fff7ed;color:#c2410c}
+.approved,.completed{background:#ecfdf5;color:#15803d}
+.rejected{background:#fef2f2;color:#dc2626}
+.message{padding:15px;background:#f8f7ff;border-radius:12px;margin-bottom:10px}
+.message small{color:#888}
+.referral{background:#f3efff;padding:15px;border-radius:12px;margin-bottom:15px}
+.referral-code{font-size:22px;font-weight:bold;color:#7657d9;letter-spacing:1px}
+.member{padding:13px 0;border-bottom:1px solid #eee}
+.empty,.loading{text-align:center;color:#999;padding:25px 5px}
+.success{display:none;background:#ecfdf5;color:#15803d;padding:12px;border-radius:10px;margin-top:12px;font-weight:bold}
+.error{display:none;background:#fef2f2;color:#dc2626;padding:12px;border-radius:10px;margin-top:12px;font-weight:bold}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{border:2px solid #ddd;background:#fff;color:#555}
+.choice.selected{border-color:#7657d9;background:#f3efff;color:#7657d9}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:68px;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-around;align-items:center;z-index:1000;box-shadow:0 -3px 15px rgba(0,0,0,.08)}
+.nav-item{text-align:center;color:#999;font-size:11px;cursor:pointer}
+.nav-item.active{color:#7657d9;font-weight:bold}
+.nav-icon{font-size:22px;margin-bottom:3px}
+@media(max-width:450px){.product-grid{grid-template-columns:1fr 1fr}.amount{font-size:32px}}
+</style>
 </head>
 
 <body>
 
-<!-- ================= HOME ================= -->
-
+<!-- HOME -->
 <div id="homePage" class="page active">
+<div class="top">
+<h2>Zonguru</h2>
+<p id="welcomeText">Welcome, User</p>
+</div>
 
-  <div class="top">
-    <h2>Zonguru</h2>
-    <p id="welcomeText">Welcome, User</p>
-  </div>
+<div class="container">
 
-  <div class="container">
+<div class="balance">
+<div class="balance-title">Available Balance</div>
+<div class="amount">
+<span id="balanceAmount">0.00</span>
+<span id="currency" class="currency">USDT</span>
+</div>
+<div class="profit-box">
+<span>Total Profit</span>
+<strong id="totalProfit" class="profit">0.00 USDT</strong>
+</div>
+</div>
 
-    <div class="balance">
+<div class="buttons">
+<button class="deposit" onclick="showPage('depositPage')">Deposit</button>
+<button class="withdraw" onclick="showPage('withdrawPage')">Withdraw</button>
+</div>
 
-      <div class="balance-title">
-        Available Balance
-      </div>
+<div class="card">
+<h3>Account</h3>
+<div class="row"><span>Username</span><strong id="username">Loading...</strong></div>
+<div class="row"><span>Currency</span><strong id="accountCurrency">USDT</strong></div>
+<div class="row"><span>Status</span><strong>Active</strong></div>
+</div>
 
-      <div class="amount">
-        <span id="balanceAmount">0.00</span>
-        <span id="currency" class="currency">USDT</span>
-      </div>
+<div class="card">
+<h3>Recent Transactions</h3>
+<div id="recentTransactions"><div class="loading">Loading...</div></div>
+</div>
 
-      <div class="profit-box">
-        <span>Total Profit</span>
-        <strong id="totalProfit" class="profit">
-          0.00 USDT
-        </strong>
-      </div>
-
-    </div>
-
-    <div class="buttons">
-
-      <button
-        class="deposit"
-        onclick="showPage('depositPage')">
-        Deposit
-      </button>
-
-      <button
-        class="withdraw"
-        onclick="showPage('withdrawPage')">
-        Withdraw
-      </button>
-
-    </div>
-
-    <div class="card">
-
-      <h3>Account</h3>
-
-      <div class="row">
-        <span>Username</span>
-        <strong id="username">Loading...</strong>
-      </div>
-
-      <div class="row">
-        <span>Currency</span>
-        <strong id="accountCurrency">USDT</strong>
-      </div>
-
-      <div class="row">
-        <span>Status</span>
-        <strong>Active</strong>
-      </div>
-
-    </div>
-
-    <div class="card">
-
-      <h3>Recent Transactions</h3>
-
-      <div id="recentTransactions">
-        <div class="loading">
-          Loading...
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
-<!-- ================= DEPOSIT ================= -->
-
+<!-- DEPOSIT -->
 <div id="depositPage" class="page">
+<div class="container">
 
-  <div class="container">
+<div class="back" onclick="showPage('homePage')">← Back</div>
 
-    <div
-      class="back"
-      onclick="showPage('homePage')">
-      ← Back
-    </div>
+<div class="card">
+<h3>Deposit</h3>
+<p class="small">Submit a deposit request for admin review.</p>
 
-    <div class="card">
+<div class="form-group">
+<label>Amount (USDT)</label>
+<input id="depositAmount" type="number" min="0" step="0.01" placeholder="Enter amount">
+</div>
 
-      <h3>Deposit</h3>
+<div class="form-group">
+<label>Note</label>
+<textarea id="depositNote" rows="4" placeholder="Optional note"></textarea>
+</div>
 
-      <p class="small">
-        Submit a deposit request for admin review.
-      </p>
+<button class="primary" id="depositButton" onclick="submitDeposit()">
+Submit Deposit Request
+</button>
 
-      <div class="form-group">
+<div id="depositSuccess" class="success">
+Deposit submitted successfully.
+</div>
 
-        <label>Amount (USDT)</label>
+<div id="depositError" class="error"></div>
+</div>
 
-        <input
-          id="depositAmount"
-          type="number"
-          min="0"
-          step="0.01"
-          placeholder="Enter amount">
-
-      </div>
-
-      <div class="form-group">
-
-        <label>Note</label>
-
-        <textarea
-          id="depositNote"
-          rows="4"
-          placeholder="Optional note"></textarea>
-
-      </div>
-
-      <button
-        class="primary"
-        onclick="submitDeposit()">
-        Submit Deposit Request
-      </button>
-
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
-<!-- ================= WITHDRAW ================= -->
-
+<!-- WITHDRAW -->
 <div id="withdrawPage" class="page">
+<div class="container">
 
-  <div class="container">
+<div class="back" onclick="showPage('homePage')">← Back</div>
 
-    <div
-      class="back"
-      onclick="showPage('homePage')">
-      ← Back
-    </div>
+<div class="card">
+<h3>Withdraw</h3>
 
-    <div class="card">
+<p class="small">
+Available:
+<strong id="withdrawBalance">0.00 USDT</strong>
+</p>
 
-      <h3>Withdraw</h3>
+<div class="form-group">
+<label>Amount (USDT)</label>
+<input id="withdrawAmount" type="number" min="0" step="0.01" placeholder="Enter amount">
+</div>
 
-      <p class="small">
-        Available:
-        <strong id="withdrawBalance">
-          0.00 USDT
-        </strong>
-      </p>
+<div class="form-group">
+<label>Withdrawal Method</label>
 
-      <div class="form-group">
+<div class="choice-grid">
+<button type="button" id="cryptoChoice" class="choice selected" onclick="selectWithdrawMethod('crypto')">
+₿ Crypto
+</button>
 
-        <label>Amount (USDT)</label>
+<button type="button" id="bankChoice" class="choice" onclick="selectWithdrawMethod('bank')">
+🏦 Bank
+</button>
+</div>
+</div>
 
-        <input
-          id="withdrawAmount"
-          type="number"
-          min="0"
-          step="0.01"
-          placeholder="Enter amount">
+<div id="cryptoFields">
 
-      </div>
+<div class="form-group">
+<label>Wallet Address</label>
+<input id="cryptoWallet" type="text" placeholder="Enter crypto wallet address">
+</div>
 
-      <div class="form-group">
-
-        <label>Wallet / Payment Details</label>
-
-        <textarea
-          id="withdrawNote"
-          rows="4"
-          placeholder="Enter wallet address or payment details"></textarea>
-
-      </div>
-
-      <button
-        class="primary"
-        onclick="submitWithdraw()">
-        Submit Withdrawal Request
-      </button>
-
-    </div>
-
-  </div>
+<div class="form-group">
+<label>Network</label>
+<select id="cryptoNetwork">
+<option value="">Select network</option>
+<option value="TRC20">USDT TRC20</option>
+<option value="ERC20">USDT ERC20</option>
+<option value="BEP20">USDT BEP20</option>
+</select>
+</div>
 
 </div>
 
+<div id="bankFields" style="display:none">
 
-<!-- ================= PRODUCTS ================= -->
+<div class="form-group">
+<label>Bank Name</label>
+<input id="bankName" type="text" placeholder="Enter bank name">
+</div>
 
+<div class="form-group">
+<label>Account Name</label>
+<input id="accountName" type="text" placeholder="Enter account name">
+</div>
+
+<div class="form-group">
+<label>Account Number</label>
+<input id="accountNumber" type="text" placeholder="Enter account number">
+</div>
+
+<div class="form-group">
+<label>Branch / Additional Details</label>
+<input id="bankBranch" type="text" placeholder="Optional">
+</div>
+
+</div>
+
+<div class="form-group">
+<label>Note</label>
+<textarea id="withdrawNote" rows="3" placeholder="Optional note"></textarea>
+</div>
+
+<button class="primary" id="withdrawButton" onclick="submitWithdraw()">
+Submit Withdrawal Request
+</button>
+
+<div id="withdrawSuccess" class="success">
+Withdrawal submitted successfully.
+</div>
+
+<div id="withdrawError" class="error"></div>
+
+</div>
+</div>
+</div>
+
+
+<!-- PRODUCTS -->
 <div id="productsPage" class="page">
+<div class="container">
 
-  <div class="container">
+<div class="card">
+<h3>Products</h3>
+<p class="small">Choose a product and optimize it.</p>
+</div>
 
-    <div class="card">
+<div id="productGrid" class="product-grid">
+<div class="loading">Loading products...</div>
+</div>
 
-      <h3>Products</h3>
-
-      <p class="small">
-        Choose a product and optimize it.
-      </p>
-
-    </div>
-
-    <div
-      id="productGrid"
-      class="product-grid">
-
-      <div class="loading">
-        Loading products...
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
-<!-- ================= TRANSACTIONS ================= -->
-
+<!-- TRANSACTIONS -->
 <div id="transactionsPage" class="page">
+<div class="container">
 
-  <div class="container">
+<div class="card">
+<h3>Transaction History</h3>
+<div id="transactionList">
+<div class="loading">Loading...</div>
+</div>
+</div>
 
-    <div class="card">
-
-      <h3>Transaction History</h3>
-
-      <div id="transactionList">
-
-        <div class="loading">
-          Loading...
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
-<!-- ================= MESSAGES ================= -->
-
+<!-- MESSAGES -->
 <div id="messagesPage" class="page">
+<div class="container">
 
-  <div class="container">
+<div class="card">
+<h3>Messages</h3>
+<div id="messageList">
+<div class="loading">Loading...</div>
+</div>
+</div>
 
-    <div class="card">
-
-      <h3>Messages</h3>
-
-      <div id="messageList">
-
-        <div class="loading">
-          Loading...
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
-<!-- ================= TEAM ================= -->
-
+<!-- TEAM -->
 <div id="teamPage" class="page">
+<div class="container">
 
-  <div class="container">
+<div class="card">
+<h3>Team & Referral</h3>
 
-    <div class="card">
+<div class="referral">
+<div class="small">Your Referral Code</div>
 
-      <h3>Team & Referral</h3>
+<div id="referralCode" class="referral-code">-</div>
 
-      <div class="referral">
+<button
+style="margin-top:12px;background:#7657d9;color:white;width:100%"
+onclick="copyReferral()">
+Copy Referral Code
+</button>
+</div>
 
-        <div class="small">
-          Your Referral Code
-        </div>
+<h3>Team Members</h3>
 
-        <div
-          id="referralCode"
-          class="referral-code">
-          -
-        </div>
+<div id="teamMembers">
+<div class="loading">Loading...</div>
+</div>
 
-        <button
-          style="margin-top:12px;background:#7657d9;color:white;width:100%;"
-          onclick="copyReferral()">
-          Copy Referral Code
-        </button>
-
-      </div>
-
-      <h3>Team Members</h3>
-
-      <div id="teamMembers">
-
-        <div class="loading">
-          Loading...
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
+</div>
 </div>
 
 
-<!-- ================= ACCOUNT ================= -->
-
+<!-- ACCOUNT -->
 <div id="accountPage" class="page">
+<div class="container">
 
-  <div class="container">
+<div class="card">
+<h3>Account Details</h3>
 
-    <div class="card">
+<div class="row">
+<span>Username</span>
+<strong id="accountUsername">-</strong>
+</div>
 
-      <h3>Account Details</h3>
+<div class="row">
+<span>Balance</span>
+<strong id="accountBalance">0.00 USDT</strong>
+</div>
 
-      <div class="row">
-        <span>Username</span>
-        <strong id="accountUsername">-</strong>
-      </div>
+<div class="row">
+<span>Total Profit</span>
+<strong id="accountProfit">0.00 USDT</strong>
+</div>
 
-      <div class="row">
-        <span>Balance</span>
-        <strong id="accountBalance">0.00 USDT</strong>
-      </div>
+<div class="row">
+<span>Referral Code</span>
+<strong id="accountReferral">-</strong>
+</div>
 
-      <div class="row">
-        <span>Total Profit</span>
-        <strong id="accountProfit">0.00 USDT</strong>
-      </div>
-
-      <div class="row">
-        <span>Referral Code</span>
-        <strong id="accountReferral">-</strong>
-      </div>
-
-      <div class="row">
-        <span>Status</span>
-        <strong>Active</strong>
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <h3>Change Password</h3>
-
-      <div class="form-group">
-
-        <label>Current Password</label>
-
-        <input
-          id="oldPassword"
-          type="password"
-          placeholder="Current password">
-
-      </div>
-
-      <div class="form-group">
-
-        <label>New Password</label>
-
-        <input
-          id="newPassword"
-          type="password"
-          placeholder="New password">
-
-      </div>
-
-      <button
-        class="primary"
-        onclick="changePassword()">
-        Change Password
-      </button>
-
-    </div>
-
-
-    <div class="card">
-
-      <button
-        class="danger"
-        onclick="logout()">
-        Logout
-      </button>
-
-    </div>
-
-  </div>
+<div class="row">
+<span>Status</span>
+<strong>Active</strong>
+</div>
 
 </div>
 
 
-<!-- ================= NAV ================= -->
+<div class="card">
+<h3>Change Password</h3>
 
+<div class="form-group">
+<label>Current Password</label>
+<input id="oldPassword" type="password" placeholder="Current password">
+</div>
+
+<div class="form-group">
+<label>New Password</label>
+<input id="newPassword" type="password" placeholder="New password">
+</div>
+
+<button class="primary" onclick="changePassword()">
+Change Password
+</button>
+</div>
+
+
+<div class="card">
+<button class="danger" onclick="logout()">Logout</button>
+</div>
+
+</div>
+</div>
+
+
+<!-- NAV -->
 <div class="bottom-nav">
 
-  <div
-    id="navHome"
-    class="nav-item active"
-    onclick="showPage('homePage')">
+<div id="navHome" class="nav-item active" onclick="showPage('homePage')">
+<div class="nav-icon">⌂</div>
+Home
+</div>
 
-    <div class="nav-icon">⌂</div>
-    Home
+<div id="navProducts" class="nav-item" onclick="showPage('productsPage')">
+<div class="nav-icon">▣</div>
+Products
+</div>
 
-  </div>
+<div id="navTransactions" class="nav-item" onclick="showPage('transactionsPage')">
+<div class="nav-icon">☷</div>
+History
+</div>
 
+<div id="navMessages" class="nav-item" onclick="showPage('messagesPage')">
+<div class="nav-icon">✉</div>
+Messages
+</div>
 
-  <div
-    id="navProducts"
-    class="nav-item"
-    onclick="showPage('productsPage')">
-
-    <div class="nav-icon">▣</div>
-    Products
-
-  </div>
-
-
-  <div
-    id="navTransactions"
-    class="nav-item"
-    onclick="showPage('transactionsPage')">
-
-    <div class="nav-icon">☷</div>
-    History
-
-  </div>
-
-
-  <div
-    id="navMessages"
-    class="nav-item"
-    onclick="showPage('messagesPage')">
-
-    <div class="nav-icon">✉</div>
-    Messages
-
-  </div>
-
-
-  <div
-    id="navAccount"
-    class="nav-item"
-    onclick="showPage('accountPage')">
-
-    <div class="nav-icon">♙</div>
-    Account
-
-  </div>
+<div id="navAccount" class="nav-item" onclick="showPage('accountPage')">
+<div class="nav-icon">♙</div>
+Account
+</div>
 
 </div>
 
 
 <script>
 
-const API_URL =
-  "https://zonguru-jack-api.onrender.com";
+const API_URL = "https://zonguru-jack-api.onrender.com";
 
 let currentUser = null;
+let withdrawMethod = "crypto";
 
 
 /* ================= AUTH ================= */
 
-function getToken() {
-
-  return localStorage.getItem(
-    "zonguru_token"
-  );
-
+function getToken(){
+return localStorage.getItem("zonguru_token");
 }
 
 
-async function api(path, options = {}) {
+async function api(path, options = {}){
 
-  const token = getToken();
+const token = getToken();
 
-  if (!token) {
+if(!token){
+window.location.href = "login.html";
+throw new Error("Not logged in");
+}
 
-    window.location.href = "login.html";
+const headers = {
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+};
 
-    throw new Error("Not logged in");
+const response = await fetch(
+API_URL + path,
+{
+...options,
+headers:{
+...headers,
+...(options.headers || {})
+}
+}
+);
 
-  }
+let data = {};
 
-  const headers = {
+try{
+data = await response.json();
+}catch(e){
+data = {};
+}
 
-    "Content-Type": "application/json",
+if(response.status === 401){
 
-    "Authorization":
-      "Bearer " + token
+localStorage.removeItem("zonguru_token");
+localStorage.removeItem("zonguru_user");
 
-  };
+window.location.href = "login.html";
 
-  const response =
-    await fetch(
-      API_URL + path,
-      {
-        ...options,
-        headers: {
-          ...headers,
-          ...(options.headers || {})
-        }
-      }
-    );
+throw new Error("Session expired");
+}
 
-  const data =
-    await response.json();
+if(!response.ok || !data.success){
 
-  if (
-    response.status === 401
-  ) {
+throw new Error(
+data.message || "Request failed"
+);
+}
 
-    localStorage.removeItem(
-      "zonguru_token"
-    );
-
-    localStorage.removeItem(
-      "zonguru_user"
-    );
-
-    window.location.href =
-      "login.html";
-
-    throw new Error(
-      "Session expired"
-    );
-
-  }
-
-  if (!response.ok || !data.success) {
-
-    throw new Error(
-      data.message ||
-      "Request failed"
-    );
-
-  }
-
-  return data;
-
+return data;
 }
 
 
 /* ================= PAGE ================= */
 
-function showPage(id) {
+function showPage(id){
 
-  document
-    .querySelectorAll(".page")
-    .forEach(
-      page =>
-        page.classList.remove("active")
-    );
+document.querySelectorAll(".page").forEach(
+page => page.classList.remove("active")
+);
 
-  document
-    .getElementById(id)
-    .classList.add("active");
+const page = document.getElementById(id);
 
+if(page){
+page.classList.add("active");
+}
 
-  document
-    .querySelectorAll(".nav-item")
-    .forEach(
-      nav =>
-        nav.classList.remove("active")
-    );
+document.querySelectorAll(".nav-item").forEach(
+nav => nav.classList.remove("active")
+);
 
+if(id === "homePage"){
+document.getElementById("navHome").classList.add("active");
+loadUser();
+}
 
-  if (id === "homePage") {
+if(id === "productsPage"){
+document.getElementById("navProducts").classList.add("active");
+loadProducts();
+}
 
-    document
-      .getElementById("navHome")
-      .classList.add("active");
+if(id === "transactionsPage"){
+document.getElementById("navTransactions").classList.add("active");
+loadTransactions();
+}
 
-    loadUser();
+if(id === "messagesPage"){
+document.getElementById("navMessages").classList.add("active");
+loadMessages();
+}
 
-  }
+if(id === "accountPage"){
+document.getElementById("navAccount").classList.add("active");
+loadUser();
+}
 
-
-  if (id === "productsPage") {
-
-    document
-      .getElementById("navProducts")
-      .classList.add("active");
-
-    loadProducts();
-
-  }
-
-
-  if (id === "transactionsPage") {
-
-    document
-      .getElementById("navTransactions")
-      .classList.add("active");
-
-    loadTransactions();
-
-  }
-
-
-  if (id === "messagesPage") {
-
-    document
-      .getElementById("navMessages")
-      .classList.add("active");
-
-    loadMessages();
-
-  }
-
-
-  if (id === "accountPage") {
-
-    document
-      .getElementById("navAccount")
-      .classList.add("active");
-
-    loadUser();
-
-  }
-
-
-  if (id === "teamPage") {
-
-    loadTeam();
-
-  }
+if(id === "teamPage"){
+loadTeam();
+}
 
 }
 
 
 /* ================= USER ================= */
 
-async function loadUser() {
+async function loadUser(){
 
-  try {
+try{
 
-    const data =
-      await api("/api/me");
+const data = await api("/api/me");
 
-    currentUser =
-      data.user;
+currentUser = data.user;
 
-    const user =
-      data.user;
+const user = data.user;
 
+const balance =
+Number(user.balance || 0).toFixed(2);
 
-    const balance =
-      Number(
-        user.balance || 0
-      ).toFixed(2);
+const profit =
+Number(user.totalProfit || 0).toFixed(2);
 
+const currency =
+user.currency || "USDT";
 
-    const profit =
-      Number(
-        user.totalProfit || 0
-      ).toFixed(2);
+document.getElementById("balanceAmount").textContent = balance;
 
+document.getElementById("currency").textContent = currency;
 
-    const currency =
-      user.currency ||
-      "USDT";
+document.getElementById("totalProfit").textContent =
+profit + " " + currency;
 
+document.getElementById("welcomeText").textContent =
+"Welcome, " + user.username;
 
-    document
-      .getElementById(
-        "balanceAmount"
-      )
-      .textContent =
-      balance;
+document.getElementById("username").textContent =
+user.username;
 
+document.getElementById("accountCurrency").textContent =
+currency;
 
-    document
-      .getElementById(
-        "currency"
-      )
-      .textContent =
-      currency;
+document.getElementById("withdrawBalance").textContent =
+balance + " " + currency;
 
+document.getElementById("accountUsername").textContent =
+user.username;
 
-    document
-      .getElementById(
-        "totalProfit"
-      )
-      .textContent =
-      `${profit} ${currency}`;
+document.getElementById("accountBalance").textContent =
+balance + " " + currency;
 
+document.getElementById("accountProfit").textContent =
+profit + " " + currency;
 
-    document
-      .getElementById(
-        "welcomeText"
-      )
-      .textContent =
-      "Welcome, " +
-      user.username;
+document.getElementById("accountReferral").textContent =
+user.referralCode || "-";
 
+document.getElementById("referralCode").textContent =
+user.referralCode || "-";
 
-    document
-      .getElementById(
-        "username"
-      )
-      .textContent =
-      user.username;
+await loadTransactions();
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
 
 
-    document
-      .getElementById(
-        "accountCurrency"
-      )
-      .textContent =
-      currency;
+/* ================= DEPOSIT ================= */
+
+async function submitDeposit(){
+
+const amount = Number(
+document.getElementById("depositAmount").value
+);
+
+const note =
+document.getElementById("depositNote").value.trim();
+
+const success =
+document.getElementById("depositSuccess");
+
+const errorBox =
+document.getElementById("depositError");
+
+success.style.display = "none";
+errorBox.style.display = "none";
+
+if(!Number.isFinite(amount) || amount <= 0){
+
+errorBox.textContent =
+"Please enter a valid deposit amount.";
+
+errorBox.style.display = "block";
+
+return;
+}
+
+const button =
+document.getElementById("depositButton");
+
+button.disabled = true;
+button.textContent = "Submitting...";
+
+try{
+
+const data = await api(
+"/api/deposits",
+{
+method:"POST",
+body:JSON.stringify({
+amount,
+note
+})
+}
+);
+
+success.textContent =
+data.message ||
+"Deposit submitted successfully.";
+
+success.style.display = "block";
+
+document.getElementById("depositAmount").value = "";
+document.getElementById("depositNote").value = "";
+
+await loadUser();
+
+}catch(error){
+
+errorBox.textContent = error.message;
+errorBox.style.display = "block";
+
+}finally{
+
+button.disabled = false;
+button.textContent =
+"Submit Deposit Request";
+
+}
+
+}
 
 
-    document
-      .getElementById(
-        "withdrawBalance"
-      )
-      .textContent =
-      `${balance} ${currency}`;
+/* ================= WITHDRAW METHOD ================= */
+
+function selectWithdrawMethod(method){
+
+withdrawMethod = method;
+
+const cryptoChoice =
+document.getElementById("cryptoChoice");
+
+const bankChoice =
+document.getElementById("bankChoice");
+
+const cryptoFields =
+document.getElementById("cryptoFields");
+
+const bankFields =
+document.getElementById("bankFields");
+
+if(method === "crypto"){
+
+cryptoChoice.classList.add("selected");
+bankChoice.classList.remove("selected");
+
+cryptoFields.style.display = "block";
+bankFields.style.display = "none";
+
+}else{
+
+bankChoice.classList.add("selected");
+cryptoChoice.classList.remove("selected");
+
+cryptoFields.style.display = "none";
+bankFields.style.display = "block";
+
+}
+
+}
 
 
-    document
-      .getElementById(
-        "accountUsername"
-      )
-      .textContent =
-      user.username;
+/* ================= WITHDRAW ================= */
 
+async function submitWithdraw(){
 
-    document
-      .getElementById(
-        "accountBalance"
-      )
-      .textContent =
-      `${balance} ${currency}`;
+const amount = Number(
+document.getElementById("withdrawAmount").value
+);
 
+const note =
+document.getElementById("withdrawNote").value.trim();
 
-    document
-      .getElementById(
-        "accountProfit"
-      )
-      .textContent =
-      `${profit} ${currency}`;
+const success =
+document.getElementById("withdrawSuccess");
 
+const errorBox =
+document.getElementById("withdrawError");
 
-    document
-      .getElementById(
-        "accountReferral"
-      )
-      .textContent =
-      user.referralCode ||
-      "-";
+success.style.display = "none";
+errorBox.style.display = "none";
 
+if(!Number.isFinite(amount) || amount <= 0){
 
-    await loadTransactions();
+errorBox.textContent =
+"Please enter a valid withdrawal amount.";
 
-  } catch (error) {
+errorBox.style.display = "block";
 
-    console.error(error);
+return;
+}
 
-  }
+let details = {};
+
+if(withdrawMethod === "crypto"){
+
+const wallet =
+document.getElementById("cryptoWallet").value.trim();
+
+const network =
+document.getElementById("cryptoNetwork").value;
+
+if(!wallet){
+
+errorBox.textContent =
+"Please enter your wallet address.";
+
+errorBox.style.display = "block";
+
+return;
+}
+
+if(!network){
+
+errorBox.textContent =
+"Please select a crypto network.";
+
+errorBox.style.display = "block";
+
+return;
+}
+
+details = {
+walletAddress: wallet,
+network: network
+};
+
+}else{
+
+const bankName =
+document.getElementById("bankName").value.trim();
+
+const accountName =
+document.getElementById("accountName").value.trim();
+
+const accountNumber =
+document.getElementById("accountNumber").value.trim();
+
+const bankBranch =
+document.getElementById("bankBranch").value.trim();
+
+if(!bankName || !accountName || !accountNumber){
+
+errorBox.textContent =
+"Please enter bank name, account name and account number.";
+
+errorBox.style.display = "block";
+
+return;
+}
+
+details = {
+bankName,
+accountName,
+accountNumber,
+bankBranch
+};
+
+}
+
+const button =
+document.getElementById("withdrawButton");
+
+button.disabled = true;
+button.textContent = "Submitting...";
+
+try{
+
+const data = await api(
+"/api/withdrawals",
+{
+method:"POST",
+body:JSON.stringify({
+
+amount,
+
+note,
+
+method:withdrawMethod,
+
+details
+
+})
+}
+);
+
+success.textContent =
+data.message ||
+"Withdrawal submitted successfully.";
+
+success.style.display = "block";
+
+document.getElementById("withdrawAmount").value = "";
+document.getElementById("withdrawNote").value = "";
+
+document.getElementById("cryptoWallet").value = "";
+document.getElementById("cryptoNetwork").value = "";
+
+document.getElementById("bankName").value = "";
+document.getElementById("accountName").value = "";
+document.getElementById("accountNumber").value = "";
+document.getElementById("bankBranch").value = "";
+
+await loadUser();
+
+await loadTransactions();
+
+}catch(error){
+
+errorBox.textContent = error.message;
+errorBox.style.display = "block";
+
+}finally{
+
+button.disabled = false;
+button.textContent =
+"Submit Withdrawal Request";
+
+}
 
 }
 
 
 /* ================= PRODUCTS ================= */
 
-async function loadProducts() {
+async function loadProducts(){
 
-  const grid =
-    document.getElementById(
-      "productGrid"
-    );
+const grid =
+document.getElementById("productGrid");
+
+grid.innerHTML =
+'<div class="loading">Loading products...</div>';
+
+try{
+
+const data =
+await api("/api/products");
+
+if(!data.products || !data.products.length){
+
+grid.innerHTML =
+'<div class="empty">No products available.</div>';
+
+return;
+}
+
+grid.innerHTML = "";
+
+data.products.forEach(product => {
+
+const rate =
+Number(product.profitRate || 0) * 100;
+
+const div =
+document.createElement("div");
+
+div.className = "product";
+
+div.innerHTML = `
+
+<div class="product-name">
+${escapeHtml(product.name)}
+</div>
+
+<div class="product-category">
+${escapeHtml(product.category || "General")}
+</div>
+
+<div class="product-price">
+${Number(product.price || 0).toFixed(2)} USDT
+</div>
+
+<div class="product-profit">
+Profit: ${rate.toFixed(2)}%
+</div>
+
+<button
+class="optimize"
+onclick="optimizeProduct('${product._id}',this)">
+Optimize
+</button>
+
+`;
+
+grid.appendChild(div);
+
+});
+
+}catch(error){
+
+grid.innerHTML =
+'<div class="empty">' +
+escapeHtml(error.mes}catch(error){
 
   grid.innerHTML =
-    `<div class="loading">
-      Loading products...
-    </div>`;
+    '<div class="empty">' +
+    escapeHtml(error.message) +
+    '</div>';
 
-  try {
+}
+
+}
+
+
+/* ================= TRANSACTIONS ================= */
+
+async function loadTransactions(){
+
+  const list =
+    document.getElementById("transactionList");
+
+  const recent =
+    document.getElementById("recentTransactions");
+
+  if(list){
+    list.innerHTML =
+      '<div class="loading">Loading...</div>';
+  }
+
+  if(recent){
+    recent.innerHTML =
+      '<div class="loading">Loading...</div>';
+  }
+
+  try{
 
     const data =
-      await api(
-        "/api/products"
-      );
+      await api("/api/transactions");
 
+    const transactions =
+      data.transactions || [];
 
-    if (
-      !data.products ||
-      !data.products.length
-    ) {
+    if(!transactions.length){
 
-      grid.innerHTML =
-        `<div class="empty">
-          No products available.
-        </div>`;
+      if(list){
+        list.innerHTML =
+          '<div class="empty">No transactions yet.</div>';
+      }
+
+      if(recent){
+        recent.innerHTML =
+          '<div class="empty">No transactions yet.</div>';
+      }
 
       return;
-
     }
 
+    const html =
+      transactions.map(tx => {
 
-    grid.innerHTML = "";
+        const type =
+          String(tx.type || "transaction");
 
+        const amount =
+          Number(tx.amount || 0).toFixed(2);
 
-    data.products.forEach(
-      product => {
+        const status =
+          String(tx.status || "pending");
 
-        const rate =
-          Number(
-            product.profitRate || 0
-          ) * 100;
+        const date =
+          tx.createdAt
+            ? new Date(tx.createdAt).toLocaleString()
+            : "";
 
+        return `
 
-        const div =
-          document.createElement(
-            "div"
-          );
+          <div class="tx">
 
-        div.className =
-          "product";
+            <div class="tx-top">
 
+              <span class="tx-type">
+                ${escapeHtml(type)}
+              </span>
 
-        div.innerHTML = `
+              <span class="tx-amount">
+                ${amount} USDT
+              </span>
 
-          <div class="product-name">
-            ${escapeHtml(product.name)}
+            </div>
+
+            <span class="tx-status ${escapeHtml(status)}">
+              ${escapeHtml(status)}
+            </span>
+
+            <div class="small">
+              ${escapeHtml(date)}
+            </div>
+
+            ${
+              tx.note
+              ? `
+                <div class="small">
+                  ${escapeHtml(tx.note)}
+                </div>
+              `
+              : ""
+            }
+
           </div>
-
-          <div class="product-category">
-            ${escapeHtml(product.category || "General")}
-          </div>
-
-          <div class="product-price">
-            ${Number(product.price).toFixed(2)}
-            USDT
-          </div>
-
-          <div class="product-profit">
-            Profit: ${rate.toFixed(2)}%
-          </div>
-
-          <button
-            class="optimize"
-            onclick="optimizeProduct('${product._id}', this)">
-            Optimize
-          </button>
 
         `;
 
+      }).join("");
 
-        grid.appendChild(div);
+    if(list){
+      list.innerHTML = html;
+    }
 
-      }
-    );
+    if(recent){
 
+      recent.innerHTML =
+        transactions
+        .slice(0,3)
+        .map(tx => {
 
-  } catch (error) {
+          const type =
+            String(tx.type || "transaction");
 
-    grid.innerHTML =
-      `<div class="empty">
-        ${escapeHtml(error.message)}
-      </div>`;
+          const amount =
+            Number(tx.amount || 0).toFixed(2);
+
+          const status =
+            String(tx.status || "pending");
+
+          return `
+
+            <div class="tx">
+
+              <div class="tx-top">
+
+                <span class="tx-type">
+                  ${escapeHtml(type)}
+                </span>
+
+                <span class="tx-amount">
+                  ${amount} USDT
+                </span>
+
+              </div>
+
+              <span class="tx-status ${escapeHtml(status)}">
+                ${escapeHtml(status)}
+              </span>
+
+            </div>
+
+          `;
+
+        }).join("");
+
+    }
+
+  }catch(error){
+
+    if(list){
+
+      list.innerHTML =
+        '<div class="empty">' +
+        escapeHtml(error.message) +
+        '</div>';
+
+    }
+
+    if(recent){
+
+      recent.innerHTML =
+        '<div class="empty">Unable to load transactions.</div>';
+
+    }
 
   }
 
 }
 
 
-/* ================= OPTIMIZE ================= */
+/* ================= MESSAGES ================= */
 
-async function optimizeProduct(
-  id,
-  button
-) {
+async function loadMessages(){
 
-  button.disabled = true;
+  const list =
+    document.getElementById("messageList");
 
-  button.textContent =
-    "Processing...";
+  list.innerHTML =
+    '<div class="loading">Loading...</div>';
+
+  try{
+
+    const data =
+      await api("/api/messages");
+
+    const messages =
+      data.messages || [];
+
+    if(!messages.length){
+
+      list.innerHTML =
+        '<div class="empty">No messages yet.</div>';
+
+      return;
+    }
+
+    list.innerHTML =
+      messages.map(message => {
+
+        const date =
+          message.createdAt
+            ? new Date(message.createdAt).toLocaleString()
+            : "";
+
+        return `
+
+          <div class="message">
+
+            <strong>
+              ${escapeHtml(message.sender || "System")}
+            </strong>
+
+            <div style="margin-top:6px">
+              ${escapeHtml(message.text || "")}
+            </div>
+
+            <small>
+              ${escapeHtml(date)}
+            </small>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }catch(error){
+
+    list.innerHTML =
+      '<div class="empty">' +
+      escapeHtml(error.message) +
+      '</div>';
+
+  }
+
+}
 
 
-  try {
+/* ================= TEAM ================= */
+
+async function loadTeam(){
+
+  const list =
+    document.getElementById("teamMembers");
+
+  list.innerHTML =
+    '<div class="loading">Loading...</div>';
+
+  try{
+
+    const data =
+      await api("/api/team");
+
+    const members =
+      data.members || data.team || [];
+
+    if(!members.length){
+
+      list.innerHTML =
+        '<div class="empty">No team members yet.</div>';
+
+      return;
+    }
+
+    list.innerHTML =
+      members.map(member => {
+
+        return `
+
+          <div class="member">
+
+            <strong>
+              ${escapeHtml(member.username || "User")}
+            </strong>
+
+            <div class="small">
+              Status:
+              ${escapeHtml(member.status || "Active")}
+            </div>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }catch(error){
+
+    list.innerHTML =
+      '<div class="empty">' +
+      escapeHtml(error.message) +
+      '</div>';
+
+  }
+
+}
+
+
+/* ================= COPY REFERRAL ================= */
+
+function copyReferral(){
+
+  const code =
+    document.getElementById("referralCode").textContent;
+
+  if(!code || code === "-"){
+
+    alert("No referral code available.");
+
+    return;
+  }
+
+  if(navigator.clipboard){
+
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+
+        alert("Referral code copied.");
+
+      })
+      .catch(() => {
+
+        alert("Copy failed.");
+
+      });
+
+  }else{
+
+    alert(code);
+
+  }
+
+}
+
+
+/* ================= CHANGE PASSWORD ================= */
+
+async function changePassword(){
+
+  const oldPassword =
+    document.getElementById("oldPassword").value;
+
+  const newPassword =
+    document.getElementById("newPassword").value;
+
+  if(!oldPassword || !newPassword){
+
+    alert("Please enter both passwords.");
+
+    return;
+  }
+
+  try{
 
     const data =
       await api(
-        `/api/products/${id}/optimize`,
+        "/api/auth/change-password",
         {
-          method: "POST"
+          method:"POST",
+
+          body:JSON.stringify({
+            oldPassword,
+            newPassword
+          })
         }
       );
 
-
     alert(
-      `Optimization completed!\n\nProfit: ${Number(data.profit).toFixed(2)} USDT`
+      data.message ||
+      "Password changed successfully."
     );
 
+    document.getElementById("oldPassword").value = "";
+    document.getElementById("newPassword").value = "";
 
-    button.textContent =
-      "Completed";
-
-
-    await loadUser();
-
-    await loadTransactions();
-
-
-  } catch (error) {
+  }catch(error){
 
     alert(error.message);
 
-    button.disabled = false;
   }
+
 }
+
+
+/* ================= DEPOSIT ================= */
+
+async function submitDeposit(){
+
+  const amount =
+    Number(
+      document.getElementById("depositAmount").value
+    );
+
+  const note =
+    document
+      .getElementById("depositNote")
+      .value
+      .trim();
+
+  if(!Number.isFinite(amount) || amount <= 0){
+
+    alert("Please enter a valid deposit amount.");
+
+    return;
+  }
+
+  const button =
+    document.getElementById("depositButton");
+
+  const success =
+    document.getElementById("depositSuccess");
+
+  const errorBox =
+    document.getElementById("depositError");
+
+  success.style.display = "none";
+  errorBox.style.display = "none";
+
+  button.disabled = true;
+  button.textContent = "Submitting...";
+
+  try{
+
+    const data =
+      await api(
+        "/api/deposits",
+        {
+          method:"POST",
+
+          body:JSON.stringify({
+            amount,
+            note
+          })
+        }
+      );
+
+    success.textContent =
+      data.message ||
+      "Deposit submitted successfully.";
+
+    success.style.display = "block";
+
+    document.getElementById("depositAmount").value = "";
+    document.getElementById("depositNote").value = "";
+
+    await loadTransactions();
+
+  }catch(error){
+
+    errorBox.textContent =
+      error.message;
+
+    errorBox.style.display = "block";
+
+  }finally{
+
+    button.disabled = false;
+
+    button.textContent =
+      "Submit Deposit Request";
+
+  }
+
+}
+
+
+/* ================= WITHDRAW METHOD ================= */
+
+function selectWithdrawMethod(method){
+
+  const cryptoChoice =
+    document.getElementById("cryptoChoice");
+
+  const bankChoice =
+    document.getElementById("bankChoice");
+
+  const cryptoFields =
+    document.getElementById("cryptoFields");
+
+  const bankFields =
+    document.getElementById("bankFields");
+
+  if(method === "crypto"){
+
+    cryptoChoice.classList.add("selected");
+    bankChoice.classList.remove("selected");
+
+    cryptoFields.style.display = "block";
+    bankFields.style.display = "none";
+
+  }else{
+
+    bankChoice.classList.add("selected");
+    cryptoChoice.classList.remove("selected");
+
+    cryptoFields.style.display = "none";
+    bankFields.style.display = "block";
+
+  }
+
+}
+
+
+/* ================= WITHDRAW ================= */
+
+async function submitWithdraw(){
+
+  const amount =
+    Number(
+      document.getElementById("withdrawAmount").value
+    );
+
+  const note =
+    document
+      .getElementById("withdrawNote")
+      .value
+      .trim();
+
+  const errorBox =
+    document.getElementById("withdrawError");
+
+  const success =
+    document.getElementById("withdrawSuccess");
+
+  errorBox.style.display = "none";
+  success.style.display = "none";
+
+  if(!Number.isFinite(amount) || amount <= 0){
+
+    errorBox.textContent =
+      "Please enter a valid withdrawal amount.";
+
+    errorBox.style.display = "block";
+
+    return;
+  }
+
+  let method = "crypto";
+  let details = {};
+
+  const cryptoChoice =
+    document.getElementById("cryptoChoice");
+
+  if(
+    cryptoChoice &&
+    cryptoChoice.classList.contains("selected")
+  ){
+
+    method = "crypto";
+
+    const wallet =
+      document
+        .getElementById("cryptoWallet")
+        .value
+        .trim();
+
+    const network =
+      document
+        .getElementById("cryptoNetwork")
+        .value;
+
+    if(!wallet){
+
+      errorBox.textContent =
+        "Please enter your wallet address.";
+
+      errorBox.style.display = "block";
+
+      return;
+    }
+
+    if(!network){
+
+      errorBox.textContent =
+        "Please select a crypto network.";
+
+      errorBox.style.display = "block";
+
+      return;
+    }
+
+    details = {
+      walletAddress: wallet,
+      network: network
+    };
+
+  }else{
+
+    method = "bank";
+
+    const bankName =
+      document
+        .getElementById("bankName")
+        .value
+        .trim();
+
+    const accountName =
+      document
+        .getElementById("accountName")
+        .value
+        .trim();
+
+    const accountNumber =
+      document
+        .getElementById("accountNumber")
+        .value
+        .trim();
+
+    const bankBranch =
+      document
+        .getElementById("bankBranch")
+        .value
+        .trim();
+
+    if(
+      !bankName ||
+      !accountName ||
+      !accountNumber
+    ){
+
+      errorBox.textContent =
+        "Please enter bank name, account name and account number.";
+
+      errorBox.style.display = "block";
+
+      return;
+    }
+
+    details = {
+      bankName,
+      accountName,
+      accountNumber,
+      bankBranch
+    };
+
+  }
+
+  const button =
+    document.getElementById("withdrawButton");
+
+  button.disabled = true;
+  button.textContent = "Submitting...";
+
+  try{
+
+    const data =
+      await api(
+        "/api/withdrawals",
+        {
+          method:"POST",
+
+          body:JSON.stringify({
+
+            amount,
+            note,
+            method,
+            details
+
+          })
+        }
+      );
+
+    success.textContent =
+      data.message ||
+      "Withdrawal submitted successfully.";
+
+    success.style.display = "block";
+
+    document.getElementById("withdrawAmount").value = "";
+    document.getElementById("withdrawNote").value = "";
+
+    document.getElementById("cryptoWallet").value = "";
+    document.getElementById("cryptoNetwork").value = "";
+
+    document.getElementById("bankName").value = "";
+    document.getElementById("accountName").value = "";
+    document.getElementById("accountNumber").value = "";
+    document.getElementById("bankBranch").value = "";
+
+    await loadUser();
+    await loadTransactions();
+
+  }catch(error){
+
+    errorBox.textContent =
+      error.message;
+
+    errorBox.style.display = "block";
+
+  }finally{
+
+    button.disabled = false;
+
+    button.textContent =
+      "Submit Withdrawal Request";
+
+  }
+
+}
+
+
+/* ================= LOGOUT ================= */
+
+function logout(){
+
+  localStorage.removeItem("zonguru_token");
+  localStorage.removeItem("zonguru_user");
+
+  window.location.href = "login.html";
+
+}
+
+
+/* ================= ESCAPE HTML ================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* ================= START ================= */
 
 loadUser();
 
