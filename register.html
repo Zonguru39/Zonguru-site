@@ -1,462 +1,1382 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Zonguru Register</title>
+<meta charset="UTF-8">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #6d28d9, #9333ea, #c026d3);
-      padding: 20px;
-    }
+<title>Zonguru Register</title>
 
-    .register-box {
-      width: 100%;
-      max-width: 430px;
-      background: #ffffff;
-      padding: 32px 26px;
-      border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.20);
-    }
+<style>
 
-    .logo {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    .logo-icon {
-      width: 70px;
-      height: 70px;
-      margin: auto;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #7c3aed, #a855f7);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 34px;
-      font-weight: bold;
-      box-shadow: 0 10px 25px rgba(124,58,237,0.30);
-    }
+body{
+  min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    linear-gradient(135deg,#16002f,#3b176d,#16002f);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
 
-    .logo h1 {
-      margin: 15px 0 5px;
-      color: #1f2937;
-      font-size: 28px;
-    }
 
-    .logo p {
-      margin: 0;
-      color: #6b7280;
-      font-size: 14px;
-    }
+/* =========================
+   TOP TOOLS
+========================= */
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+.top-tools{
+  position:fixed;
+  top:15px;
+  right:15px;
+  z-index:99999;
+  display:flex;
+  gap:8px;
+}
 
-    label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #374151;
-    }
+.tool-btn{
+  border:0;
+  background:white;
+  color:#5b21b6;
+  border-radius:12px;
+  padding:10px 14px;
+  font-size:13px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 5px 20px rgba(0,0,0,.25);
+}
 
-    input {
-      width: 100%;
-      padding: 14px 15px;
-      border: 1px solid #d1d5db;
-      border-radius: 11px;
-      outline: none;
-      font-size: 15px;
-      background: #fff;
-      transition: 0.2s;
-    }
+.tool-btn:active{
+  transform:scale(.96);
+}
 
-    input:focus {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.10);
-    }
+.globe-btn{
+  width:45px;
+  padding:10px 0;
+  font-size:18px;
+}
 
-    .register-btn {
-      width: 100%;
-      border: 0;
-      padding: 14px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, #7c3aed, #9333ea);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 5px;
-      transition: 0.2s;
-    }
 
-    .register-btn:hover {
-      opacity: 0.93;
-      transform: translateY(-1px);
-    }
+/* =========================
+   LANGUAGE MENU
+========================= */
 
-    .register-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
+.language-menu{
+  position:absolute;
+  right:0;
+  top:52px;
+  width:180px;
+  background:white;
+  border-radius:14px;
+  padding:8px;
+  box-shadow:0 15px 40px rgba(0,0,0,.3);
+  display:none;
+}
 
-    .message {
-      display: none;
-      margin-bottom: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      text-align: center;
-      line-height: 1.5;
-    }
+.language-menu.open{
+  display:block;
+}
 
-    .message.error {
-      display: block;
-      background: #fee2e2;
-      color: #b91c1c;
-    }
+.language-item{
+  width:100%;
+  border:0;
+  background:white;
+  color:#333;
+  padding:12px;
+  text-align:left;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:14px;
+}
 
-    .message.success {
-      display: block;
-      background: #dcfce7;
-      color: #166534;
-    }
+.language-item:hover{
+  background:#f3e8ff;
+}
 
-    .login-link {
-      text-align: center;
-      margin-top: 22px;
-      font-size: 14px;
-      color: #6b7280;
-    }
 
-    .login-link a {
-      color: #7c3aed;
-      font-weight: bold;
-      text-decoration: none;
-    }
+/* =========================
+   REGISTER BOX
+========================= */
 
-    .login-link a:hover {
-      text-decoration: underline;
-    }
+.register-box{
+  width:100%;
+  max-width:430px;
+  background:white;
+  border-radius:24px;
+  padding:35px 28px;
+  box-shadow:0 25px 70px rgba(0,0,0,.35);
+}
 
-    .terms {
-      margin-top: 18px;
-      text-align: center;
-      color: #9ca3af;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-  </style>
+.logo{
+  width:65px;
+  height:65px;
+  margin:0 auto 14px;
+  border-radius:18px;
+  background:
+    linear-gradient(135deg,#7c3aed,#4f46e5);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  font-weight:bold;
+}
+
+h1{
+  text-align:center;
+  color:#211333;
+  font-size:28px;
+  margin-bottom:8px;
+}
+
+.subtitle{
+  text-align:center;
+  color:#777;
+  font-size:14px;
+  margin-bottom:28px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-group{
+  margin-bottom:18px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  color:#333;
+  font-size:14px;
+  font-weight:bold;
+}
+
+input{
+  width:100%;
+  height:50px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:0 15px;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus{
+  border-color:#7c3aed;
+  box-shadow:
+    0 0 0 3px
+    rgba(124,58,237,.1);
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message{
+  display:none;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:18px;
+  font-size:14px;
+}
+
+.message.error{
+  display:block;
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.message.success{
+  display:block;
+  background:#dcfce7;
+  color:#166534;
+}
+
+
+/* =========================
+   REGISTER BUTTON
+========================= */
+
+.register-btn{
+  width:100%;
+  height:52px;
+  border:0;
+  border-radius:13px;
+  background:
+    linear-gradient(135deg,#7c3aed,#4f46e5);
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.register-btn:disabled{
+  opacity:.6;
+}
+
+
+/* =========================
+   LOGIN LINK
+========================= */
+
+.login-link{
+  text-align:center;
+  margin-top:22px;
+  color:#777;
+  font-size:14px;
+}
+
+.login-link a{
+  color:#6d28d9;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.security{
+  text-align:center;
+  margin-top:20px;
+  color:#999;
+  font-size:12px;
+}
+
+
+/* =========================
+   CUSTOMER SERVICE CHAT
+========================= */
+
+.chat-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:100000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.chat-overlay.open{
+  display:flex;
+}
+
+.chat-box{
+  width:100%;
+  max-width:420px;
+  height:560px;
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.chat-header{
+  background:
+    linear-gradient(135deg,#7c3aed,#4f46e5);
+  color:white;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.chat-close{
+  border:0;
+  background:transparent;
+  color:white;
+  font-size:25px;
+  cursor:pointer;
+}
+
+.chat-body{
+  flex:1;
+  padding:15px;
+  overflow-y:auto;
+  background:#f8f7fb;
+}
+
+.chat-welcome{
+  background:white;
+  padding:12px;
+  border-radius:12px;
+  font-size:14px;
+}
+
+.chat-bottom{
+  padding:12px;
+  border-top:1px solid #eee;
+  display:flex;
+  gap:8px;
+}
+
+.chat-input{
+  flex:1;
+  height:44px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:0 12px;
+}
+
+.chat-send{
+  width:48px;
+  border:0;
+  border-radius:10px;
+  background:#7c3aed;
+  color:white;
+  cursor:pointer;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+  body{
+    padding:14px;
+  }
+
+  .top-tools{
+    top:10px;
+    right:10px;
+  }
+
+  .tool-btn{
+    padding:9px 10px;
+    font-size:12px;
+  }
+
+  .register-box{
+    padding:28px 20px;
+  }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-  <div class="register-box">
 
-    <div class="logo">
-      <div class="logo-icon">Z</div>
+<!-- =========================
+     TOP TOOLS
+========================= -->
 
-      <h1>Zonguru</h1>
+<div class="top-tools">
 
-      <p>Create your account</p>
+  <button
+    type="button"
+    class="tool-btn"
+    id="csButton">
+
+    💬 Customer Service
+
+  </button>
+
+
+  <button
+    type="button"
+    class="tool-btn globe-btn"
+    id="languageButton">
+
+    🌐
+
+  </button>
+
+
+  <div
+    class="language-menu"
+    id="languageMenu">
+
+
+    <button
+      type="button"
+      class="language-item"
+      data-lang="en">
+
+      🇬🇧 English
+
+    </button>
+
+
+    <button
+      type="button"
+      class="language-item"
+      data-lang="es">
+
+      🇪🇸 Español
+
+    </button>
+
+
+    <button
+      type="button"
+      class="language-item"
+      data-lang="ar">
+
+      🇸🇦 العربية
+
+    </button>
+
+
+    <button
+      type="button"
+      class="language-item"
+      data-lang="pt">
+
+      🇵🇹 Português
+
+    </button>
+
+
+    <button
+      type="button"
+      class="language-item"
+      data-lang="my">
+
+      🇲🇲 မြန်မာ
+
+    </button>
+
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     REGISTER
+========================= -->
+
+<div class="register-box">
+
+
+  <div class="logo">
+    Z
+  </div>
+
+
+  <h1 id="title">
+    Create Account
+  </h1>
+
+
+  <p
+    class="subtitle"
+    id="subtitle">
+
+    Create your Zonguru account
+
+  </p>
+
+
+  <div
+    id="message"
+    class="message">
+  </div>
+
+
+  <form id="registerForm">
+
+
+    <!-- USERNAME -->
+
+    <div class="form-group">
+
+      <label id="usernameLabel">
+        Username
+      </label>
+
+      <input
+        id="username"
+        type="text"
+        placeholder="Choose a username"
+        required>
+
     </div>
 
 
-    <div id="message" class="message"></div>
+    <!-- PASSWORD -->
 
+    <div class="form-group">
 
-    <form id="registerForm">
+      <label id="passwordLabel">
+        Password
+      </label>
 
-      <div class="form-group">
-        <label for="username">
-          Username
-        </label>
+      <input
+        id="password"
+        type="password"
+        placeholder="Create a password"
+        required>
 
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Enter username"
-          autocomplete="username"
-          minlength="3"
-          required
-        >
-      </div>
-
-
-      <div class="form-group">
-        <label for="password">
-          Password
-        </label>
-
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Create password"
-          autocomplete="new-password"
-          minlength="6"
-          required
-        >
-      </div>
-
-
-      <div class="form-group">
-        <label for="confirmPassword">
-          Confirm Password
-        </label>
-
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          placeholder="Confirm password"
-          autocomplete="new-password"
-          minlength="6"
-          required
-        >
-      </div>
-
-
-      <button
-        type="submit"
-        class="register-btn"
-        id="registerButton"
-      >
-        Create Account
-      </button>
-
-    </form>
-
-
-    <div class="login-link">
-      Already have an account?
-      <a href="login.html">Login</a>
     </div>
 
 
-    <div class="terms">
-      🔒 Your account information is securely protected.
+    <!-- CONFIRM PASSWORD -->
+
+    <div class="form-group">
+
+      <label id="confirmLabel">
+        Confirm Password
+      </label>
+
+      <input
+        id="confirmPassword"
+        type="password"
+        placeholder="Confirm your password"
+        required>
+
     </div>
+
+
+    <!-- BUTTON -->
+
+    <button
+      id="registerButton"
+      class="register-btn"
+      type="submit">
+
+      Create Account
+
+    </button>
+
+
+  </form>
+
+
+  <!-- LOGIN -->
+
+  <div
+    class="login-link"
+    id="loginText">
+
+    Already have an account?
+
+    <a href="login.html">
+      Login
+    </a>
 
   </div>
 
 
-  <script>
-    const API_URL =
-      "https://zonguru-jack-api.onrender.com";
+  <div
+    class="security"
+    id="securityText">
 
-    const registerForm =
-      document.getElementById("registerForm");
+    🔒 Your account information is securely protected.
 
-    const registerButton =
-      document.getElementById("registerButton");
-
-    const messageBox =
-      document.getElementById("message");
+  </div>
 
 
-    function showMessage(text, type = "error") {
+</div>
 
-      messageBox.textContent = text;
 
-      messageBox.className =
-        "message " + type;
+<!-- =========================
+     CUSTOMER SERVICE CHAT
+========================= -->
+
+<div
+  class="chat-overlay"
+  id="chatOverlay">
+
+
+  <div class="chat-box">
+
+
+    <div class="chat-header">
+
+      <strong id="chatTitle">
+        Customer Service
+      </strong>
+
+
+      <button
+        type="button"
+        class="chat-close"
+        id="chatClose">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="chat-body"
+      id="chatBody">
+
+
+      <div
+        class="chat-welcome"
+        id="chatWelcome">
+
+        Hello! How can we help you?
+
+      </div>
+
+
+    </div>
+
+
+    <div class="chat-bottom">
+
+
+      <input
+        id="chatInput"
+        class="chat-input"
+        placeholder="Type your message...">
+
+
+      <button
+        type="button"
+        id="chatSend"
+        class="chat-send">
+
+        ➤
+
+      </button>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+const API_URL =
+  "https://zonguru-jack-api.onrender.com";
+
+
+/* =========================
+   TRANSLATIONS
+========================= */
+
+const translations = {
+
+
+  en:{
+    title:"Create Account",
+    subtitle:"Create your Zonguru account",
+    username:"Username",
+    usernamePlaceholder:"Choose a username",
+    password:"Password",
+    passwordPlaceholder:"Create a password",
+    confirm:"Confirm Password",
+    confirmPlaceholder:"Confirm your password",
+    register:"Create Account",
+    loginText:"Already have an account?",
+    login:"Login",
+    security:"🔒 Your account information is securely protected.",
+    cs:"💬 Customer Service",
+    chatTitle:"Customer Service",
+    welcome:"Hello! How can we help you?",
+    chatPlaceholder:"Type your message..."
+  },
+
+
+  es:{
+    title:"Crear cuenta",
+    subtitle:"Crea tu cuenta de Zonguru",
+    username:"Nombre de usuario",
+    usernamePlaceholder:"Elige un nombre de usuario",
+    password:"Contraseña",
+    passwordPlaceholder:"Crea una contraseña",
+    confirm:"Confirmar contraseña",
+    confirmPlaceholder:"Confirma tu contraseña",
+    register:"Crear cuenta",
+    loginText:"¿Ya tienes una cuenta?",
+    login:"Iniciar sesión",
+    security:"🔒 Tu información está protegida de forma segura.",
+    cs:"💬 Atención al cliente",
+    chatTitle:"Atención al cliente",
+    welcome:"¡Hola! ¿Cómo podemos ayudarte?",
+    chatPlaceholder:"Escribe tu mensaje..."
+  },
+
+
+  pt:{
+    title:"Criar conta",
+    subtitle:"Crie sua conta Zonguru",
+    username:"Nome de usuário",
+    usernamePlaceholder:"Escolha um nome de usuário",
+    password:"Senha",
+    passwordPlaceholder:"Crie uma senha",
+    confirm:"Confirmar senha",
+    confirmPlaceholder:"Confirme sua senha",
+    register:"Criar conta",
+    loginText:"Já tem uma conta?",
+    login:"Entrar",
+    security:"🔒 Suas informações estão protegidas com segurança.",
+    cs:"💬 Atendimento ao cliente",
+    chatTitle:"Atendimento ao cliente",
+    welcome:"Olá! Como podemos ajudar?",
+    chatPlaceholder:"Digite sua mensagem..."
+  },
+
+
+  my:{
+    title:"အကောင့်ဖွင့်ရန်",
+    subtitle:"သင့် Zonguru အကောင့်ကို ဖန်တီးပါ",
+    username:"အသုံးပြုသူအမည်",
+    usernamePlaceholder:"အသုံးပြုသူအမည် ရွေးပါ",
+    password:"စကားဝှက်",
+    passwordPlaceholder:"စကားဝှက် ဖန်တီးပါ",
+    confirm:"စကားဝှက် အတည်ပြုပါ",
+    confirmPlaceholder:"စကားဝှက်ကို ထပ်မံထည့်ပါ",
+    register:"အကောင့်ဖွင့်ရန်",
+    loginText:"အကောင့်ရှိပြီးသားလား?",
+    login:"ဝင်ရောက်ရန်",
+    security:"🔒 သင့်အကောင့်အချက်အလက်များကို လုံခြုံစွာ ကာကွယ်ထားပါသည်။",
+    cs:"💬 Customer Service",
+    chatTitle:"Customer Service",
+    welcome:"မင်္ဂလာပါ။ ဘာကူညီပေးရမလဲ?",
+    chatPlaceholder:"စာရေးပါ..."
+  },
+
+
+  ar:{
+    title:"إنشاء حساب",
+    subtitle:"أنشئ حساب Zonguru الخاص بك",
+    username:"اسم المستخدم",
+    usernamePlaceholder:"اختر اسم مستخدم",
+    password:"كلمة المرور",
+    passwordPlaceholder:"أنشئ كلمة مرور",
+    confirm:"تأكيد كلمة المرور",
+    confirmPlaceholder:"أكد كلمة المرور",
+    register:"إنشاء حساب",
+    loginText:"لديك حساب بالفعل؟",
+    login:"تسجيل الدخول",
+    security:"🔒 معلومات حسابك محمية بشكل آمن.",
+    cs:"💬 خدمة العملاء",
+    chatTitle:"خدمة العملاء",
+    welcome:"مرحباً! كيف يمكننا مساعدتك؟",
+    chatPlaceholder:"اكتب رسالتك..."
+  }
+
+};
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const languageButton =
+  document.getElementById(
+    "languageButton"
+  );
+
+
+const languageMenu =
+  document.getElementById(
+    "languageMenu"
+  );
+
+
+const csButton =
+  document.getElementById(
+    "csButton"
+  );
+
+
+const chatOverlay =
+  document.getElementById(
+    "chatOverlay"
+  );
+
+
+const chatClose =
+  document.getElementById(
+    "chatClose"
+  );
+
+
+const chatInput =
+  document.getElementById(
+    "chatInput"
+  );
+
+
+const chatSend =
+  document.getElementById(
+    "chatSend"
+  );
+
+
+const chatBody =
+  document.getElementById(
+    "chatBody"
+  );
+
+
+/* =========================
+   LANGUAGE BUTTON
+========================= */
+
+languageButton.onclick =
+  function(event){
+
+    event.stopPropagation();
+
+    languageMenu.classList.toggle(
+      "open"
+    );
+
+  };
+
+
+/* =========================
+   LANGUAGE ITEMS
+========================= */
+
+document
+  .querySelectorAll(
+    ".language-item"
+  )
+  .forEach(
+    function(item){
+
+      item.onclick =
+        function(event){
+
+          event.stopPropagation();
+
+          const lang =
+            item.getAttribute(
+              "data-lang"
+            );
+
+          changeLanguage(
+            lang
+          );
+
+          languageMenu.classList.remove(
+            "open"
+          );
+
+        };
+
+    }
+  );
+
+
+/* =========================
+   OUTSIDE CLICK
+========================= */
+
+document.onclick =
+  function(event){
+
+    if(
+      !languageMenu.contains(
+        event.target
+      ) &&
+      event.target !==
+        languageButton
+    ){
+
+      languageMenu.classList.remove(
+        "open"
+      );
+
+    }
+
+  };
+
+
+/* =========================
+   CHANGE LANGUAGE
+========================= */
+
+function changeLanguage(lang){
+
+  const t =
+    translations[lang] ||
+    translations.en;
+
+
+  document.getElementById(
+    "title"
+  ).textContent =
+    t.title;
+
+
+  document.getElementById(
+    "subtitle"
+  ).textContent =
+    t.subtitle;
+
+
+  document.getElementById(
+    "usernameLabel"
+  ).textContent =
+    t.username;
+
+
+  document.getElementById(
+    "passwordLabel"
+  ).textContent =
+    t.password;
+
+
+  document.getElementById(
+    "confirmLabel"
+  ).textContent =
+    t.confirm;
+
+
+  document.getElementById(
+    "username"
+  ).placeholder =
+    t.usernamePlaceholder;
+
+
+  document.getElementById(
+    "password"
+  ).placeholder =
+    t.passwordPlaceholder;
+
+
+  document.getElementById(
+    "confirmPassword"
+  ).placeholder =
+    t.confirmPlaceholder;
+
+
+  document.getElementById(
+    "registerButton"
+  ).textContent =
+    t.register;
+
+
+  document.getElementById(
+    "csButton"
+  ).textContent =
+    t.cs;
+
+
+  document.getElementById(
+    "chatTitle"
+  ).textContent =
+    t.chatTitle;
+
+
+  document.getElementById(
+    "chatWelcome"
+  ).textContent =
+    t.welcome;
+
+
+  document.getElementById(
+    "chatInput"
+  ).placeholder =
+    t.chatPlaceholder;
+
+
+  document.getElementById(
+    "securityText"
+  ).textContent =
+    t.security;
+
+
+  document.getElementById(
+    "loginText"
+  ).innerHTML =
+    t.loginText +
+    ' <a href="login.html">' +
+    t.login +
+    "</a>";
+
+
+  document.documentElement.lang =
+    lang;
+
+
+  document.body.dir =
+    lang === "ar"
+      ? "rtl"
+      : "ltr";
+
+
+  localStorage.setItem(
+    "zonguru_lang",
+    lang
+  );
+
+}
+
+
+/* =========================
+   LOAD SAVED LANGUAGE
+========================= */
+
+const savedLanguage =
+  localStorage.getItem(
+    "zonguru_lang"
+  ) || "en";
+
+
+changeLanguage(
+  savedLanguage
+);
+
+
+/* =========================
+   CUSTOMER SERVICE
+========================= */
+
+csButton.onclick =
+  function(){
+
+    chatOverlay.classList.add(
+      "open"
+    );
+
+    chatInput.focus();
+
+  };
+
+
+chatClose.onclick =
+  function(){
+
+    chatOverlay.classList.remove(
+      "open"
+    );
+
+  };
+
+
+chatOverlay.onclick =
+  function(event){
+
+    if(
+      event.target ===
+      chatOverlay
+    ){
+
+      chatOverlay.classList.remove(
+        "open"
+      );
+
+    }
+
+  };
+
+
+/* =========================
+   CHAT SEND
+========================= */
+
+function sendChat(){
+
+  const text =
+    chatInput.value.trim();
+
+
+  if(!text){
+    return;
+  }
+
+
+  const bubble =
+    document.createElement(
+      "div"
+    );
+
+
+  bubble.style.background =
+    "#7c3aed";
+
+  bubble.style.color =
+    "white";
+
+  bubble.style.padding =
+    "10px 13px";
+
+  bubble.style.borderRadius =
+    "14px";
+
+  bubble.style.marginBottom =
+    "10px";
+
+  bubble.style.marginLeft =
+    "auto";
+
+  bubble.style.maxWidth =
+    "80%";
+
+  bubble.textContent =
+    text;
+
+
+  chatBody.appendChild(
+    bubble
+  );
+
+
+  chatInput.value =
+    "";
+
+
+  chatBody.scrollTop =
+    chatBody.scrollHeight;
+
+}
+
+
+chatSend.onclick =
+  function(){
+
+    sendChat();
+
+  };
+
+
+chatInput.onkeydown =
+  function(event){
+
+    if(
+      event.key === "Enter"
+    ){
+
+      event.preventDefault();
+
+      sendChat();
+
+    }
+
+  };
+
+
+/* =========================
+   REGISTER
+========================= */
+
+document.getElementById(
+  "registerForm"
+).onsubmit =
+  async function(event){
+
+    event.preventDefault();
+
+
+    const username =
+      document.getElementById(
+        "username"
+      ).value.trim();
+
+
+    const password =
+      document.getElementById(
+        "password"
+      ).value;
+
+
+    const confirmPassword =
+      document.getElementById(
+        "confirmPassword"
+      ).value;
+
+
+    const button =
+      document.getElementById(
+        "registerButton"
+      );
+
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+
+    if(
+      !username ||
+      !password ||
+      !confirmPassword
+    ){
+
+      message.textContent =
+        "Please complete all fields.";
+
+      message.className =
+        "message error";
+
+      return;
+
     }
 
 
-    function hideMessage() {
+    if(
+      password !==
+      confirmPassword
+    ){
 
-      messageBox.textContent = "";
+      message.textContent =
+        "Passwords do not match.";
 
-      messageBox.className = "message";
+      message.className =
+        "message error";
+
+      return;
+
     }
 
 
-    registerForm.addEventListener(
-      "submit",
-      async function(event) {
+    if(
+      password.length < 6
+    ){
 
-        event.preventDefault();
+      message.textContent =
+        "Password must be at least 6 characters.";
 
-        hideMessage();
+      message.className =
+        "message error";
 
+      return;
 
-        const username =
-          document
-            .getElementById("username")
-            .value
-            .trim();
-
-
-        const password =
-          document
-            .getElementById("password")
-            .value;
+    }
 
 
-        const confirmPassword =
-          document
-            .getElementById("confirmPassword")
-            .value;
+    button.disabled =
+      true;
 
 
-        if (!username || !password || !confirmPassword) {
-
-          showMessage(
-            "Please complete all fields."
-          );
-
-          return;
-        }
+    button.textContent =
+      "Creating account...";
 
 
-        if (username.length < 3) {
+    try{
 
-          showMessage(
-            "Username must be at least 3 characters."
-          );
+      const response =
+        await fetch(
+          API_URL +
+          "/api/auth/register",
+          {
 
-          return;
-        }
+            method:"POST",
 
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
 
-        if (password.length < 6) {
+            body:JSON.stringify({
+              username:username,
+              password:password
+            })
 
-          showMessage(
-            "Password must be at least 6 characters."
-          );
-
-          return;
-        }
-
-
-        if (password !== confirmPassword) {
-
-          showMessage(
-            "Passwords do not match."
-          );
-
-          return;
-        }
-
-
-        registerButton.disabled = true;
-
-        registerButton.textContent =
-          "Creating Account...";
-
-
-        try {
-
-          const response =
-            await fetch(
-              API_URL + "/api/auth/register",
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-
-                body: JSON.stringify({
-                  username: username,
-                  password: password
-                })
-              }
-            );
-
-
-          const data =
-            await response.json();
-
-
-          if (
-            !response.ok ||
-            !data.success
-          ) {
-
-            throw new Error(
-              data.message ||
-              data.error ||
-              "Registration failed."
-            );
           }
+        );
 
 
-          if (data.token) {
-
-            localStorage.setItem(
-              "zonguru_token",
-              data.token
-            );
-          }
+      const data =
+        await response.json();
 
 
-          if (data.user) {
+      if(
+        !response.ok ||
+        !data.success
+      ){
 
-            localStorage.setItem(
-              "zonguru_user",
-              JSON.stringify(data.user)
-            );
-          }
-
-
-          showMessage(
-            "Account created successfully. Redirecting...",
-            "success"
-          );
-
-
-          setTimeout(function() {
-
-            window.location.href =
-              "dashboard.html";
-
-          }, 800);
-
-
-        } catch (error) {
-
-          console.error(error);
-
-
-          showMessage(
-            error.message ||
-            "Unable to connect to the server."
-          );
-
-
-          registerButton.disabled = false;
-
-          registerButton.textContent =
-            "Create Account";
-        }
+        throw new Error(
+          data.message ||
+          "Registration failed."
+        );
 
       }
-    );
-  </script>
 
 
-  <!-- Customer Service + Language -->
-  <script src="support.js"></script>
+      if(data.token){
+
+        localStorage.setItem(
+          "zonguru_token",
+          data.token
+        );
+
+      }
+
+
+      if(data.user){
+
+        localStorage.setItem(
+          "zonguru_user",
+          JSON.stringify(
+            data.user
+          )
+        );
+
+      }
+
+
+      message.textContent =
+        "Account created successfully. Redirecting...";
+
+      message.className =
+        "message success";
+
+
+      setTimeout(
+        function(){
+
+          window.location.href =
+            "dashboard.html";
+
+        },
+        800
+      );
+
+
+    }catch(error){
+
+      message.textContent =
+        error.message ||
+        "Unable to create account.";
+
+      message.className =
+        "message error";
+
+
+      button.disabled =
+        false;
+
+
+      const lang =
+        localStorage.getItem(
+          "zonguru_lang"
+        ) || "en";
+
+
+      button.textContent =
+        translations[lang].register;
+
+    }
+
+  };
+
+</script>
 
 </body>
-</html>
+
+  </html>
