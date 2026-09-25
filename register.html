@@ -120,6 +120,7 @@
     <form onsubmit="registerUser(event)">
 
       <label>Invitation Code</label>
+
       <input
         id="invite"
         type="text"
@@ -127,22 +128,17 @@
       >
 
       <label>Username</label>
+
       <input
         id="username"
         type="text"
         placeholder="Choose username"
-        required
-      >
-
-      <label>Email</label>
-      <input
-        id="email"
-        type="email"
-        placeholder="Enter email"
+        minlength="3"
         required
       >
 
       <label>Password</label>
+
       <input
         id="password"
         type="password"
@@ -152,6 +148,7 @@
       >
 
       <label>Confirm Password</label>
+
       <input
         id="confirm"
         type="password"
@@ -183,11 +180,9 @@
 
       event.preventDefault();
 
+
       const username =
         document.getElementById("username").value.trim();
-
-      const email =
-        document.getElementById("email").value.trim();
 
       const password =
         document.getElementById("password").value;
@@ -197,6 +192,14 @@
 
       const button =
         document.getElementById("registerBtn");
+
+
+      if (username.length < 3) {
+
+        alert("Username must contain at least 3 characters.");
+
+        return;
+      }
 
 
       if (password !== confirm) {
@@ -232,8 +235,7 @@
             },
 
             body: JSON.stringify({
-              name: username,
-              email: email,
+              username: username,
               password: password
             })
           }
@@ -251,37 +253,39 @@
           );
 
           button.disabled = false;
+
           button.textContent = "Register";
 
           return;
         }
 
 
-        if (data.success) {
+        if (data.token) {
 
-          // Save login token
           localStorage.setItem(
             "zonguru_token",
             data.token
           );
+        }
 
-          // Save user information
+
+        if (data.user) {
+
           localStorage.setItem(
             "zonguru_user",
             JSON.stringify(data.user)
           );
-
-
-          alert(
-            "Registration successful!"
-          );
-
-
-          // Go to dashboard
-          window.location.href =
-            "dashboard.html";
-
         }
+
+
+        alert(
+          "Registration successful!"
+        );
+
+
+        window.location.href =
+          "dashboard.html";
+
 
       } catch (error) {
 
@@ -292,6 +296,7 @@
         );
 
         button.disabled = false;
+
         button.textContent = "Register";
       }
 
@@ -300,4 +305,4 @@
   </script>
 
 </body>
-</html>
+  </html>
