@@ -131,12 +131,13 @@ const currencyOptions=[
   ["THB","฿","Thai Baht"],
   ["MYR","RM","Malaysian Ringgit"],
   ["BRL","R$","Brazilian Real"],
-  ["INR","₹","Indian Rupee"]
+  ["INR","₹","Indian Rupee"],
+  ["EGP","£","Egyptian Pound"]
 ];
-const currencyRates={MXN:18.5,USD:1,EUR:0.86,GBP:0.75,CAD:1.38,AUD:1.51,JPY:148,CNY:7.1,SGD:1.28,THB:32.5,MYR:4.25,BRL:5.35,INR:88};
+const currencyRates={MXN:18.5,USD:1,EUR:0.86,GBP:0.75,CAD:1.38,AUD:1.51,JPY:148,CNY:7.1,SGD:1.28,THB:32.5,MYR:4.25,BRL:5.35,INR:88,EGP:51.75};
 let accountCurrency=localStorage.getItem('zonguru_currency')||'USDT',lastUSDTBalance=0;
 function currencyMeta(code){return currencyOptions.find(x=>x[0]===code)||currencyOptions[0]}
-function renderCurrencyList(){const box=document.getElementById('currencyList');if(!box)return;box.innerHTML=currencyOptions.map(([code,sym,name])=>'<button type="button" class="currency-option '+(code===accountCurrency?'selected':'')+'" onclick="selectCurrency(\''+code+'\')"><span style="font-size:22px">'+(code==='MXN'?'🇲🇽':code==='USD'?'🇺🇸':code==='EUR'?'🇪🇺':code==='GBP'?'🇬🇧':code==='CAD'?'🇨🇦':code==='AUD'?'🇦🇺':code==='JPY'?'🇯🇵':code==='CNY'?'🇨🇳':code==='SGD'?'🇸🇬':code==='THB'?'🇹🇭':code==='MYR'?'🇲🇾':code==='BRL'?'🇧🇷':code==='INR'?'🇮🇳':'₮')+'</span><span>'+code+'<small>'+name+'</small></span></button>').join('')}
+function renderCurrencyList(){const box=document.getElementById('currencyList');if(!box)return;box.innerHTML=currencyOptions.map(([code,sym,name])=>'<button type="button" class="currency-option '+(code===accountCurrency?'selected':'')+'" onclick="selectCurrency(\''+code+'\')"><span style="font-size:22px">'+(code==='MXN'?'🇲🇽':code==='USD'?'🇺🇸':code==='EUR'?'🇪🇺':code==='GBP'?'🇬🇧':code==='CAD'?'🇨🇦':code==='AUD'?'🇦🇺':code==='JPY'?'🇯🇵':code==='CNY'?'🇨🇳':code==='SGD'?'🇸🇬':code==='THB'?'🇹🇭':code==='MYR'?'🇲🇾':code==='BRL'?'🇧🇷':code==='INR'?'🇮🇳':code==='EGP'?'🇪🇬':'₮')+'</span><span>'+code+'<small>'+name+'</small></span></button>').join('')}
 function convertUSDT(v){return Number(v||0)*(accountCurrency==='USDT'?1:(currencyRates[accountCurrency]||1))}
 function money(v){return convertUSDT(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+' '+accountCurrency}
 function displayBalance(){const value=convertUSDT(lastUSDTBalance);document.getElementById('balance').textContent=value.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});document.getElementById('topBalance').textContent=value.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});document.getElementById('balanceCurrency').textContent=accountCurrency;const label=document.querySelector('[data-i18n="Balance USDT"]');if(label)label.textContent='Balance '+accountCurrency;const frozen=document.getElementById('frozenAmount');if(frozen)frozen.textContent=money(window._frozenUSDT||0);const profit=document.getElementById('profit');if(profit)profit.textContent=money(window._profitUSDT||0);const sp=document.getElementById('securityProfit');if(sp)sp.textContent=money(window._securityProfitUSDT||0);const wp=document.getElementById('weeklyProfit');if(wp)wp.textContent=money(window._weeklyProfitUSDT||0);const mp=document.getElementById('monthlyProfit');if(mp)mp.textContent=money(window._monthlyProfitUSDT||0);if(window.cachedTransactions)renderTransactions()}
