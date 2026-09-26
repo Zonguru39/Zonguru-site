@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Zonguru Register</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#16002f,#3b176d,#16002f);display:flex;align-items:center;justify-content:center;padding:75px 15px 20px;color:#222}
+.box{width:100%;max-width:440px;background:#fff;border-radius:22px;padding:28px 22px;box-shadow:0 15px 50px rgba(0,0,0,.3)}
+.logo{text-align:center;color:#7657d9;font-size:32px;font-weight:bold}
+.sub{text-align:center;color:#777;margin:7px 0 22px}
+.group{margin-bottom:14px} label{display:block;font-size:13px;font-weight:bold;color:#555;margin-bottom:7px}
+input{width:100%;padding:13px;border:1px solid #ddd;border-radius:11px;font-size:15px;outline:none}
+input:focus{border-color:#7657d9;box-shadow:0 0 0 3px rgba(118,87,217,.1)}
+.row{display:flex;gap:8px}.row input{flex:1}
+button{font-family:inherit}.main{width:100%;padding:14px;border:0;border-radius:11px;background:#7657d9;color:#fff;font-size:16px;font-weight:bold;cursor:pointer}
+.main:disabled{opacity:.6}.resend{border:0;border-radius:11px;background:#7657d9;color:#fff;font-weight:bold;padding:0 13px;cursor:pointer}
+.msg{display:none;padding:11px;border-radius:10px;margin-bottom:13px;font-size:13px;font-weight:bold}
+.ok{background:#ecfdf5;color:#15803d}.err{background:#fef2f2;color:#dc2626}
+.step{display:none}.step.show{display:block}.timer{font-size:12px;color:#777;margin-top:7px}
+.login{text-align:center;margin-top:17px;color:#777;font-size:14px}.login a{color:#7657d9;font-weight:bold;text-decoration:none}
+.security{text-align:center;margin-top:18px;color:#999;font-size:12px}
+.top{position:fixed;top:14px;right:14px;display:flex;gap:8px}.tool{border:0;border-radius:10px;padding:9px 11px;background:#fff;color:#4b2c91;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,.18)}
+</style>
+</head>
+<body>
+<div class="top">
+<button class="tool" onclick="alert('Customer Service is available after login.')">💬 Customer Service</button>
+<button class="tool" onclick="alert('Language selector')">🌐 Language</button>
+</div>
+
+<div class="box">
+<div class="logo">Zonguru</div>
+<div class="sub">Create your account</div>
+<div id="msg" class="msg"></div>
+
+<div id="step1" class="step show">
+<div class="group"><label>Username</label><input id="username" autocomplete="username" placeholder="Enter your username"></div>
+<div class="group"><label>Phone Number</label><input id="phone" type="tel" autocomplete="tel" placeholder="+95 9xxxxxxxxx"></div>
+<div class="group"><label>Email Address</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+<button id="sendBtn" class="main" onclick="sendCode()">Send Verification Code</button>
+</div>
+
+<div id="step2" class="step">
+<div class="group"><label>Email Verification Code</label><div class="row"><input id="code" inputmode="numeric" maxlength="6" placeholder="6-digit code"><button id="resend" class="resend" onclick="sendCode()">Resend</button></div><div id="timer" class="timer"></div></div>
+<div class="group"><label>Password</label><input id="password" type="password" autocomplete="new-password" placeholder="At least 6 characters"></div>
+<div class="group"><label>Confirm Password</label><input id="confirm" type="password" autocomplete="new-password" placeholder="Repeat your password"></div>
+<button id="registerBtn" class="main" onclick="register()">Create Account</button>
+</div>
+
+<div class="login">Already have an account? <a href="login.html">Login</a></div>
+<div class="security">🔒 Your account information is securely protected.</div>
+</div>
+
+<script>
+const API="https://zonguru-jack-api.onrender.com";let timerId=null;
+function msg(t,ok=false){const e=document.getElementById("msg");e.textContent=t;e.className="msg "+(ok?"ok":"err");e.style.display="block"}
+function emailOK(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
+function phoneOK(v){return String(v).replace(/\D/g,"").length>=7}
+
+async function sendCode(){
+ const email=document.getElementById("email").value.trim().toLowerCase(),phone=document.getElementById("phone").value.trim();
+ if(!emailOK(email))return msg("Please enter a valid email address.");
+ if(!phoneOK(phone))return msg("Please enter a valid phone number.");
+ const b=document.getElementById("sendBtn"),r=document.getElementById("resend");b.disabled=true;if(r)r.disabled=true;b.textContent="Sending...";
+ try{
+  const x=await fetch(API+"/api/auth/send-email-code",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,phone})});
+  const d=await x.json().catch(()=>({}));if(!x.ok||!d.success)throw new Error(d.message||"Unable to send code.");
+  msg("Verification code sent to your email.",true);document.getElementById("step1").classList.remove("show");document.getElementById("step2").classList.add("show");startTimer(60);document.getElementById("code").focus();
+ }catch(e){msg(e.message)}finally{b.disabled=false;b.textContent="Send Verification Code";if(r)r.disabled=false}
+}
+function startTimer(n){clearInterval(timerId);const e=document.getElementById("timer"),r=document.getElementById("resend");function t(){e.textContent=n>0?"Request another code in "+n+"s":"You can request a new code now.";if(n<=0){clearInterval(timerId);r.disabled=false}n--}t();timerId=setInterval(t,1000)}
+async function register(){
+ const username=document.getElementById("username").value.trim(),phone=document.getElementById("phone").value.trim(),email=document.getElementById("email").value.trim().toLowerCase(),code=document.getElementById("code").value.trim(),password=document.getElementById("password").value,confirm=document.getElementById("confirm").value,b=document.getElementById("registerBtn");
+ if(username.length<3)return msg("Username must contain at least 3 characters.");
+ if(!phoneOK(phone))return msg("Please enter a valid phone number.");
+ if(!emailOK(email))return msg("Please enter a valid email address.");
+ if(!/^\d{6}$/.test(code))return msg("Enter the 6-digit email verification code.");
+ if(password.length<6)return msg("Password must contain at least 6 characters.");
+ if(password!==confirm)return msg("Passwords do not match.");
+ b.disabled=true;b.textContent="Creating...";
+ try{
+  const x=await fetch(API+"/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,phone,email,emailCode:code,password})});
+  const d=await x.json().catch(()=>({}));if(!x.ok||!d.success)throw new Error(d.message||"Registration failed.");
+  localStorage.setItem("zonguru_token",d.token);localStorage.setItem("zonguru_user",JSON.stringify(d.user));msg("Registration successful. Opening dashboard...",true);
+  setTimeout(()=>location.href="dashboard.html",800);
+ }catch(e){msg(e.message);b.disabled=false;b.textContent="Create Account"}
+}
+</script>
+</body>
+</html>
