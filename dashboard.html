@@ -42,7 +42,38 @@
 <div class="realtime-box dark"><h3>Platform Promotion Optimization Quantity</h3><small>Animated preview</small><div class="live-value" id="rtPromo">98.00K</div><div class="realtime-chart"><svg viewBox="0 0 300 80" preserveAspectRatio="none"><path d="M0 66 C30 80 42 25 75 50 S115 61 145 39 S185 30 210 65 S255 72 275 42 S292 15 300 8 L300 80 L0 80 Z" fill="currentColor"/></svg></div></div>
 </div><div class="demo-note">These four cards are currently a visual activity preview. They are not verified live platform traffic; connect them to backend statistics before presenting them as real-time figures.</div></div>
 </section>
-<section class="page" id="depositPage"><div class="card"><h2 class="section-title">Deposit</h2><div class="notice">Enter the amount you want to deposit.</div><div class="form-group"><label>Amount (USDT)</label><input id="depositAmount" type="number" min="0" step="0.01"></div><div class="form-group"><label>Note</label><textarea id="depositNote"></textarea></div><button class="primary" onclick="submitDeposit()">Submit Deposit</button></div></section>
+<section class="page" id="depositPage"><div class="card">
+<h2 class="section-title">Deposit</h2>
+<div class="notice">Choose your deposit method.</div>
+<div class="form-group"><label>Deposit Method</label><div class="method-grid">
+<button class="method" id="depositCryptoMethod" onclick="selectDepositMethod('crypto')">₿ Crypto</button>
+<button class="method" id="depositBankMethod" onclick="selectDepositMethod('bank')">🏦 Bank</button>
+</div></div>
+<div id="depositBankBox" style="display:none">
+  <div style="padding:15px;border-radius:13px;background:#fff4f5;color:#9b3042;margin:12px 0">For Bank Deposit, please contact Customer Service for bank details and instructions.</div>
+  <button class="primary" onclick="openChat()">💬 Contact Customer Service</button>
+</div>
+<div id="depositCryptoBox" style="display:none">
+  <div class="form-group"><label>Crypto</label><div class="method-grid">
+    <button class="method" id="coinBTC" onclick="selectDepositCoin('BTC')">₿ BTC</button>
+    <button class="method" id="coinUSDT" onclick="selectDepositCoin('USDT')">₮ USDT</button>
+    <button class="method" id="coinETH" onclick="selectDepositCoin('ETH')">Ξ ETH</button>
+  </div></div>
+  <div id="depositNetworkBox" style="display:none">
+    <div class="form-group"><label>Network</label><div class="method-grid">
+      <button class="method network-btn" data-network="TRC20" onclick="selectDepositNetwork('TRC20')">TRC20</button>
+      <button class="method network-btn" data-network="ERC20" onclick="selectDepositNetwork('ERC20')">ERC20</button>
+      <button class="method network-btn" data-network="BNB" onclick="selectDepositNetwork('BNB')">BNB</button>
+    </div></div>
+  </div>
+  <div id="depositAddressBox" style="display:none">
+    <div class="form-group"><label>Deposit Address</label><div style="display:flex;gap:8px"><input id="depositAddress" readonly style="flex:1"><button class="secondary" type="button" onclick="copyDepositAddress()">📋 Copy</button></div><small id="depositAddressHint" style="display:block;color:#777;margin-top:6px"></small></div>
+    <div class="form-group"><label>Amount (USDT)</label><input id="depositAmount" type="number" min="0" step="0.01" placeholder="Enter amount"></div>
+    <div class="form-group"><label>Note (optional)</label><textarea id="depositNote" placeholder="Transaction hash or note"></textarea></div>
+    <button class="primary" onclick="submitDeposit()">Submit Deposit</button>
+  </div>
+</div>
+</div></section>
 <section class="page" id="withdrawPage"><div class="card"><h2 class="section-title">Withdraw</h2><div class="form-group"><label>Method</label><div class="method-grid"><button class="method" id="cryptoMethod" onclick="selectWithdrawMethod('crypto')">₿ Crypto</button><button class="method" id="bankMethod" onclick="selectWithdrawMethod('bank')">🏦 Bank</button></div></div><div id="cryptoFields" style="display:none"><div class="form-group"><label>Amount (USDT)</label><input id="cryptoAmount" type="number" min="0"></div><div class="form-group"><label>Wallet Address</label><input id="walletAddress"></div><div class="form-group"><label>Network</label><input id="walletNetwork" placeholder="TRC20 / ERC20 / BEP20"></div><button class="primary" onclick="submitWithdraw()">Submit Withdrawal</button></div><div id="bankFields" style="display:none"><div class="form-group"><label>Amount (USDT)</label><input id="bankAmount" type="number" min="0"></div><div class="form-group"><label>Bank Name</label><input id="bankName"></div><div class="form-group"><label>Account Name</label><input id="accountName"></div><div class="form-group"><label>Account Number</label><input id="accountNumber"></div><div class="form-group"><label>Additional Details</label><textarea id="bankDetails"></textarea></div><button class="primary" onclick="submitWithdraw()">Submit Withdrawal</button></div></div></section>
 <section class="page" id="productsPage"><div class="card"><h2 class="section-title">Products</h2><div id="productList"><div class="empty">Loading...</div></div></div></section>
 <section class="page" id="transactionsPage"><div class="card"><h2 class="section-title">History</h2><div id="transactionList"><div class="empty">Loading...</div></div></div></section>
@@ -59,7 +90,69 @@ async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
 function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
 async function loadUser(){try{const d=await api('/api/me');const u=d.user||d;const name=u.username||'User';welcome.textContent='Welcome, '+name;balance.textContent=Number(u.balance||0).toFixed(2);profit.textContent=Number(u.totalProfit||u.profit||0).toFixed(2);document.getElementById('frozenAmount').textContent=Number(u.frozenAmount||0).toFixed(2);document.getElementById('creditPoints').textContent=Number(u.creditPoints||0).toFixed(0);document.getElementById('trustScore').textContent=Number(u.creditScore??100).toFixed(0);document.getElementById('securityProfit').textContent=Number(u.securityProfit||0).toFixed(2)+' USDT';document.getElementById('weeklyProfit').textContent=Number(u.weeklyProfit||0).toFixed(2)+' USDT';document.getElementById('monthlyProfit').textContent=Number(u.monthlyProfit||0).toFixed(2)+' USDT';accountUsername.textContent=name;accountUsername2.textContent=name;accountStatus.textContent=u.status||'Active';accountStatus2.textContent=u.status||'Active'}catch(e){console.log(e)}}
-async function submitDeposit(){const amount=Number(depositAmount.value);if(!amount||amount<=0)return alert('Please enter a valid amount.');try{await api('/api/deposits',{method:'POST',body:JSON.stringify({amount,note:depositNote.value.trim()})});alert('Deposit submitted successfully.');depositAmount.value='';depositNote.value='';showPage('homePage');loadTransactions(true)}catch(e){alert(e.message)}}
+let depositMethod='',depositCoin='',depositNetwork='';
+const depositAddresses={
+  'USDT-TRC20':'TS3fFhpyCECAtEnV7gurRyojgKVznieun5',
+  'USDT-ERC20':'0x84a872810ab213eacb8ac8e9e962faf34cd9a72b',
+  'ETH-ERC20':'0x84a872810ab213eacb8ac8e9e962faf34cd9a72b',
+  'BTC-BTC':'176xzWWVLW5KsHoikVPatuinJJ6vMrvifW'
+};
+function selectDepositMethod(m){
+  depositMethod=m;
+  depositCryptoMethod.classList.toggle('selected',m==='crypto');
+  depositBankMethod.classList.toggle('selected',m==='bank');
+  depositCryptoBox.style.display=m==='crypto'?'block':'none';
+  depositBankBox.style.display=m==='bank'?'block':'none';
+  if(m==='crypto') { depositCoin=''; depositNetwork=''; depositNetworkBox.style.display='none'; depositAddressBox.style.display='none'; }
+}
+function selectDepositCoin(coin){
+  depositCoin=coin;
+  [coinBTC,coinUSDT,coinETH].forEach(e=>e.classList.remove('selected'));
+  document.getElementById('coin'+coin).classList.add('selected');
+  depositNetworkBox.style.display='block';
+  depositAddressBox.style.display='none';
+  document.querySelectorAll('.network-btn').forEach(e=>e.classList.remove('selected'));
+  if(coin==='BTC') selectDepositNetwork('BTC');
+  else if(coin==='ETH') selectDepositNetwork('ERC20');
+}
+function selectDepositNetwork(network){
+  if(!depositCoin)return;
+  if(network==='BTC'&&depositCoin!=='BTC')return;
+  if(network==='TRC20'&&depositCoin!=='USDT')return;
+  if(network==='BNB'&&depositCoin!=='USDT')return;
+  if(network==='ERC20'&&depositCoin!=='USDT'&&depositCoin!=='ETH')return;
+  depositNetwork=network;
+  document.querySelectorAll('.network-btn').forEach(e=>e.classList.toggle('selected',e.dataset.network===network));
+  const key=depositCoin+'-'+network, address=depositAddresses[key]||'';
+  depositAddressBox.style.display='block';
+  depositAddress.value=address;
+  depositAddressHint.textContent=address?'Send '+depositCoin+' only through '+network+'. Double-check the address before sending.':'No '+depositCoin+' address is configured for '+network+'. Please contact Customer Service.';
+  depositAddressBox.querySelector('button.primary').style.display=address?'block':'none';
+}
+async function copyDepositAddress(){
+  const address=depositAddress.value;
+  if(!address)return;
+  try{await navigator.clipboard.writeText(address);toast&&toast('Address copied');alert('Address copied.');}
+  catch(e){depositAddress.select();document.execCommand('copy');alert('Address copied.');}
+}
+async function submitDeposit(){
+  if(depositMethod!=='crypto')return alert('Please choose Crypto or Bank.');
+  if(!depositCoin||!depositNetwork)return alert('Please choose a crypto and network.');
+  const address=depositAddress.value.trim();
+  if(!address)return alert('This network address is not configured. Please contact Customer Service.');
+  const amount=Number(depositAmount.value);
+  if(!amount||amount<=0)return alert('Please enter a valid amount.');
+  try{
+    await api('/api/deposits',{method:'POST',body:JSON.stringify({
+      amount,method:'crypto',
+      details:{coin:depositCoin,network:depositNetwork,address},
+      note:depositNote.value.trim()
+    })});
+    alert('Deposit submitted successfully. Admin will review your deposit.');
+    depositAmount.value='';depositNote.value='';
+    showPage('homePage');loadTransactions(true);
+  }catch(e){alert(e.message)}
+}
 let withdrawMethod='';function selectWithdrawMethod(m){withdrawMethod=m;cryptoMethod.classList.toggle('selected',m==='crypto');bankMethod.classList.toggle('selected',m==='bank');cryptoFields.style.display=m==='crypto'?'block':'none';bankFields.style.display=m==='bank'?'block':'none'}
 async function submitWithdraw(){if(!withdrawMethod)return alert('Please choose Crypto or Bank.');let amount,details;if(withdrawMethod==='crypto'){amount=Number(cryptoAmount.value);details={walletAddress:walletAddress.value.trim(),network:walletNetwork.value.trim()};if(!amount||!details.walletAddress)return alert('Please complete crypto details.')}else{amount=Number(bankAmount.value);details={bankName:bankName.value.trim(),accountName:accountName.value.trim(),accountNumber:accountNumber.value.trim(),additionalDetails:bankDetails.value.trim()};if(!amount||!details.bankName||!details.accountName||!details.accountNumber)return alert('Please complete bank details.')}try{await api('/api/withdrawals',{method:'POST',body:JSON.stringify({amount,method:withdrawMethod,details})});alert('Withdrawal submitted successfully.');showPage('homePage');loadTransactions(true)}catch(e){alert(e.message)}}
 async function loadProducts(){productList.innerHTML='<div class="empty">Loading...</div>';try{const d=await api('/api/products');const ps=d.products||d.data||[];productList.innerHTML=ps.length?ps.map(p=>`<div class="product"><div class="product-head"><b>${esc(p.name||'Product')}</b><span>${esc(p.price||'')} USDT</span></div><div>${esc(p.description||'')}</div><button onclick="optimizeProduct('${esc(p._id||p.id)}',this)">Optimize</button></div>`).join(''):'<div class="empty">No products available.</div>'}catch(e){productList.innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
