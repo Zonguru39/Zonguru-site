@@ -249,7 +249,7 @@ function renderTaskProducts(){
   renderTaskProgress();
   const products=currentTask.products||[];
   if(!products.length){box.innerHTML='<div class="empty">No products are available right now.</div>';return}
-  box.innerHTML=products.map((p,i)=>`<div class="product-card ${p.completed?'done':''}">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name||'Product')}">`:''}<div style="display:flex;justify-content:space-between;gap:8px"><b>${i+1}. ${esc(p.name||'Product')}</b><span class="task-status">${p.completed?'Completed':'Pending'}</span></div><div style="margin-top:7px;color:#666">${esc(p.description||'')}</div><div class="product-meta"><span>Value</span><b class="product-price">${money(Number(p.price||0))}</b></div><div class="product-meta"><span>Commission</span><b>${Number(p.profitRate||0).toFixed(2)}%</b></div><button type="button" class="buy-button" onclick="openProductDetail('${esc(p.id)}')" ${p.completed?'disabled':''}>${p.completed?'Completed':'Start Buying'}</button></div>`).join('');
+  box.innerHTML=products.map((p,i)=>`<div class="product-card ${p.completed?'done':''}">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name||'Product')}">`:''}<div style="display:flex;justify-content:space-between;gap:8px"><b>${i+1}. ${esc(p.name||'Product')}</b><span class="task-status">${p.completed?'Completed':'Pending'}</span></div><div style="margin-top:7px;color:#666">${esc(p.description||'')}</div><div class="product-meta"><span>Value</span><b class="product-price">${money(Number(p.price||0))}</b></div><div class="product-meta"><span>Profit</span><b>${money(Number(p.profitAmount||((Number(p.price||0)*Number(p.profitRate||0))/100)))}</b></div><button type="button" class="buy-button" onclick="openProductDetail('${esc(p.id)}')" ${p.completed?'disabled':''}>${p.completed?'Completed':'Start Buying'}</button></div>`).join('');
   if(Number(currentTask.completed)>=5)box.insertAdjacentHTML('afterbegin','<div class="task-complete">✓ Task completed: 5/5 orders</div>')
 }
 async function loadProducts(){const box=document.getElementById('productList');if(box)box.innerHTML='<div class="empty">Loading products...</div>';window._taskLocked=false;try{const d=await api('/api/tasks/current');window._taskLocked=Boolean(d.locked);currentTask=d.task||null;renderTaskProducts()}catch(e){window._taskLocked=false;currentTask=null;if(box)box.innerHTML='<div class="empty" style="padding:30px 12px"><div style="font-size:28px;margin-bottom:8px">ℹ️</div><b>No active product task</b><div style="margin-top:8px;color:#777">Products are not available for ordering at the moment.</div></div>';}}
@@ -268,7 +268,7 @@ function openProductDetail(id){
     <p style="color:#666;line-height:1.5">${esc(currentProduct.description||'')}</p>
     <div class="order-summary">
       <div class="order-stat"><small>Product Value</small><b>${money(currentProduct.price||0)}</b></div>
-      <div class="order-stat"><small>Commission</small><b>${money(estimated)}</b></div>
+      <div class="order-stat"><small>Profit Amount</small><b>${money(estimated)}</b></div>
     </div>
     <div class="order-stat"><small>Current Account</small><b>VIP ${Number(window._vipLevel||0)}</b></div>
     <div class="review-editor">
@@ -277,7 +277,7 @@ function openProductDetail(id){
       <div class="review-suggestions">${suggestions.map((s,i)=>`<button type="button" class="review-suggestion" onclick="useReviewSuggestion(${i})">${esc(s)}</button>`).join('')}</div>
       <textarea id="reviewText" maxlength="1000" placeholder="Write your own review..."></textarea>
     </div>
-    <div id="profitCreditPreview" class="profit-credit">Estimated profit credited after order: ${money(estimated)}</div>
+    <div id="profitCreditPreview" class="profit-credit">Profit credited after order: ${money(estimated)}</div>
     <button type="button" class="buy-button" onclick="completeCurrentOrder()">Complete Order & Add Profit</button>`;
   window._reviewSuggestions=suggestions;
   document.getElementById('productDetailModal').classList.add('show')
