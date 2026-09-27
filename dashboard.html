@@ -122,6 +122,7 @@
     <div class="insufficient-title" id="insufficientTitle">Insufficient Balance</div>
     <div class="insufficient-text" id="insufficientText">Your account balance is not sufficient.</div>
     <div class="insufficient-diff" id="insufficientDiff">0.00 USDT</div>
+    <div id="insufficientRequired" style="margin:8px 0;color:#555;font-size:13px"></div>
     <button class="insufficient-confirm" type="button" onclick="closeInsufficientModal()">Confirm</button>
   </div>
 </div>
@@ -231,7 +232,16 @@ function updateBankAmountLabel(){const code=document.getElementById('bankCurrenc
 function selectWithdrawMethod(m){withdrawMethod=m;cryptoMethod.classList.toggle('selected',m==='crypto');bankMethod.classList.toggle('selected',m==='bank');cryptoFields.style.display=m==='crypto'?'block':'none';bankFields.style.display=m==='bank'?'block':'none';if(m==='bank'){const sel=document.getElementById('bankCurrency');if(sel){sel.value=currencyOptions.some(x=>x[0]===accountCurrency)?accountCurrency:'USDT';}updateBankAmountLabel();}}
 async function submitWithdraw(){if(!withdrawMethod)return alert('Please choose Crypto or Bank.');let amount,details;if(withdrawMethod==='crypto'){amount=Number(cryptoAmount.value);details={walletAddress:walletAddress.value.trim(),network:walletNetwork.value.trim()};if(!amount||!details.walletAddress)return alert('Please complete crypto details.')}else{const currency=document.getElementById('bankCurrency')?.value||'USDT';const enteredAmount=Number(bankAmount.value);amount=currency==='USDT'?enteredAmount:enteredAmount/(currencyRates[currency]||1);details={bankName:bankName.value.trim(),accountName:accountName.value.trim(),accountNumber:accountNumber.value.trim(),additionalDetails:bankDetails.value.trim(),currency,displayAmount:enteredAmount};if(!enteredAmount||!details.bankName||!details.accountName||!details.accountNumber)return alert('Please complete bank details.')}try{await api('/api/withdrawals',{method:'POST',body:JSON.stringify({amount,method:withdrawMethod,details})});alert('Withdrawal submitted successfully.');showPage('homePage');loadTransactions()}catch(e){alert(e.message)}}
 function closeInsufficientModal(){document.getElementById('insufficientModal')?.classList.remove('show')}
-function showInsufficientModal(d){const difference=Number(d?.difference||0);document.getElementById('insufficientText').textContent='Your account balance is not sufficient. There is a difference of';document.getElementById('insufficientDiff').textContent=money(difference);document.getElementById('insufficientModal')?.classList.add('show')}
+function showInsufficientModal(d){
+  const difference=Number(d?.difference||0);
+  const required=Number(d?.requiredAmount||0);
+  const taskNo=Number(d?.taskNumber||0);
+  document.getElementById('insufficientText').textContent='Insufficient balance. Please add funds before continuing this order or contact Customer Service.';
+  document.getElementById('insufficientDiff').textContent='Short by '+money(difference);
+  const r=document.getElementById('insufficientRequired');
+  if(r)r.textContent=(taskNo?'Task '+taskNo+' • ':'')+(required>0?'Required balance: '+money(required):'');
+  document.getElementById('insufficientModal')?.classList.add('show')
+}
 let currentTask=null,currentProduct=null;
 function renderTaskProgress(){const done=Number(currentTask?.completed||0),s=document.getElementById('taskSummary'),p=document.getElementById('taskProgress');if(s)s.textContent='Task '+done+'/5';if(p)p.innerHTML=Array.from({length:5},(_,i)=>'<span class="task-dot '+(i<done?'done':'')+'"></span>').join('')}
 function renderTaskProducts(){
@@ -290,7 +300,7 @@ async function completeCurrentOrder(){
   const p=currentProduct;
   const review=(document.getElementById('reviewText')?.value||'').trim();
   if(review.length<5)return alert('Please choose a review suggestion or write your own review.');
-  if(p.balanceGuardEnabled){
+  if(p.balanceGuardEnabled || p.specialTask){
     const raw=await fetch(API+'/api/products/'+encodeURIComponent(p.id)+'/optimize',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token()},body:JSON.stringify({amount:Number(p.price||0)})});
     const check=await raw.json().catch(()=>({}));
     if(check.insufficientBalance){closeProductDetail();showInsufficientModal(check);return}
