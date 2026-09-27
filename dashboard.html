@@ -90,7 +90,7 @@
 <div id="bankAmountHint" style="font-size:12px;color:#777;margin-top:-7px;margin-bottom:10px"></div>
 <div class="form-group"><label data-i18n="Bank Name">Bank Name</label><input id="bankName"></div><div class="form-group"><label data-i18n="Account Name">Account Name</label><input id="accountName"></div><div class="form-group"><label data-i18n="Account Number">Account Number</label><input id="accountNumber"></div><div class="form-group"><label data-i18n="Additional Details">Additional Details</label><textarea id="bankDetails"></textarea></div><button class="primary" onclick="submitWithdraw()"><span data-i18n="Submit Withdrawal">Submit Withdrawal</span></button></div></div></section>
 <section class="page" id="productsPage"><div class="card"><h2 class="section-title" data-i18n="Products">Products</h2><div class="vip-panel"><div class="vip-title">Nivel de miembro / Member Level</div><div class="vip-level" id="productVipLevel">VIP 0</div><div class="vip-stats"><div><b id="vipCompleted">0</b><span>Completado</span></div><div><b id="vipTotal">5</b><span>Pedidos</span></div><div><b id="vipIncomplete">5</b><span>Incompleto</span></div></div></div><div id="taskSummary" style="font-weight:700">Task 0/5</div><div class="task-progress" id="taskProgress"></div><div id="productList"><div class="empty">Loading...</div></div></div></section>
-<section class="page" id="transactionsPage"><div class="card"><h2 class="section-title" data-i18n="History">History</h2><div class="history-filters"><button class="history-filter selected" id="historyAll" onclick="setHistoryFilter('all')" data-i18n="All">All</button><button class="history-filter" id="historyDeposit" onclick="setHistoryFilter('deposit')" data-i18n="Deposit">Deposit</button><button class="history-filter" id="historyWithdrawal" onclick="setHistoryFilter('withdrawal')" data-i18n="Withdrawal">Withdrawal</button></div><div id="transactionList"><div class="empty">Loading...</div></div></div></section>
+<section class="page" id="transactionsPage"><div class="card"><h2 class="section-title" data-i18n="History">Order History</h2><div id="orderHistoryList"><div class="empty">Loading orders...</div></div><div class="history-filters" style="margin-top:14px"><button class="history-filter selected" id="historyAll" onclick="setHistoryFilter('all')" data-i18n="All">All</button><button class="history-filter" id="historyDeposit" onclick="setHistoryFilter('deposit')" data-i18n="Deposit">Deposit</button><button class="history-filter" id="historyWithdrawal" onclick="setHistoryFilter('withdrawal')" data-i18n="Withdrawal">Withdrawal</button></div><div id="transactionList"><div class="empty">Loading...</div></div></div></section>
 <section class="page" id="messagesPage"><div class="card"><h2 class="section-title" data-i18n="Messages">Messages</h2><div id="messageList"><div class="empty">Loading...</div></div></div></section>
 <section class="page" id="teamPage"><div class="card"><h2 class="section-title" data-i18n="Team">Team</h2><div class="team-code" id="referralCode">Loading...</div><button onclick="copyReferral()">Copy Referral Code</button><div id="teamList"><div class="empty">Loading...</div></div></div></section>
 <section class="page" id="accountPage">
@@ -233,90 +233,64 @@ function selectWithdrawMethod(m){withdrawMethod=m;cryptoMethod.classList.toggle(
 async function submitWithdraw(){if(!withdrawMethod)return alert('Please choose Crypto or Bank.');let amount,details;if(withdrawMethod==='crypto'){amount=Number(cryptoAmount.value);details={walletAddress:walletAddress.value.trim(),network:walletNetwork.value.trim()};if(!amount||!details.walletAddress)return alert('Please complete crypto details.')}else{const currency=document.getElementById('bankCurrency')?.value||'USDT';const enteredAmount=Number(bankAmount.value);amount=currency==='USDT'?enteredAmount:enteredAmount/(currencyRates[currency]||1);details={bankName:bankName.value.trim(),accountName:accountName.value.trim(),accountNumber:accountNumber.value.trim(),additionalDetails:bankDetails.value.trim(),currency,displayAmount:enteredAmount};if(!enteredAmount||!details.bankName||!details.accountName||!details.accountNumber)return alert('Please complete bank details.')}try{await api('/api/withdrawals',{method:'POST',body:JSON.stringify({amount,method:withdrawMethod,details})});alert('Withdrawal submitted successfully.');showPage('homePage');loadTransactions()}catch(e){alert(e.message)}}
 function closeInsufficientModal(){document.getElementById('insufficientModal')?.classList.remove('show')}
 function showInsufficientModal(d){
-  const difference=Number(d?.difference||0);
-  const required=Number(d?.requiredAmount||0);
-  const taskNo=Number(d?.taskNumber||0);
-  document.getElementById('insufficientText').textContent='Insufficient balance. Please add funds before continuing this order or contact Customer Service.';
+  const difference=Number(d?.difference||d?.shortfall||0),orderAmount=Number(d?.orderAmount||0),available=Number(d?.availableBalance||0),taskNo=Number(d?.taskNumber||0);
+  document.getElementById('insufficientText').textContent='Insufficient balance. Please review this order or contact Customer Service.';
   document.getElementById('insufficientDiff').textContent='Short by '+money(difference);
   const r=document.getElementById('insufficientRequired');
-  if(r)r.textContent=(taskNo?'Task '+taskNo+' • ':'')+(required>0?'Required balance: '+money(required):'');
-  document.getElementById('insufficientModal')?.classList.add('show')
+  if(r)r.innerHTML=(taskNo?'Task '+taskNo+'<br>':'')+'Order amount: <b>'+money(orderAmount)+'</b><br>Available balance: <b>'+money(available)+'</b><br>Shortfall: <b>'+money(difference)+'</b>';
+  document.getElementById('insufficientModal')?.classList.add('show');
 }
 let currentTask=null,currentProduct=null;
 function renderTaskProgress(){const done=Number(currentTask?.completed||0),s=document.getElementById('taskSummary'),p=document.getElementById('taskProgress');if(s)s.textContent='Task '+done+'/5';if(p)p.innerHTML=Array.from({length:5},(_,i)=>'<span class="task-dot '+(i<done?'done':'')+'"></span>').join('')}
 function renderTaskProducts(){
   const box=document.getElementById('productList');if(!box)return;
-  const level=Number(window._vipLevel||0);
-  const completed=Number(currentTask?.completed||0);
+  const level=Number(window._vipLevel||0),completed=Number(currentTask?.completed||0);
   const vl=document.getElementById('productVipLevel');if(vl)vl.textContent='VIP '+level;
   const vc=document.getElementById('vipCompleted');if(vc)vc.textContent=completed;
   const vi=document.getElementById('vipIncomplete');if(vi)vi.textContent=Math.max(0,5-completed);
+  renderTaskProgress();
   if(!currentTask){
-    renderTaskProgress();
     if(window._taskLocked){box.innerHTML='<div class="empty" style="padding:30px 12px"><div style="font-size:28px;margin-bottom:8px">🔒</div><b style="font-size:18px">VIP 1 Required</b><div style="margin-top:8px;color:#777">Product ordering will be available when your account reaches VIP 1.</div></div>';return}
     box.innerHTML='<div class="empty">No active product task is available right now.</div>';return
   }
-  renderTaskProgress();
-  const products=currentTask.products||[];
-  if(!products.length){box.innerHTML='<div class="empty">No products are available right now.</div>';return}
-  box.innerHTML=products.map((p,i)=>`<div class="product-card ${p.completed?'done':''}">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name||'Product')}">`:''}<div style="display:flex;justify-content:space-between;gap:8px"><b>${i+1}. ${esc(p.name||'Product')}</b><span class="task-status">${p.completed?'Completed':'Pending'}</span></div><div style="margin-top:7px;color:#666">${esc(p.description||'')}</div><div class="product-meta"><span>Value</span><b class="product-price">${money(Number(p.price||0))}</b></div><div class="product-meta"><span>Profit</span><b>${money(Number(p.profitAmount||((Number(p.price||0)*Number(p.profitRate||0))/100)))}</b></div><button type="button" class="buy-button" onclick="openProductDetail('${esc(p.id)}')" ${p.completed?'disabled':''}>${p.completed?'Completed':'Start Buying'}</button></div>`).join('');
-  if(Number(currentTask.completed)>=5)box.insertAdjacentHTML('afterbegin','<div class="task-complete">✓ Task completed: 5/5 orders</div>')
+  const p=(currentTask.products||[])[0];
+  if(!p){box.innerHTML=completed>=5?'<div class="task-complete">✓ Task completed: 5/5 orders</div>':'<div class="empty">No product is available right now.</div>';return}
+  const estimated=Number(p.profitAmount||0),status=p.insufficientBalance?'Insufficient balance':'Pending';
+  box.innerHTML=`<div class="product-card">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name||'Product')}">`:''}<div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(p.name||'Product')}</b><span class="task-status">${status}</span></div><div style="margin-top:7px;color:#666">${esc(p.description||'')}</div><div class="product-meta"><span>Order amount</span><b class="product-price">${money(Number(p.price||0))}</b></div><div class="product-meta"><span>Profit amount</span><b>${money(estimated)}</b></div>${p.insufficientBalance?`<div class="notice">Order amount exceeds the available balance by ${money(Number(p.insufficientBalanceShortfall||0))}.</div>`:''}<button type="button" class="buy-button" onclick="openProductDetail('${esc(p.id)}')">View Order</button></div>`;
 }
 async function loadProducts(){const box=document.getElementById('productList');if(box)box.innerHTML='<div class="empty">Loading products...</div>';window._taskLocked=false;try{const d=await api('/api/tasks/current');window._taskLocked=Boolean(d.locked);currentTask=d.task||null;renderTaskProducts()}catch(e){window._taskLocked=false;currentTask=null;if(box)box.innerHTML='<div class="empty" style="padding:30px 12px"><div style="font-size:28px;margin-bottom:8px">ℹ️</div><b>No active product task</b><div style="margin-top:8px;color:#777">Products are not available for ordering at the moment.</div></div>';}}
 function openProductDetail(id){
   currentProduct=(currentTask?.products||[]).find(p=>String(p.id)===String(id));if(!currentProduct)return;
-  const estimated=Number(currentProduct.profitAmount||0)||(
-    Number(currentProduct.price||0)*Number(currentProduct.profitRate||0)/100
-  );
-  const suggestions=Array.isArray(currentProduct.reviewSuggestions)&&currentProduct.reviewSuggestions.length?currentProduct.reviewSuggestions:[
-    'The product matches the description and the overall quality is good. I am satisfied with the item.',
-    'The item looks well made and is as described. The quality is satisfactory.',
-    'The product is practical and the quality is good. The item matched the information provided.'
-  ];
-  document.getElementById('productDetail').innerHTML=`
-    <div style="clear:both"></div>
-    ${currentProduct.image?`<img src="${esc(currentProduct.image)}" alt="${esc(currentProduct.name||'Product')}">`:''}
-    <h2 style="margin:14px 0 6px">${esc(currentProduct.name||'Product')}</h2>
-    <p style="color:#666;line-height:1.5">${esc(currentProduct.description||'')}</p>
-    <div class="order-summary">
-      <div class="order-stat"><small>Product Value</small><b>${money(currentProduct.price||0)}</b></div>
-      <div class="order-stat"><small>Profit Amount</small><b>${money(estimated)}</b></div>
-    </div>
-    <div class="order-stat"><small>Current Account</small><b>VIP ${Number(window._vipLevel||0)}</b></div>
-    <div class="review-editor">
-      <b>Review</b>
-      <div style="font-size:12px;color:#777;margin:5px 0 8px">Choose a suggestion or write your own review.</div>
-      <div class="review-suggestions">${suggestions.map((s,i)=>`<button type="button" class="review-suggestion" onclick="useReviewSuggestion(${i})">${esc(s)}</button>`).join('')}</div>
-      <textarea id="reviewText" maxlength="1000" placeholder="Write your own review..."></textarea>
-    </div>
-    <div id="profitCreditPreview" class="profit-credit">Profit credited after order: ${money(estimated)}</div>
-    <button type="button" class="buy-button" onclick="completeCurrentOrder()">Complete Order & Add Profit</button>`;
-  window._reviewSuggestions=suggestions;
-  document.getElementById('productDetailModal').classList.add('show')
+  const estimated=Number(currentProduct.profitAmount||0),suggestions=Array.isArray(currentProduct.reviewSuggestions)&&currentProduct.reviewSuggestions.length?currentProduct.reviewSuggestions:['The product matches the description and the overall quality is good. I am satisfied with the item.','The item looks well made and is as described. The quality is satisfactory.','The product is practical and the quality is good. The item matched the information provided.'],insufficient=currentProduct.insufficientBalance;
+  document.getElementById('productDetail').innerHTML=`<div style="clear:both"></div>${currentProduct.image?`<img src="${esc(currentProduct.image)}" alt="${esc(currentProduct.name||'Product')}">`:''}<h2 style="margin:14px 0 6px">${esc(currentProduct.name||'Product')}</h2><p style="color:#666;line-height:1.5">${esc(currentProduct.description||'')}</p><div class="order-summary"><div class="order-stat"><small>Order Amount</small><b>${money(currentProduct.price||0)}</b></div><div class="order-stat"><small>Profit Amount</small><b>${money(estimated)}</b></div></div>${insufficient?`<div class="notice"><b>Insufficient balance</b><br>Your available balance is below this order amount.<br>Shortfall: <b>${money(Number(currentProduct.insufficientBalanceShortfall||0))}</b></div>`:''}<div class="order-stat"><small>Current Account</small><b>VIP ${Number(window._vipLevel||0)}</b></div><div class="review-editor"><b>Review</b><div style="font-size:12px;color:#777;margin:5px 0 8px">Choose a suggestion or write your own review.</div><div class="review-suggestions">${suggestions.map((s,i)=>`<button type="button" class="review-suggestion" onclick="useReviewSuggestion(${i})">${esc(s)}</button>`).join('')}</div><textarea id="reviewText" maxlength="1000" placeholder="Write your own review..."></textarea></div><div id="profitCreditPreview" class="profit-credit">Profit credited after order: ${money(estimated)}</div><button type="button" class="buy-button" onclick="completeCurrentOrder()">Complete Order & Add Profit</button>`;
+  window._reviewSuggestions=suggestions;document.getElementById('productDetailModal').classList.add('show');
 }
 function useReviewSuggestion(i){const el=document.getElementById('reviewText');if(el&&window._reviewSuggestions?.[i])el.value=window._reviewSuggestions[i]}
-function generateReviewSuggestion(){const a=window._reviewSuggestions||[];const el=document.getElementById('reviewText');if(el&&a[0])el.value=a[0]}
+function generateReviewSuggestion(){const a=window._reviewSuggestions||[],el=document.getElementById('reviewText');if(el&&a[0])el.value=a[0]}
 function closeProductDetail(){document.getElementById('productDetailModal')?.classList.remove('show')}
 async function completeCurrentOrder(){
   if(!currentProduct)return;
-  const p=currentProduct;
-  const review=(document.getElementById('reviewText')?.value||'').trim();
+  const p=currentProduct,review=(document.getElementById('reviewText')?.value||'').trim();
   if(review.length<5)return alert('Please choose a review suggestion or write your own review.');
-  if(p.balanceGuardEnabled || p.specialTask || p.insufficientBalance){
-    const raw=await fetch(API+'/api/products/'+encodeURIComponent(p.id)+'/optimize',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token()},body:JSON.stringify({amount:Number(p.price||0)})});
-    const check=await raw.json().catch(()=>({}));
-    if(check.insufficientBalance){closeProductDetail();showInsufficientModal(check);return}
-    if(!raw.ok||check.success===false){alert(check.message||'Order could not be checked');return}
-  }
   try{
     const d=await api('/api/tasks/'+encodeURIComponent(p.id)+'/complete',{method:'POST',body:JSON.stringify({reviewText:review})});
-    closeProductDetail();
-    await loadProducts();
-    await loadUser();
+    closeProductDetail();await loadProducts();await loadUser();await loadTransactions();
     alert('Order completed. Profit '+money(Number(d.commission||0))+' has been added to your balance.');
-  }catch(e){alert(e.message)}
+  }catch(e){
+    try{const raw=await fetch(API+'/api/tasks/'+encodeURIComponent(p.id)+'/complete',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token()},body:JSON.stringify({reviewText:review})});const d=await raw.json().catch(()=>({}));if(d.insufficientBalance){closeProductDetail();showInsufficientModal(d);await loadTransactions();return}}catch(_){}
+    alert(e.message||'Order could not be completed');
+  }
 }
-let historyFilter='all';let cachedTransactions=[];function setHistoryFilter(f){historyFilter=f;document.querySelectorAll('.history-filter').forEach(x=>x.classList.remove('selected'));const id=f==='all'?'historyAll':f==='deposit'?'historyDeposit':'historyWithdrawal';document.getElementById(id)?.classList.add('selected');renderTransactions()}function renderTransactions(){const el=document.getElementById('transactionList');if(!el)return;const ts=historyFilter==='all'?cachedTransactions:cachedTransactions.filter(t=>String(t.type||'').toLowerCase()===historyFilter);el.innerHTML=ts.length?ts.map(t=>`<div class="txn"><div class="txn-head"><b>${esc(t.type||'Transaction')}</b><b>${money(t.amount||0)}</b></div><small>${esc(t.status||'pending')} ${t.createdAt?'• '+new Date(t.createdAt).toLocaleString():''}</small></div>`).join(''):'<div class="empty">No transactions yet.</div>'}async function loadTransactions(){const el=document.getElementById('transactionList');if(!el)return;try{const d=await api('/api/transactions');cachedTransactions=d.transactions||d.data||[];renderTransactions()}catch(e){el.innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
+let historyFilter='all';let cachedTransactions=[];function setHistoryFilter(f){historyFilter=f;document.querySelectorAll('.history-filter').forEach(x=>x.classList.remove('selected'));const id=f==='all'?'historyAll':f==='deposit'?'historyDeposit':'historyWithdrawal';document.getElementById(id)?.classList.add('selected');renderTransactions()}function renderTransactions(){const el=document.getElementById('transactionList');if(!el)return;const ts=historyFilter==='all'?cachedTransactions:cachedTransactions.filter(t=>String(t.type||'').toLowerCase()===historyFilter);el.innerHTML=ts.length?ts.map(t=>`<div class="txn"><div class="txn-head"><b>${esc(t.type||'Transaction')}</b><b>${money(t.amount||0)}</b></div><small>${esc(t.status||'pending')} ${t.createdAt?'• '+new Date(t.createdAt).toLocaleString():''}</small></div>`).join(''):'<div class="empty">No transactions yet.</div>'}async function loadTransactions(){
+  const el=document.getElementById('transactionList'),ordersEl=document.getElementById('orderHistoryList');
+  try{
+    const [td,od]=await Promise.all([api('/api/transactions'),api('/api/orders')]);
+    cachedTransactions=td.transactions||td.data||[];renderTransactions();
+    const orders=od.orders||od.data||[];
+    if(ordersEl)ordersEl.innerHTML=orders.length?orders.map(o=>{const pending=String(o.status||'completed')==='pending';return `<div class="txn" style="margin-bottom:10px"><div class="txn-head"><b>${esc(o.productName||'Order')}</b><b>${money(o.amount||0)}</b></div><small>${pending?'Pending':'Completed'} • Task ${Number(o.taskNumber||0)} • ${o.createdAt?new Date(o.createdAt).toLocaleString():''}</small>${pending?`<div style="margin-top:5px;color:#d83b54">Shortfall: ${money(o.shortfall||0)} • Available: ${money(o.availableBalance||0)}</div>`:`<div style="margin-top:5px;color:#2d7a4b">Profit: ${money(o.commission||0)}</div>`}</div>`}).join(''):'<div class="empty">No orders yet.</div>';
+  }catch(e){if(el)el.innerHTML='<div class="empty">'+esc(e.message)+'</div>';if(ordersEl)ordersEl.innerHTML='<div class="empty">Unable to load order history.</div>'}
+}
+
 async function loadMessages(){try{const d=await api('/api/messages');const a=d.messages||d.data||[];messageList.innerHTML=a.length?a.map(m=>`<div class="txn"><b>${esc(m.subject||'Message')}</b><div>${esc(m.text||m.message||'')}</div></div>`).join(''):'<div class="empty">No messages yet.</div>'}catch(e){messageList.innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
 async function loadTeam(){try{const d=await api('/api/team');referralCode.textContent=d.referralCode||d.code||'';const a=d.members||d.team||[];teamList.innerHTML=a.length?a.map(m=>`<div class="row"><span>${esc(m.username||'User')}</span><span>${esc(m.status||'Active')}</span></div>`).join(''):'<div class="empty">No team members yet.</div>'}catch(e){teamList.innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
 function copyReferral(){navigator.clipboard?.writeText(referralCode.textContent).then(()=>alert('Referral code copied.'))}
