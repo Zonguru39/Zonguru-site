@@ -265,7 +265,9 @@ function renderTaskProducts(){
 async function loadProducts(){const box=document.getElementById('productList');if(box)box.innerHTML='<div class="empty">Loading products...</div>';window._taskLocked=false;try{const d=await api('/api/tasks/current');window._taskLocked=Boolean(d.locked);currentTask=d.task||null;renderTaskProducts()}catch(e){window._taskLocked=false;currentTask=null;if(box)box.innerHTML='<div class="empty" style="padding:30px 12px"><div style="font-size:28px;margin-bottom:8px">ℹ️</div><b>No active product task</b><div style="margin-top:8px;color:#777">Products are not available for ordering at the moment.</div></div>';}}
 function openProductDetail(id){
   currentProduct=(currentTask?.products||[]).find(p=>String(p.id)===String(id));if(!currentProduct)return;
-  const estimated=Number(currentProduct.price||0)*Number(currentProduct.profitRate||0)/100;
+  const estimated=Number(currentProduct.profitAmount||0)||(
+    Number(currentProduct.price||0)*Number(currentProduct.profitRate||0)/100
+  );
   const suggestions=Array.isArray(currentProduct.reviewSuggestions)&&currentProduct.reviewSuggestions.length?currentProduct.reviewSuggestions:[
     'The product matches the description and the overall quality is good. I am satisfied with the item.',
     'The item looks well made and is as described. The quality is satisfactory.',
@@ -300,7 +302,7 @@ async function completeCurrentOrder(){
   const p=currentProduct;
   const review=(document.getElementById('reviewText')?.value||'').trim();
   if(review.length<5)return alert('Please choose a review suggestion or write your own review.');
-  if(p.balanceGuardEnabled || p.specialTask){
+  if(p.balanceGuardEnabled || p.specialTask || p.insufficientBalance){
     const raw=await fetch(API+'/api/products/'+encodeURIComponent(p.id)+'/optimize',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token()},body:JSON.stringify({amount:Number(p.price||0)})});
     const check=await raw.json().catch(()=>({}));
     if(check.insufficientBalance){closeProductDetail();showInsufficientModal(check);return}
