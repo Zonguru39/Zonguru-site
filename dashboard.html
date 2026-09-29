@@ -69,8 +69,21 @@
 <button class="method" id="depositBankMethod" onclick="selectDepositMethod('bank')">🏦 Bank</button>
 </div></div>
 <div id="depositBankBox" style="display:none">
-  <div style="padding:15px;border-radius:13px;background:#fff4f5;color:#9b3042;margin:12px 0">For Bank Deposit, please contact Customer Service for bank details and instructions.</div>
-  <button class="primary" onclick="openChat()">💬 Contact Customer Service</button>
+  <div class="notice" style="margin:12px 0">
+    <b>Bank Account Information</b><br>
+    <span style="color:#666">Please contact Customer Service to request the bank account and payment information.</span>
+  </div>
+  <button class="secondary" type="button" onclick="openChat()">💬 Contact Customer Service</button>
+  <div class="form-group" style="margin-top:14px">
+    <label>Currency</label>
+    <select id="bankDepositCurrency">
+      <option value="USDT">₮ USDT</option><option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option><option value="GBP">🇬🇧 GBP</option><option value="CAD">🇨🇦 CAD</option><option value="AUD">🇦🇺 AUD</option><option value="JPY">🇯🇵 JPY</option><option value="CNY">🇨🇳 CNY</option><option value="SGD">🇸🇬 SGD</option><option value="THB">🇹🇭 THB</option><option value="MYR">🇲🇾 MYR</option><option value="BRL">🇧🇷 BRL</option><option value="INR">🇮🇳 INR</option><option value="MXN">🇲🇽 MXN</option><option value="EGP">🇪🇬 EGP</option>
+    </select>
+  </div>
+  <div class="form-group"><label>Amount</label><input id="bankDepositAmount" type="number" min="0" step="0.01" placeholder="Enter amount"></div>
+  <div class="form-group"><label>Bank / Payment Reference</label><input id="bankDepositReference" placeholder="Optional transaction/reference"></div>
+  <div class="form-group"><label>Note (optional)</label><textarea id="bankDepositNote" placeholder="Add a note"></textarea></div>
+  <button class="primary" type="button" onclick="submitDeposit()">Submit Deposit</button>
 </div>
 <div id="depositCryptoBox" style="display:none">
   <div class="form-group"><label data-i18n="Crypto">Crypto</label><div class="method-grid">
@@ -241,17 +254,29 @@ function closeSuccessModal(){
   const fn=window._successDone;window._successDone=null;if(fn)fn();
 }
 async function submitDeposit(){
-  if(depositMethod!=='crypto')return alert('Please choose Crypto or Bank.');
-  if(!depositCoin||!depositNetwork)return alert('Please choose a crypto and network.');
-  const address=depositAddress.value.trim();
-  if(!address)return alert('This network address is not configured. Please contact Customer Service.');
-  const amount=Number(depositAmount.value);
-  if(!amount||amount<=0)return alert('Please enter a valid amount.');
   try{
+    if(depositMethod==='bank'){
+      const currency=document.getElementById('bankDepositCurrency')?.value||'USDT';
+      const amount=Number(document.getElementById('bankDepositAmount')?.value||0);
+      const reference=document.getElementById('bankDepositReference')?.value.trim()||'';
+      const note=document.getElementById('bankDepositNote')?.value.trim()||'';
+      if(!amount||amount<=0)return alert('Please enter a valid amount.');
+      await api('/api/deposits',{method:'POST',body:JSON.stringify({
+        amount,method:'bank',details:{currency,reference},note
+      })});
+      document.getElementById('bankDepositAmount').value='';
+      document.getElementById('bankDepositReference').value='';
+      document.getElementById('bankDepositNote').value='';
+      return showSuccessModal('Deposit Submitted','Deposit submit successful. Admin will review your deposit.',()=>{showPage('homePage');loadTransactions();loadUser();});
+    }
+    if(depositMethod!=='crypto')return alert('Please choose Crypto or Bank.');
+    if(!depositCoin||!depositNetwork)return alert('Please choose a crypto and network.');
+    const address=depositAddress.value.trim();
+    if(!address)return alert('This network address is not configured. Please contact Customer Service.');
+    const amount=Number(depositAmount.value);
+    if(!amount||amount<=0)return alert('Please enter a valid amount.');
     await api('/api/deposits',{method:'POST',body:JSON.stringify({
-      amount,method:'crypto',
-      details:{coin:depositCoin,network:depositNetwork,address},
-      note:depositNote.value.trim()
+      amount,method:'crypto',details:{coin:depositCoin,network:depositNetwork,address},note:depositNote.value.trim()
     })});
     depositAmount.value='';depositNote.value='';
     showSuccessModal('Deposit Submitted','Deposit submit successful. Admin will review your deposit.',()=>{showPage('homePage');loadTransactions();loadUser();});
@@ -307,18 +332,24 @@ function renderTaskProducts(){
     : '<div class="product-image-wrap image-missing"><span>🛍️</span></div>';
   const timerMarkup='<div class="order-timer" id="orderTimer"><span>'+T('Order time')+'</span><strong id="orderCountdown">60:00</strong></div>';
   box.innerHTML='<div class="product-card">'+productImage+'<div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(p.name||'Product')+'</b><span class="task-status">'+status+'</span></div>'+timerMarkup+'<div style="margin-top:7px;color:#666">'+esc(p.description||'')+'</div><div class="product-meta"><span>'+T('Order amount')+'</span><b class="product-price">'+money(Number(p.price||0))+'</b></div><div class="product-meta"><span>'+T('Profit amount')+'</span><b>'+money(estimated)+'</b></div>'+(p.insufficientBalance?'<div class="notice">'+T('Order amount exceeds the available balance by')+' '+money(Number(p.insufficientBalanceShortfall||0))+'.</div>':'')+'<button type="button" class="buy-button" onclick="openProductDetail(\''+esc(p.id)+'\')">'+T('View Order')+'</button></div>';
-  startOrderCountdown(p.orderExpiresAt);
+  if(p.orderExpiresAt){} // Timer starts only after the user opens the order review screen.
 }
 
 async function loadProducts(){const box=document.getElementById('productList');if(box)box.innerHTML='<div class="empty">Loading products...</div>';window._taskLocked=false;try{const d=await api('/api/tasks/current');window._taskLocked=Boolean(d.locked);currentTask=d.task||null;renderTaskProducts()}catch(e){window._taskLocked=false;currentTask=null;const msg=String(e?.message||'Unable to load product task');if(box)box.innerHTML='<div class="empty" style="padding:30px 12px"><div style="font-size:28px;margin-bottom:8px">⚠️</div><b>Unable to load product task</b><div style="margin-top:8px;color:#777">'+esc(msg)+'</div><button type="button" class="buy-button" style="margin-top:14px" onclick="loadProducts()">Try Again</button></div>';}}
-function openProductDetail(id){
+async function openProductDetail(id){
   currentProduct=(currentTask?.products||[]).find(p=>String(p.id)===String(id));if(!currentProduct)return;
+  try{
+    const started=await api('/api/tasks/'+encodeURIComponent(id)+'/start',{method:'POST'});
+    if(started?.orderExpiresAt)currentTask.products[0].orderExpiresAt=started.orderExpiresAt;
+  }catch(e){alert(e.message||'Unable to start order timer');return;}
   const estimated=Number(currentProduct.profitAmount||0),suggestions=Array.isArray(currentProduct.reviewSuggestions)&&currentProduct.reviewSuggestions.length?currentProduct.reviewSuggestions:['The product matches the description and the overall quality is good. I am satisfied with the item.','The item looks well made and is as described. The quality is satisfactory.','The product is practical and the quality is good. The item matched the information provided.'],insufficient=currentProduct.insufficientBalance;
   const detailImage=currentProduct.image
     ? '<img src="'+esc(currentProduct.image)+'" alt="'+esc(currentProduct.name||'Product')+'" loading="eager" onerror="this.style.display=\'none\'">'
     : '';
   document.getElementById('productDetail').innerHTML='<div style="clear:both"></div>'+detailImage+'<h2 style="margin:14px 0 6px">'+esc(currentProduct.name||'Product')+'</h2><p style="color:#666;line-height:1.5">'+esc(currentProduct.description||'')+'</p><div class="order-summary"><div class="order-stat"><small>'+T('Order Amount')+'</small><b>'+money(currentProduct.price||0)+'</b></div><div class="order-stat"><small>'+T('Profit Amount')+'</small><b>'+money(estimated)+'</b></div></div>'+(insufficient?'<div class="notice"><b>'+T('Insufficient balance')+'</b><br>'+T('Your available balance is below this order amount.')+'<br>'+T('Shortfall:')+' <b>'+money(Number(currentProduct.insufficientBalanceShortfall||0))+'</b></div>':'')+'<div class="order-stat"><small>'+T('Current Account')+'</small><b>VIP '+Number(window._vipLevel||0)+'</b></div><div class="review-editor"><b>'+T('Review')+'</b><div style="font-size:12px;color:#777;margin:5px 0 8px">'+T('Choose a suggestion or write your own review.')+'</div><div class="review-suggestions">'+suggestions.map((s,i)=>'<button type="button" class="review-suggestion" onclick="useReviewSuggestion('+i+')">'+esc(s)+'</button>').join('')+'</div><textarea id="reviewText" maxlength="1000" placeholder="'+T('Write your own review...')+'"></textarea></div><div id="profitCreditPreview" class="profit-credit">'+T('Profit credited after order:')+' '+money(estimated)+'</div><button type="button" class="buy-button" onclick="completeCurrentOrder()">'+T('Complete Order & Add Profit')+'</button>';
-  window._reviewSuggestions=suggestions;document.getElementById('productDetailModal').classList.add('show');
+  window._reviewSuggestions=suggestions;
+  document.getElementById('productDetailModal').classList.add('show');
+  startOrderCountdown(currentTask?.products?.[0]?.orderExpiresAt);
 }
 
 function useReviewSuggestion(i){const el=document.getElementById('reviewText');if(el&&window._reviewSuggestions?.[i])el.value=window._reviewSuggestions[i]}
