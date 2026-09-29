@@ -379,8 +379,10 @@ async function completeCurrentOrder(){
   if(review.length<5)return alert('Please choose a review suggestion or write your own review.');
   try{
     const d=await api('/api/tasks/'+encodeURIComponent(p.id)+'/complete',{method:'POST',body:JSON.stringify({reviewText:review})});
-    closeProductDetail();await loadProducts();await loadUser();await loadTransactions();
+    closeProductDetail();
+    // Show completion immediately after the server confirms the order.
     showSuccessModal('Order Completed','Profit '+money(Number(d.commission||0))+' has been added to your balance.');
+    Promise.allSettled([loadProducts(),loadUser(),loadTransactions()]);
   }catch(e){
     try{const raw=await fetch(API+'/api/tasks/'+encodeURIComponent(p.id)+'/complete',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token()},body:JSON.stringify({reviewText:review})});const d=await raw.json().catch(()=>({}));if(d.insufficientBalance){closeProductDetail();showInsufficientModal(d);await loadTransactions();return}}catch(_){}
     alert(e.message||'Order could not be completed');
@@ -530,7 +532,7 @@ function startRealtimeSync(){
   _realtimeSyncTimer=setInterval(()=>{
     if(document.hidden||!token()||_syncBusy)return;
     loadUser({refreshTask:true});
-  },3000);
+  },180000);
 }
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&token())loadUser({refreshTask:true})});
 
