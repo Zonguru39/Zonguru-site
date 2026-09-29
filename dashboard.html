@@ -15,6 +15,16 @@
 .insufficient-text{font-size:16px;line-height:1.55;color:#555}
 .insufficient-diff{font-size:23px;font-weight:900;color:#d92f3d;margin:10px 0 18px}
 .insufficient-confirm{width:100%;border:0;border-radius:12px;padding:13px;background:#d92f3d;color:#fff;font-weight:800;font-size:16px}
+.success-modal{position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.48);padding:24px}
+.success-modal.show{display:flex}
+.success-card{width:min(100%,360px);background:#fff;border-radius:20px;padding:28px 22px 20px;text-align:center;box-shadow:0 18px 55px rgba(0,0,0,.25)}
+.success-icon{width:58px;height:58px;margin:0 auto 12px;border-radius:50%;background:#eafaf0;color:#20a05a;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900}
+.success-title{font-size:21px;font-weight:900;color:#222;margin-bottom:9px}
+.success-text{font-size:15px;line-height:1.55;color:#555;margin-bottom:18px}
+.success-done{width:100%;border:0;border-radius:12px;padding:13px;background:#20a05a;color:#fff;font-weight:900;font-size:16px}
+.order-timer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 4px;padding:9px 11px;border-radius:11px;background:#fff7e8;color:#a55a00;font-size:13px;font-weight:800}
+.order-timer strong{font-size:18px;letter-spacing:.6px}
+.order-timer.expired{background:#f2f2f4;color:#777}
 .vip-panel{background:linear-gradient(135deg,#ff6b00,#ff8f1f);color:#fff;border-radius:18px;padding:16px;margin:10px 0 14px;box-shadow:0 8px 20px #ff6b0030}.vip-panel .vip-title{font-size:16px;font-weight:800}.vip-panel .vip-level{font-size:28px;font-weight:900;margin:6px 0}.vip-panel .vip-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.vip-panel .vip-stats b{display:block;font-size:20px}.vip-panel .vip-stats span{font-size:11px;opacity:.9}.order-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.order-stat{background:#f7f7f8;border-radius:13px;padding:12px}.order-stat small{display:block;color:#888}.order-stat b{display:block;font-size:18px;margin-top:4px}.review-suggestions{display:grid;gap:8px;margin:10px 0}.review-suggestion{border:1px solid #ddd;background:#fff;border-radius:11px;padding:10px;text-align:left;font-size:13px;line-height:1.4}.review-suggestion.selected{border-color:#ff6b00;background:#fff5ec}.review-editor{background:#f7f7fb;border-radius:14px;padding:12px;margin:14px 0}.review-editor textarea{width:100%;min-height:105px;border:1px solid #ddd;border-radius:10px;padding:10px;resize:vertical;font:inherit}.profit-credit{background:#ecfbf2;color:#23844a;border-radius:12px;padding:12px;margin:12px 0;font-weight:800;text-align:center}.buy-button{width:100%;border:0;border-radius:13px;padding:15px;background:linear-gradient(135deg,#ff6b00,#ff8f1f);color:#fff;font-size:17px;font-weight:900}.product-detail-close{float:right;border:0;background:#f1f1f1;border-radius:50%;width:36px;height:36px;font-size:22px}.task-progress{display:flex;gap:6px;margin:12px 0 16px}.task-dot{flex:1;height:6px;border-radius:99px;background:#e8e8ef}.task-dot.done{background:#6f42e8}.product-card{border:1px solid #eee;border-radius:16px;padding:14px;margin:12px 0;background:#fff;box-shadow:0 4px 14px #0000000d}.product-image-wrap{width:100%;height:180px;border-radius:12px;overflow:hidden;background:#f5f6f8;margin-bottom:10px;display:flex;align-items:center;justify-content:center}.product-image-wrap img{width:100%;height:100%;object-fit:cover;display:block}.product-image-wrap.image-error{background:#f8f8fa}.product-image-wrap.image-error img{display:none}.product-image-wrap.image-error:after{content:'🖼️ Image unavailable';color:#888;font-size:13px}.product-image-wrap.image-missing{color:#999;font-size:42px}.product-meta{display:flex;justify-content:space-between;gap:10px;margin:8px 0;color:#555;font-size:13px}.product-price{font-size:20px;font-weight:800}.task-status{font-weight:800;color:#6f42e8}.product-card.done{opacity:.72}.product-card button{width:100%;margin-top:10px}.product-detail-modal{position:fixed;inset:0;z-index:9998;display:none;background:#0008;padding:18px;align-items:flex-end}.product-detail-modal.show{display:flex}.product-detail-sheet{background:#fff;width:100%;max-height:88vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px}.product-detail-sheet img{width:100%;max-height:230px;object-fit:cover;border-radius:14px}.review-box{background:#f7f7fb;border-radius:14px;padding:12px;margin:14px 0}.review-box textarea{width:100%;min-height:90px;border:1px solid #ddd;border-radius:10px;padding:10px;resize:none}.task-complete{padding:12px;border-radius:12px;background:#eef9f0;color:#26733a;font-weight:700;text-align:center;margin-bottom:12px}</style>
 </head>
 <body>
@@ -127,6 +137,14 @@
     <button class="insufficient-confirm" type="button" onclick="closeInsufficientModal()">Confirm</button>
   </div>
 </div>
+<div class="success-modal" id="successModal" role="dialog" aria-modal="true">
+  <div class="success-card">
+    <div class="success-icon">✓</div>
+    <div class="success-title" id="successTitle">Successful</div>
+    <div class="success-text" id="successText">Your request was submitted successfully.</div>
+    <button class="success-done" type="button" onclick="closeSuccessModal()">Done</button>
+  </div>
+</div>
 <nav class="bottom"></section>
 </main>
 <nav class="bottom"><button class="nav-btn active" id="navHome" onclick="showPage('homePage')"><span class="nav-icon">⌂</span><span data-i18n="Home">Home</span></button><button class="nav-btn" id="navProducts" onclick="showPage('productsPage')"><span class="nav-icon">▣</span><span data-i18n="Products">Products</span></button><button class="nav-btn" id="navHistory" onclick="showPage('transactionsPage')"><span class="nav-icon">☷</span><span data-i18n="History">History</span></button><button class="nav-btn" id="navMessages" onclick="showPage('messagesPage')"><span class="nav-icon">✉</span><span data-i18n="Messages">Messages</span></button><button class="nav-btn" id="navAccount" onclick="showPage('accountPage')"><span class="nav-icon">♙</span><span data-i18n="Account">Account</span></button></nav>
@@ -211,6 +229,17 @@ async function copyDepositAddress(){
   try{await navigator.clipboard.writeText(address);toast&&toast('Address copied');alert('Address copied.');}
   catch(e){depositAddress.select();document.execCommand('copy');alert('Address copied.');}
 }
+function showSuccessModal(title,text,onDone){
+  const m=document.getElementById('successModal');if(!m)return;
+  document.getElementById('successTitle').textContent=title||'Successful';
+  document.getElementById('successText').textContent=text||'Your request was submitted successfully.';
+  window._successDone=typeof onDone==='function'?onDone:null;
+  m.classList.add('show');
+}
+function closeSuccessModal(){
+  document.getElementById('successModal')?.classList.remove('show');
+  const fn=window._successDone;window._successDone=null;if(fn)fn();
+}
 async function submitDeposit(){
   if(depositMethod!=='crypto')return alert('Please choose Crypto or Bank.');
   if(!depositCoin||!depositNetwork)return alert('Please choose a crypto and network.');
@@ -224,15 +253,29 @@ async function submitDeposit(){
       details:{coin:depositCoin,network:depositNetwork,address},
       note:depositNote.value.trim()
     })});
-    alert('Deposit submitted successfully. Admin will review your deposit.');
     depositAmount.value='';depositNote.value='';
-    showPage('homePage');loadTransactions();
+    showSuccessModal('Deposit Submitted','Deposit submit successful. Admin will review your deposit.',()=>{showPage('homePage');loadTransactions();loadUser();});
   }catch(e){alert(e.message)}
 }
 let withdrawMethod='';
 function updateBankAmountLabel(){const code=document.getElementById('bankCurrency')?.value||accountCurrency||'USDT';const label=document.getElementById('bankAmountLabel');if(label)label.textContent='Amount ('+code+')';const hint=document.getElementById('bankAmountHint');if(hint){const v=Number(document.getElementById('bankAmount')?.value||0);if(v>0&&code!=='USDT')hint.textContent='≈ '+money(v/(currencyRates[code]||1))+' USDT';else hint.textContent='';}}
 function selectWithdrawMethod(m){withdrawMethod=m;cryptoMethod.classList.toggle('selected',m==='crypto');bankMethod.classList.toggle('selected',m==='bank');cryptoFields.style.display=m==='crypto'?'block':'none';bankFields.style.display=m==='bank'?'block':'none';if(m==='bank'){const sel=document.getElementById('bankCurrency');if(sel){sel.value=currencyOptions.some(x=>x[0]===accountCurrency)?accountCurrency:'USDT';}updateBankAmountLabel();}}
-async function submitWithdraw(){if(!withdrawMethod)return alert('Please choose Crypto or Bank.');let amount,details;if(withdrawMethod==='crypto'){amount=Number(cryptoAmount.value);details={walletAddress:walletAddress.value.trim(),network:walletNetwork.value.trim()};if(!amount||!details.walletAddress)return alert('Please complete crypto details.')}else{const currency=document.getElementById('bankCurrency')?.value||'USDT';const enteredAmount=Number(bankAmount.value);amount=currency==='USDT'?enteredAmount:enteredAmount/(currencyRates[currency]||1);details={bankName:bankName.value.trim(),accountName:accountName.value.trim(),accountNumber:accountNumber.value.trim(),additionalDetails:bankDetails.value.trim(),currency,displayAmount:enteredAmount};if(!enteredAmount||!details.bankName||!details.accountName||!details.accountNumber)return alert('Please complete bank details.')}try{await api('/api/withdrawals',{method:'POST',body:JSON.stringify({amount,method:withdrawMethod,details})});alert('Withdrawal submitted successfully.');showPage('homePage');loadTransactions()}catch(e){alert(e.message)}}
+async function submitWithdraw(){if(!withdrawMethod)return alert('Please choose Crypto or Bank.');let amount,details;if(withdrawMethod==='crypto'){amount=Number(cryptoAmount.value);details={walletAddress:walletAddress.value.trim(),network:walletNetwork.value.trim()};if(!amount||!details.walletAddress)return alert('Please complete crypto details.')}else{const currency=document.getElementById('bankCurrency')?.value||'USDT';const enteredAmount=Number(bankAmount.value);amount=currency==='USDT'?enteredAmount:enteredAmount/(currencyRates[currency]||1);details={bankName:bankName.value.trim(),accountName:accountName.value.trim(),accountNumber:accountNumber.value.trim(),additionalDetails:bankDetails.value.trim(),currency,displayAmount:enteredAmount};if(!enteredAmount||!details.bankName||!details.accountName||!details.accountNumber)return alert('Please complete bank details.')}try{await api('/api/withdrawals',{method:'POST',body:JSON.stringify({amount,method:withdrawMethod,details})});showSuccessModal('Withdrawal Submitted','Withdrawal submit successful. Admin will review your withdrawal.',()=>{showPage('homePage');loadTransactions();loadUser();})}catch(e){alert(e.message)}}
+let orderTimerHandle=null;
+function startOrderCountdown(expiresAt){
+  if(orderTimerHandle)clearInterval(orderTimerHandle);
+  const tick=()=>{
+    const el=document.getElementById('orderCountdown'),wrap=document.getElementById('orderTimer');
+    if(!el)return;
+    const end=Date.parse(expiresAt||'');
+    if(!Number.isFinite(end)){el.textContent='60:00';return;}
+    const left=Math.max(0,end-Date.now());
+    if(left<=0){el.textContent='Expired';wrap?.classList.add('expired');clearInterval(orderTimerHandle);return;}
+    const total=Math.floor(left/1000),m=Math.floor(total/60),s=total%60;
+    el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  };
+  tick();orderTimerHandle=setInterval(tick,1000);
+}
 function closeInsufficientModal(){document.getElementById('insufficientModal')?.classList.remove('show')}
 function showInsufficientModal(d){
   const difference=Number(d?.difference||d?.shortfall||0),orderAmount=Number(d?.orderAmount||0),available=Number(d?.availableBalance||0),taskNo=Number(d?.taskNumber||0);
@@ -262,7 +305,9 @@ function renderTaskProducts(){
   const productImage=p.image
     ? '<div class="product-image-wrap"><img src="'+esc(p.image)+'" alt="'+esc(p.name||'Product')+'" loading="eager" onerror="this.closest(\'.product-image-wrap\').classList.add(\'image-error\')"></div>'
     : '<div class="product-image-wrap image-missing"><span>🛍️</span></div>';
-  box.innerHTML='<div class="product-card">'+productImage+'<div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(p.name||'Product')+'</b><span class="task-status">'+status+'</span></div><div style="margin-top:7px;color:#666">'+esc(p.description||'')+'</div><div class="product-meta"><span>'+T('Order amount')+'</span><b class="product-price">'+money(Number(p.price||0))+'</b></div><div class="product-meta"><span>'+T('Profit amount')+'</span><b>'+money(estimated)+'</b></div>'+(p.insufficientBalance?'<div class="notice">'+T('Order amount exceeds the available balance by')+' '+money(Number(p.insufficientBalanceShortfall||0))+'.</div>':'')+'<button type="button" class="buy-button" onclick="openProductDetail(\''+esc(p.id)+'\')">'+T('View Order')+'</button></div>';
+  const timerMarkup='<div class="order-timer" id="orderTimer"><span>'+T('Order time')+'</span><strong id="orderCountdown">60:00</strong></div>';
+  box.innerHTML='<div class="product-card">'+productImage+'<div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(p.name||'Product')+'</b><span class="task-status">'+status+'</span></div>'+timerMarkup+'<div style="margin-top:7px;color:#666">'+esc(p.description||'')+'</div><div class="product-meta"><span>'+T('Order amount')+'</span><b class="product-price">'+money(Number(p.price||0))+'</b></div><div class="product-meta"><span>'+T('Profit amount')+'</span><b>'+money(estimated)+'</b></div>'+(p.insufficientBalance?'<div class="notice">'+T('Order amount exceeds the available balance by')+' '+money(Number(p.insufficientBalanceShortfall||0))+'.</div>':'')+'<button type="button" class="buy-button" onclick="openProductDetail(\''+esc(p.id)+'\')">'+T('View Order')+'</button></div>';
+  startOrderCountdown(p.orderExpiresAt);
 }
 
 async function loadProducts(){const box=document.getElementById('productList');if(box)box.innerHTML='<div class="empty">Loading products...</div>';window._taskLocked=false;try{const d=await api('/api/tasks/current');window._taskLocked=Boolean(d.locked);currentTask=d.task||null;renderTaskProducts()}catch(e){window._taskLocked=false;currentTask=null;const msg=String(e?.message||'Unable to load product task');if(box)box.innerHTML='<div class="empty" style="padding:30px 12px"><div style="font-size:28px;margin-bottom:8px">⚠️</div><b>Unable to load product task</b><div style="margin-top:8px;color:#777">'+esc(msg)+'</div><button type="button" class="buy-button" style="margin-top:14px" onclick="loadProducts()">Try Again</button></div>';}}
@@ -286,7 +331,7 @@ async function completeCurrentOrder(){
   try{
     const d=await api('/api/tasks/'+encodeURIComponent(p.id)+'/complete',{method:'POST',body:JSON.stringify({reviewText:review})});
     closeProductDetail();await loadProducts();await loadUser();await loadTransactions();
-    alert('Order completed. Profit '+money(Number(d.commission||0))+' has been added to your balance.');
+    showSuccessModal('Order Completed','Profit '+money(Number(d.commission||0))+' has been added to your balance.');
   }catch(e){
     try{const raw=await fetch(API+'/api/tasks/'+encodeURIComponent(p.id)+'/complete',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token()},body:JSON.stringify({reviewText:review})});const d=await raw.json().catch(()=>({}));if(d.insufficientBalance){closeProductDetail();showInsufficientModal(d);await loadTransactions();return}}catch(_){}
     alert(e.message||'Order could not be completed');
@@ -338,7 +383,7 @@ const dynamicTr={
     'Order Amount':'Order Amount','Your available balance is below this order amount.':'Your available balance is below this order amount.','Profit Amount':'Profit Amount','Current Account':'Current Account',
     'Review':'Review','Choose a suggestion or write your own review.':'Choose a suggestion or write your own review.',
     'Write your own review...':'Write your own review...','Profit credited after order:':'Profit credited after order:',
-    'Complete Order & Add Profit':'Complete Order & Add Profit','Insufficient balance. Please review this order or contact Customer Service.':'Insufficient balance. Please review this order or contact Customer Service.',
+    'Complete Order & Add Profit':'Complete Order & Add Profit','Order time':'Order time','Insufficient balance. Please review this order or contact Customer Service.':'Insufficient balance. Please review this order or contact Customer Service.',
     'Short by':'Short by','Task':'Task','Available balance:':'Available balance:','Shortfall:':'Shortfall:',
     'Order completed. Profit':'Order completed. Profit','has been added to your balance.':'has been added to your balance.',
     'Please choose a review suggestion or write your own review.':'Please choose a review suggestion or write your own review.',
