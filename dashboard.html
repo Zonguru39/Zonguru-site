@@ -346,14 +346,28 @@ async function openProductDetail(id){
   const detailImage=currentProduct.image
     ? '<img src="'+esc(currentProduct.image)+'" alt="'+esc(currentProduct.name||'Product')+'" loading="eager" onerror="this.style.display=\'none\'">'
     : '';
-  document.getElementById('productDetail').innerHTML='<div style="clear:both"></div>'+detailImage+'<h2 style="margin:14px 0 6px">'+esc(currentProduct.name||'Product')+'</h2><p style="color:#666;line-height:1.5">'+esc(currentProduct.description||'')+'</p><div class="order-summary"><div class="order-stat"><small>'+T('Order Amount')+'</small><b>'+money(currentProduct.price||0)+'</b></div><div class="order-stat"><small>'+T('Profit Amount')+'</small><b>'+money(estimated)+'</b></div></div>'+(insufficient?'<div class="notice"><b>'+T('Insufficient balance')+'</b><br>'+T('Your available balance is below this order amount.')+'<br>'+T('Shortfall:')+' <b>'+money(Number(currentProduct.insufficientBalanceShortfall||0))+'</b></div>':'')+'<div class="order-stat"><small>'+T('Current Account')+'</small><b>VIP '+Number(window._vipLevel||0)+'</b></div><div class="review-editor"><b>'+T('Review')+'</b><div style="font-size:12px;color:#777;margin:5px 0 8px">'+T('Choose a suggestion or write your own review.')+'</div><div class="review-suggestions">'+suggestions.map((s,i)=>'<button type="button" class="review-suggestion" onclick="useReviewSuggestion('+i+')">'+esc(s)+'</button>').join('')+'</div><textarea id="reviewText" maxlength="1000" placeholder="'+T('Write your own review...')+'"></textarea></div><div id="profitCreditPreview" class="profit-credit">'+T('Profit credited after order:')+' '+money(estimated)+'</div><button type="button" class="buy-button" onclick="completeCurrentOrder()">'+T('Complete Order & Add Profit')+'</button>';
+  document.getElementById('productDetail').innerHTML='<div class="order-timer" id="reviewOrderTimer"><span>'+T('Order time')+'</span><strong id="reviewOrderCountdown">60:00</strong></div><div style="clear:both"></div>'+detailImage+'<h2 style="margin:14px 0 6px">'+esc(currentProduct.name||'Product')+'</h2><p style="color:#666;line-height:1.5">'+esc(currentProduct.description||'')+'</p><div class="order-summary"><div class="order-stat"><small>'+T('Order Amount')+'</small><b>'+money(currentProduct.price||0)+'</b></div><div class="order-stat"><small>'+T('Profit Amount')+'</small><b>'+money(estimated)+'</b></div></div>'+(insufficient?'<div class="notice"><b>'+T('Insufficient balance')+'</b><br>'+T('Your available balance is below this order amount.')+'<br>'+T('Shortfall:')+' <b>'+money(Number(currentProduct.insufficientBalanceShortfall||0))+'</b></div>':'')+'<div class="order-stat"><small>'+T('Current Account')+'</small><b>VIP '+Number(window._vipLevel||0)+'</b></div><div class="review-editor"><b>'+T('Review')+'</b><div style="font-size:12px;color:#777;margin:5px 0 8px">'+T('Choose a suggestion or write your own review.')+'</div><div class="review-suggestions">'+suggestions.map((s,i)=>'<button type="button" class="review-suggestion" onclick="useReviewSuggestion('+i+')">'+esc(s)+'</button>').join('')+'</div><textarea id="reviewText" maxlength="1000" placeholder="'+T('Write your own review...')+'"></textarea></div><div id="profitCreditPreview" class="profit-credit">'+T('Profit credited after order:')+' '+money(estimated)+'</div><button type="button" class="buy-button" onclick="completeCurrentOrder()">'+T('Complete Order & Add Profit')+'</button>';
   window._reviewSuggestions=suggestions;
   document.getElementById('productDetailModal').classList.add('show');
-  startOrderCountdown(currentTask?.products?.[0]?.orderExpiresAt);
+  startReviewOrderCountdown(currentTask?.products?.[0]?.orderExpiresAt);
 }
 
 function useReviewSuggestion(i){const el=document.getElementById('reviewText');if(el&&window._reviewSuggestions?.[i])el.value=window._reviewSuggestions[i]}
 function generateReviewSuggestion(){const a=window._reviewSuggestions||[],el=document.getElementById('reviewText');if(el&&a[0])el.value=a[0]}
+function startReviewOrderCountdown(expiresAt){
+  if(orderTimerHandle)clearInterval(orderTimerHandle);
+  const tick=()=>{
+    const el=document.getElementById('reviewOrderCountdown'),wrap=document.getElementById('reviewOrderTimer');
+    if(!el)return;
+    const end=Date.parse(expiresAt||'');
+    if(!Number.isFinite(end)){el.textContent='60:00';return;}
+    const left=Math.max(0,end-Date.now());
+    if(left<=0){el.textContent='Expired';wrap?.classList.add('expired');clearInterval(orderTimerHandle);return;}
+    const total=Math.floor(left/1000),m=Math.floor(total/60),s=total%60;
+    el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  };
+  tick();orderTimerHandle=setInterval(tick,1000);
+}
 function closeProductDetail(){document.getElementById('productDetailModal')?.classList.remove('show')}
 async function completeCurrentOrder(){
   if(!currentProduct)return;
