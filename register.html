@@ -61,12 +61,7 @@ function show(t,ok=false){let m=q("msg");m.textContent=t;m.className="msg "+(ok?
   let deferredPrompt=null;
   window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;});
   function showHelp(t){const el=document.getElementById("downloadHelp");if(el)el.textContent=t;} async function directDownloadOrInstall(url){try{const a=document.createElement("a");a.href=url;a.download="Zonguru";document.body.appendChild(a);a.click();a.remove();}catch(e){location.href=url;}}
-  document.getElementById("androidInstall").onclick=async()=>{
-    if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;return;}
-    showHelp("On Android Chrome, open the browser menu (⋮) and choose Install app or Add to Home screen.");
-  };
-  document.getElementById("iosInstall").onclick=()=>{
-    showHelp("On iPhone/iPad: open this site in Safari, tap Share, then Add to Home Screen.");
-  };
+  document.getElementById("androidInstall").onclick=()=>{location.href="https://github.com/Zonguru39/Zonguru-site/releases/latest/download/app-debug.apk"};
+  document.getElementById("iosInstall").onclick=()=>{showHelp("iPhone/iPad native app requires Apple signing/TestFlight. Use Safari > Share > Add to Home Screen until the signed iOS build is published.");};
 })();
 </script><script>document.getElementById("termsLink").onclick=e=>{e.preventDefault();document.getElementById("termsModal").style.display="flex"};document.getElementById("termsClose").onclick=()=>document.getElementById("termsModal").style.display="none";document.getElementById("termsModal").onclick=e=>{if(e.target.id==="termsModal")e.currentTarget.style.display="none"};</script><script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");</script></body></html>
