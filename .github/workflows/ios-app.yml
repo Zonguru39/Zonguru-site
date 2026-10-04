@@ -1,0 +1,25 @@
+name: Build Zonguru iOS app
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: node scripts/prepare-capacitor.js
+      - run: npx cap add ios
+      - run: npx cap sync ios
+      - name: Build unsigned iOS archive
+        working-directory: ios/App
+        run: xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release -archivePath "$RUNNER_TEMP/Zonguru.xcarchive" archive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+      - name: Package archive
+        run: ditto -c -k --sequesterRsrc --keepParent "$RUNNER_TEMP/Zonguru.xcarchive" Zonguru-iOS-unsigned.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Zonguru-iOS-unsigned
+          path: Zonguru-iOS-unsigned.zip
