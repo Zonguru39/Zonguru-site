@@ -1,1 +1,1 @@
-{"name":"Zonguru","short_name":"Zonguru","start_url":"/Zonguru-site/","display":"standalone","theme_color":"#4f46e5","background_color":"#17112b"}
+{"name":"Zonguru","short_name":"Zonguru","start_url":"/Zonguru-site/","scope":"/Zonguru-site/","display":"standalone","theme_color":"#4f46e5","background_color":"#17112b","icons":[{"src":"/Zonguru-site/zonguru-icon.svg","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}
