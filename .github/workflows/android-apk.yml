@@ -16,11 +16,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm install
-      - run: node scripts/prepare-capacitor.js
-      - run: npx cap add android
-      - run: npx cap sync android
+      - name: Install dependencies
+        run: npm install
+      - name: Prepare Capacitor web assets
+        run: node scripts/prepare-capacitor.js
+      - name: Add Android platform
+        run: npx cap add android
+      - name: Sync Capacitor
+        run: npx cap sync android
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug
@@ -29,4 +32,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           VERSION="v1.0.${{ github.run_number }}"
-          gh release create "$VERSION" android/app/build/outputs/apk/debug/app-debug.apk             --title "Zonguru Android $VERSION"             --notes "Installable Zonguru Android APK built automatically from main."
+          gh release create "$VERSION" android/app/build/outputs/apk/debug/app-debug.apk --title "Zonguru Android $VERSION" --notes "Installable Zonguru Android APK built automatically from main."
