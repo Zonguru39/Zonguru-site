@@ -1,0 +1,8 @@
+{
+  "appId":"net.zonguru39.app",
+  "appName":"Zonguru",
+  "webDir":"www",
+  "server":{
+    "androidScheme":"https"
+  }
+}
