@@ -58,10 +58,17 @@ function show(t,ok=false){let m=q("msg");m.textContent=t;m.className="msg "+(ok?
 </script>
 <script>
 (function(){
-  let deferredPrompt=null;
-  window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;});
-  function showHelp(t){const el=document.getElementById("downloadHelp");if(el)el.textContent=t;} async function directDownloadOrInstall(url){try{const a=document.createElement("a");a.href=url;a.download="Zonguru";document.body.appendChild(a);a.click();a.remove();}catch(e){location.href=url;}}
-  document.getElementById("androidInstall").onclick=()=>{location.href="https://github.com/Zonguru39/Zonguru-site/releases/latest/download/app-debug.apk"};
-  document.getElementById("iosInstall").onclick=()=>{showHelp("iPhone/iPad native app requires Apple signing/TestFlight. Use Safari > Share > Add to Home Screen until the signed iOS build is published.");};
+  const APK_URL="https://github.com/Zonguru39/Zonguru-site/releases/latest/download/app-debug.apk";
+  function notice(t,ok=false){
+    let n=document.getElementById("zDownloadNotice");
+    if(!n){n=document.createElement("div");n.id="zDownloadNotice";n.style.cssText="position:fixed;left:50%;bottom:52px;transform:translateX(-50%);z-index:100001;background:#17112b;color:#fff;padding:11px 16px;border-radius:12px;box-shadow:0 8px 30px #0005;font-size:13px;font-weight:700;text-align:center;max-width:92%";document.body.appendChild(n);}
+    n.textContent=t;n.style.background=ok?"#166534":"#17112b";setTimeout(()=>n.remove(),6500);
+  }
+  document.getElementById("androidInstall").onclick=()=>{
+    notice("⬇️ Download started. Check your Android download notification.");
+    const a=document.createElement("a");a.href=APK_URL;a.download="Zonguru.apk";a.rel="noopener";document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>notice("✅ Download started. When finished, tap the download notification and choose Install.",true),1800);
+  };
+  document.getElementById("iosInstall").onclick=()=>{const el=document.getElementById("downloadHelp");el.textContent="iPhone/iPad native app requires Apple signing/TestFlight. Use Safari > Share > Add to Home Screen until the signed iOS build is published.";};
 })();
 </script><script>document.getElementById("termsLink").onclick=e=>{e.preventDefault();document.getElementById("termsModal").style.display="flex"};document.getElementById("termsClose").onclick=()=>document.getElementById("termsModal").style.display="none";document.getElementById("termsModal").onclick=e=>{if(e.target.id==="termsModal")e.currentTarget.style.display="none"};</script><script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");</script></body></html>
