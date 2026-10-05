@@ -167,7 +167,7 @@ const API='https://zonguru-jack-api.onrender.com';
 const token=()=>localStorage.getItem('zonguru_token')||'';
 async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(d.message||'Request failed');return d}
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
-function showPage(id){document.body.classList.toggle('products-mode',id==='productsPage');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const page=document.getElementById(id);if(!page)return;page.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
+function showPage(id){document.body.classList.toggle('products-mode',id==='productsPage');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const page=document.getElementById(id);if(!page)return;page.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='depositPage')loadDepositAddresses()if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
 const currencyOptions=[
   ["USDT","₮","Tether"],
   ["MXN","$","Mexican Peso"],
@@ -203,9 +203,9 @@ let depositMethod='',depositCoin='',depositNetwork='';
 let depositAddresses={};
 async function loadDepositAddresses(){
   try{
-    const r=await fetch(API+'/api/public/deposit-addresses');
+    const r=await fetch(API+'/api/public/deposit-addresses?ts='+Date.now(),{cache:'no-store'});
     const d=await r.json();
-    if(d.success&&d.addresses) depositAddresses=d.addresses;
+    if(d.success&&d.addresses){depositAddresses={...d.addresses};if(depositCoin&&depositNetwork)selectDepositNetwork(depositNetwork);}
   }catch(e){console.log('deposit addresses load failed',e)}
 }
 function selectDepositMethod(m){
