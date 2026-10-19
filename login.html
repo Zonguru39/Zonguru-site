@@ -322,7 +322,7 @@ input:focus{
 
 }
 
-</style>
+.cs-choice-overlay{display:none;position:fixed;inset:0;z-index:100100;background:#0009;align-items:center;justify-content:center;padding:14px;box-sizing:border-box}.cs-choice-overlay.open{display:flex}.cs-choice-box{width:100%;max-width:390px;max-height:calc(100dvh - 28px);overflow:auto;background:#fff;color:#172033;border-radius:20px;padding:20px;box-sizing:border-box;box-shadow:0 18px 55px #0004}.cs-choice-item{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border:1px solid #e2e8f0;border-radius:14px;background:#fff;color:#172033;text-align:left;margin:10px 0;cursor:pointer;font-size:16px}.cs-choice-item span small{display:block;color:#64748b;margin-top:4px}.cs-choice-close{float:right;width:34px;padding:5px;margin:0;background:#f1f5f9;color:#222;box-shadow:none}</style>
 
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#4f46e5"></head>
 
@@ -483,6 +483,7 @@ input:focus{
 </div>
 
 
+<div class="cs-choice-overlay" id="csChoiceOverlay"><div class="cs-choice-box"><button class="cs-choice-close" id="csChoiceClose" type="button">×</button><h3>Contact Customer Service</h3><p>Choose how you would like to contact support.</p><button class="cs-choice-item" id="internalCsChoice" type="button">💬 <span><b>Customer Service</b><small>Chat directly on Zonguru</small></span></button><button class="cs-choice-item" id="telegramCsChoice" type="button">🌐 <span><b>Telegram CS</b><small>Open Telegram support</small></span></button></div></div>
 <!-- CUSTOMER SERVICE CHAT -->
 
 <div
@@ -883,16 +884,11 @@ changeLanguage(
    CUSTOMER SERVICE
 ========================= */
 
-csButton.onclick =
-  function(){
-
-    chatOverlay.classList.add(
-      "open"
-    );
-
-    chatInput.focus();
-
-  };
+csButton.onclick = function(){ document.getElementById("csChoiceOverlay").classList.add("open"); };
+document.getElementById("csChoiceClose").onclick=()=>document.getElementById("csChoiceOverlay").classList.remove("open");
+document.getElementById("csChoiceOverlay").onclick=e=>{if(e.target.id==="csChoiceOverlay")e.currentTarget.classList.remove("open")};
+document.getElementById("internalCsChoice").onclick=()=>{document.getElementById("csChoiceOverlay").classList.remove("open");chatOverlay.classList.add("open");chatInput.focus()};
+document.getElementById("telegramCsChoice").onclick=()=>{window.location.href="https://t.me/Zonguru_support"};
 
 
 chatClose.onclick =
