@@ -228,6 +228,13 @@ function openCurrencyPicker(){renderCurrencyList();document.getElementById('curr
 function closeCurrencyPicker(){document.getElementById('currencyModal').classList.remove('show')}
 async function selectCurrency(code){
   code=normCurrency(code);
+  if(!currencyOptions.some(item=>item[0]===code)){alert('Unsupported currency.');return}
+  const previousCurrency=accountCurrency;
+  accountCurrency=code;
+  localStorage.setItem('zonguru_currency',code);
+  renderCurrencyList();
+  displayBalance();
+  updateWithdrawAmountLabels();
   try{
     const d=await api('/api/me/currency',{method:'PATCH',body:JSON.stringify({currency:code})});
     const u=d.user||d;
@@ -241,7 +248,11 @@ async function selectCurrency(code){
     closeCurrencyPicker();
   }catch(e){
     console.error('currency switch',e);
-    alert(e.message||'Unable to change currency. Please try again.');
+    accountCurrency=previousCurrency;
+    localStorage.setItem('zonguru_currency',previousCurrency);
+    renderCurrencyList();
+    displayBalance();
+    alert(e.message||'Unable to save currency preference. Showing selected currency locally for now.');
   }
 }
 let _syncBusy=false,_lastServerState='';
