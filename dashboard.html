@@ -247,16 +247,18 @@ async function selectCurrency(code){
     renderCurrencyList();
     closeCurrencyPicker();
   }catch(e){
-    console.error('currency switch',e);
-    accountCurrency=previousCurrency;
-    localStorage.setItem('zonguru_currency',previousCurrency);
+    console.error('currency preference sync failed; keeping local display currency',e);
+    // Keep the user's selection active even if the preference API is temporarily unavailable.
+    accountCurrency=code;
+    localStorage.setItem('zonguru_currency',code);
     renderCurrencyList();
     displayBalance();
-    alert(e.message||'Unable to save currency preference. Showing selected currency locally for now.');
+    updateWithdrawAmountLabels();
+    closeCurrencyPicker();
   }
 }
 let _syncBusy=false,_lastServerState='';
-async function loadUser(opts={}){try{const d=await api('/api/me');const u=d.user||d;const name=u.username||'User';const serverCurrency=normCurrency(u.currency||'USDT');accountCurrency=serverCurrency;localStorage.setItem('zonguru_currency',accountCurrency);const currentBalance=Number(u.balance||0);const selectedBalance=Number.isFinite(currentBalance)?currentBalance:0;window._walletBalances=u.balances||{};const nextState=[selectedBalance,u.currency,u.frozenAmount,u.creditScore,u.vipLevel,u.totalProfit,u.todayProfit,u.securityProfit,u.weeklyProfit,u.monthlyProfit].map(v=>String(v??0)).join('|');const changed=_lastServerState!==''&&_lastServerState!==nextState;_lastServerState=nextState;welcome.textContent='Welcome, '+name;const profileInvite=document.getElementById('profileInviteCode');if(profileInvite)profileInvite.textContent=u.referralCode||'—';lastAccountBalance=Number((u.balances&&u.balances.USDT!==undefined)?u.balances.USDT:convertCurrencyAmount(selectedBalance,accountCurrency,'USDT'));window._frozenUSDT=Number(u.frozenAmount||0);window._profitUSDT=Number(u.todayProfit||0);window._securityProfitUSDT=Number(u.securityProfit||0);window._weeklyProfitUSDT=Number(u.weeklyProfit||0);window._monthlyProfitUSDT=Number(u.monthlyProfit||0);window._vipLevel=Number(u.vipLevel||0);displayBalance();setAvatar(u.avatarUrl||'');document.getElementById('trustScore').textContent=Number(u.creditScore??100).toFixed(0);const hv=document.getElementById('productVipLevel');if(hv)hv.textContent='VIP '+window._vipLevel;const topVip=document.getElementById('topVipLevel');if(topVip)topVip.textContent='VIP '+window._vipLevel;if((opts.refreshTask||changed)&&!_syncBusy&&typeof loadProducts==='function'){_syncBusy=true;try{await loadProducts();if(typeof loadTransactions==='function')await loadTransactions()}finally{_syncBusy=false}}}catch(e){console.log(e)}}
+async function loadUser(opts={}){try{const d=await api('/api/me');const u=d.user||d;const name=u.username||'User';const serverCurrency=normCurrency(u.currency||'USDT');const savedCurrency=normCurrency(localStorage.getItem('zonguru_currency')||serverCurrency);accountCurrency=savedCurrency;localStorage.setItem('zonguru_currency',accountCurrency);const currentBalance=Number(u.balance||0);const selectedBalance=Number.isFinite(currentBalance)?currentBalance:0;window._walletBalances=u.balances||{};const nextState=[selectedBalance,u.currency,u.frozenAmount,u.creditScore,u.vipLevel,u.totalProfit,u.todayProfit,u.securityProfit,u.weeklyProfit,u.monthlyProfit].map(v=>String(v??0)).join('|');const changed=_lastServerState!==''&&_lastServerState!==nextState;_lastServerState=nextState;welcome.textContent='Welcome, '+name;const profileInvite=document.getElementById('profileInviteCode');if(profileInvite)profileInvite.textContent=u.referralCode||'—';lastAccountBalance=Number((u.balances&&u.balances.USDT!==undefined)?u.balances.USDT:convertCurrencyAmount(selectedBalance,accountCurrency,'USDT'));window._frozenUSDT=Number(u.frozenAmount||0);window._profitUSDT=Number(u.todayProfit||0);window._securityProfitUSDT=Number(u.securityProfit||0);window._weeklyProfitUSDT=Number(u.weeklyProfit||0);window._monthlyProfitUSDT=Number(u.monthlyProfit||0);window._vipLevel=Number(u.vipLevel||0);displayBalance();setAvatar(u.avatarUrl||'');document.getElementById('trustScore').textContent=Number(u.creditScore??100).toFixed(0);const hv=document.getElementById('productVipLevel');if(hv)hv.textContent='VIP '+window._vipLevel;const topVip=document.getElementById('topVipLevel');if(topVip)topVip.textContent='VIP '+window._vipLevel;if((opts.refreshTask||changed)&&!_syncBusy&&typeof loadProducts==='function'){_syncBusy=true;try{await loadProducts();if(typeof loadTransactions==='function')await loadTransactions()}finally{_syncBusy=false}}}catch(e){console.log(e)}}
 let depositMethod='',depositCoin='',depositNetwork='';
 let depositAddresses={};
 async function loadDepositAddresses(){
