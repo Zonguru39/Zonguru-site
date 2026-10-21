@@ -238,10 +238,12 @@ async function selectCurrency(code){
   try{
     const d=await api('/api/me/currency',{method:'PATCH',body:JSON.stringify({currency:code})});
     const u=d.user||d;
-    accountCurrency=normCurrency(u.currency||code);
-    localStorage.setItem('zonguru_currency',accountCurrency);
-    lastAccountBalance=Number((u.balances&&u.balances.USDT!==undefined)?u.balances.USDT:convertCurrencyAmount(Number(u.balance||0),accountCurrency,'USDT'));
-    window._walletBalances=u.balances||{};
+    // Keep the exact currency selected by the user. An older API deployment may
+    // still return USDT in its response, which must not override display preference.
+    accountCurrency=code;
+    localStorage.setItem('zonguru_currency',code);
+    if(u.balances&&u.balances.USDT!==undefined)lastAccountBalance=Number(u.balances.USDT||0);
+    window._walletBalances=u.balances||window._walletBalances||{};
     displayBalance();
     updateWithdrawAmountLabels();
     renderCurrencyList();
