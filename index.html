@@ -3,127 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="theme-color" content="#f5f7fb">
   <title>Zonguru</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: Arial, sans-serif;
       background: #f5f7fb;
       color: #111827;
+      display: flex;
+      flex-direction: column;
     }
-
     .page {
-      min-height: 100vh;
+      flex: 1;
+      min-height: 78vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 28px 20px 42px;
     }
-
     .card {
       width: 100%;
       max-width: 430px;
       background: white;
-      border-radius: 24px;
-      padding: 35px 25px;
+      border-radius: 28px;
+      padding: 42px 25px;
       box-shadow: 0 15px 40px rgba(0,0,0,0.08);
       text-align: center;
     }
-
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 8px;
+      animation: brand-travel 1.8s ease-in-out infinite alternate;
+    }
+    .brand img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
     .logo {
-      font-size: 38px;
+      margin: 0;
+      font-size: clamp(36px, 9vw, 48px);
+      line-height: 1.1;
       font-weight: 900;
-      color: #2563eb;
-      margin-bottom: 8px;
+      letter-spacing: -1.5px;
+      background: linear-gradient(90deg, #2563eb, #8b5cf6, #ec4899, #f97316, #16a34a, #06b6d4, #2563eb);
+      background-size: 300% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: rainbow-flow 1.15s linear infinite alternate;
     }
-
-    .subtitle {
-      color: #6b7280;
-      margin-bottom: 30px;
+    @keyframes rainbow-flow {
+      from { background-position: 0% 50%; }
+      to { background-position: 100% 50%; }
     }
-
+    @keyframes brand-travel {
+      from { transform: translateX(-9px); }
+      to { transform: translateX(9px); }
+    }
+    .subtitle { color: #6b7280; margin-bottom: 30px; font-size: 17px; }
     .button {
       display: block;
       width: 100%;
-      padding: 15px;
+      padding: 17px 15px;
       margin-top: 14px;
-      border-radius: 13px;
+      border-radius: 15px;
       text-decoration: none;
       font-weight: bold;
-      font-size: 16px;
+      font-size: 17px;
     }
-
-    .register {
-      background: #2563eb;
-      color: white;
-    }
-
-    .login {
-      background: white;
-      color: #2563eb;
-      border: 2px solid #2563eb;
-    }
-
+    .register { background: #2563eb; color: white; }
+    .login { background: white; color: #2563eb; border: 2px solid #2563eb; }
     .status {
       margin-top: 28px;
-      padding: 12px;
+      padding: 13px;
       background: #ecfdf5;
       color: #047857;
-      border-radius: 12px;
-      font-size: 13px;
+      border-radius: 14px;
+      font-size: 14px;
     }
-
-    .footer {
-      margin-top: 25px;
-      color: #9ca3af;
-      font-size: 12px;
+    .card-note { margin-top: 30px; color: #9ca3af; font-size: 13px; }
+    .site-footer {
+      width: 100%;
+      padding: 30px 18px 34px;
+      text-align: center;
+      background: linear-gradient(135deg, #e7f4f1 0%, #f3f7f5 48%, #dff1ed 100%);
+      color: #303b3a;
+    }
+    .copyright { margin: 0 0 20px; font-size: clamp(17px, 4.2vw, 23px); }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      font-size: clamp(14px, 3.6vw, 18px);
+    }
+    .footer-links a { color: #303b3a; text-decoration: none; }
+    .footer-links a:first-of-type { color: #858f8d; }
+    .footer-links a:hover { text-decoration: underline; }
+    .dot { color: #42a99e; font-size: 18px; }
+    @media (prefers-reduced-motion: reduce) {
+      .brand, .logo { animation: none; }
     }
   </style>
 </head>
-
 <body>
-
-  <div class="page">
-
-    <div class="card">
-
-      <div class="logo">
-        Zonguru
+  <main class="page">
+    <section class="card" aria-label="Welcome to Zonguru">
+      <div class="brand">
+        <img src="./zonguru-icon.svg" alt="Zonguru logo">
+        <h1 class="logo">Zonguru</h1>
       </div>
-
-      <div class="subtitle">
-        Welcome to Zonguru
-      </div>
-
-      <a
-        href="./register.html"
-        class="button register">
-        Create Account
-      </a>
-
-      <a
-        href="./login.html"
-        class="button login">
-        Login
-      </a>
-
-      <div class="status">
-        ● Zonguru service is online
-      </div>
-
-      <div class="footer">
-        Zonguru Platform
-      </div>
-
-    </div>
-
-  </div>
-
+      <div class="subtitle">Welcome to Zonguru</div>
+      <a href="./register.html" class="button register">Create Account</a>
+      <a href="./login.html" class="button login">Login</a>
+      <div class="status">● Zonguru service is online</div>
+      <div class="card-note">Zonguru Platform</div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p class="copyright">© 2026 ZonGuru. All rights reserved.</p>
+    <nav class="footer-links" aria-label="Legal information">
+      <span class="dot">●</span><a href="#terms">Terms of Service</a>
+      <span class="dot">●</span><a href="#privacy">Privacy Policy</a>
+      <span class="dot">●</span><a href="#cookies">Cookie Policy</a>
+    </nav>
+  </footer>
 </body>
 </html>
