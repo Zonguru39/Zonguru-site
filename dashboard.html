@@ -190,7 +190,7 @@
 <script>
 const API='https://zonguru-jack-api.onrender.com';
 const token=()=>localStorage.getItem('zonguru_token')||'';
-async async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(d.message||'Request failed');return d}
+async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(d.message||'Request failed');return d}
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
 function showPage(id){if(id!=='withdrawPage'){const wp=document.getElementById('withdrawalPassword');if(wp)wp.value='';}document.body.classList.toggle('products-mode',id==='productsPage');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const page=document.getElementById(id);if(!page)return;page.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='depositPage')loadDepositAddresses();if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
 const currencyOptions=[
@@ -370,7 +370,7 @@ let withdrawMethod='';
 function updateWithdrawAmountLabels(){const cryptoLabel=document.getElementById('cryptoAmountLabel');if(cryptoLabel)cryptoLabel.textContent='Amount ('+(accountCurrency||'USDT')+')';updateBankAmountLabel()}
 function updateBankAmountLabel(){const code=document.getElementById('bankCurrency')?.value||accountCurrency||'USDT';const label=document.getElementById('bankAmountLabel');if(label)label.textContent='Amount ('+code+')';const hint=document.getElementById('bankAmountHint');if(hint)hint.textContent='';}
 async function loadWithdrawalSecurity(){return await api('/api/me/withdrawal-security')}
-async async function selectWithdrawMethod(m){
+async function selectWithdrawMethod(m){
  withdrawMethod=m;
  try{
   const sec=await loadWithdrawalSecurity();
@@ -533,7 +533,7 @@ else if(type==='withdrawPassword'){
  renderBankBinding();
 }else if(type==='settings'){title.textContent='Settings';box.innerHTML='<div class="row"><span>Language</span><button class="secondary" onclick="toggleLang()">Change Language</button></div><div class="row"><span>Customer Service</span><button class="secondary" onclick="openChat()">Open Chat</button></div><div class="row"><span>Account Status</span><b id="accountStatus2">Active</b></div>';}
 else if(type==='password'){title.textContent='Change Password';box.innerHTML='<div class="form-group"><label>Current Password</label><input id="oldPassword" type="password" autocomplete="current-password"></div><div class="form-group"><label>New Password</label><input id="newPassword" type="password" autocomplete="new-password"></div><div class="form-group"><label>Confirm New Password</label><input id="confirmPassword" type="password" autocomplete="new-password"></div><button class="primary" onclick="changePassword()">Change Password</button>';}
-loadUser();showPage('accountDetailPage');applyLang();}async async function renderBankBinding(){
+loadUser();showPage('accountDetailPage');applyLang();}async function renderBankBinding(){
  const box=document.getElementById('bankBindingContent');if(!box)return;
  try{
   const sec=await loadWithdrawalSecurity();
