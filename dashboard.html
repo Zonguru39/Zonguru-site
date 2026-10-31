@@ -107,7 +107,7 @@
   </div>
 </div>
 </div></section>
-<section class="page" id="withdrawPage"><div class="card"><h2 class="section-title" data-i18n="Withdraw">Withdraw</h2><div class="form-group"><label data-i18n="Method">Method</label><div class="method-grid"><button class="method" id="cryptoMethod" onclick="selectWithdrawMethod('crypto')">₿ Crypto</button><button class="method" id="bankMethod" onclick="selectWithdrawMethod('bank')">🏦 Bank</button></div></div><div class="form-group"><label>Withdrawal Password</label><input id="withdrawalPassword" type="password" autocomplete="current-password" placeholder="Enter withdrawal password" required></div>
+<section class="page" id="withdrawPage"><div class="card"><h2 class="section-title" data-i18n="Withdraw">Withdraw</h2><div class="form-group"><label data-i18n="Method">Method</label><div class="method-grid"><button class="method" id="cryptoMethod" onclick="selectWithdrawMethod('crypto')">₿ Crypto</button><button class="method" id="bankMethod" onclick="selectWithdrawMethod('bank')">🏦 Bank</button></div></div><div id="withdrawalPasswordStep" class="form-group" style="display:none"><label>Withdrawal Password</label><input id="withdrawalPassword" type="password" autocomplete="current-password" placeholder="Enter withdrawal password"><button id="confirmWithdrawalPasswordBtn" class="primary" type="button" style="margin-top:10px" onclick="confirmWithdrawalPassword()">Confirm</button><div id="withdrawalPasswordStatus" role="status" style="font-size:13px;margin-top:8px;color:#64748b"></div></div>
 <div id="cryptoFields" style="display:none"><div class="form-group"><label id="cryptoAmountLabel" data-i18n="Amount (USDT)">Amount (USDT)</label><input id="cryptoAmount" type="number" min="0"></div><div class="form-group"><label data-i18n="Wallet Address">Wallet Address</label><input id="walletAddress"></div><div class="form-group"><label data-i18n="Network">Network</label><input id="walletNetwork" placeholder="TRC20 / ERC20 / BEP20"></div><button class="primary" onclick="submitWithdraw()"><span data-i18n="Submit Withdrawal">Submit Withdrawal</span></button></div>
 <div id="bankFields" style="display:none"><div class="form-group"><label data-i18n="Withdrawal Currency">Withdrawal Currency</label><select id="bankCurrency" onchange="updateBankAmountLabel()"><option value="USDT">₮ USDT</option><option value="MXN">🇲🇽 MXN</option><option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option><option value="GBP">🇬🇧 GBP</option><option value="CAD">🇨🇦 CAD</option><option value="AUD">🇦🇺 AUD</option><option value="JPY">🇯🇵 JPY</option><option value="CNY">🇨🇳 CNY</option><option value="SGD">🇸🇬 SGD</option><option value="THB">🇹🇭 THB</option><option value="MYR">🇲🇾 MYR</option><option value="BRL">🇧🇷 BRL</option><option value="INR">🇮🇳 INR</option><option value="EGP">🇪🇬 EGP — Egyptian Pound</option><option value="ARS">🇦🇷 ARS — Argentine Peso</option><option value="PKR">🇵🇰 PKR — Pakistani Rupee</option></select></div><div class="form-group"><label id="bankAmountLabel" data-i18n="Amount">Amount (USDT)</label><input id="bankAmount" type="number" min="0" step="0.01" placeholder="Enter amount"></div><div class="form-group"><label>Saved Bank Account</label><select id="withdrawBankAccount"></select><button type="button" class="secondary" style="margin-top:8px" onclick="openAccountDetail('bankAdd')">＋ New account</button></div><button class="primary" onclick="submitWithdraw()"><span data-i18n="Submit Withdrawal">Submit Withdrawal</span></button></div></div></div></section>
 <section class="page" id="productsPage"><div class="card"><h2 class="section-title" data-i18n="Products">Products</h2><div class="vip-panel"><div class="vip-title">Nivel de miembro / Member Level</div><div class="vip-level" id="productVipLevel">VIP 0</div><div class="vip-stats"><div><b id="vipCompleted">0</b><span>Completado</span></div><div><b id="vipTotal">5</b><span>Pedidos</span></div><div><b id="vipIncomplete">5</b><span>Incompleto</span></div></div></div><div id="taskSummary" style="font-weight:700">Task 0/5</div><div class="task-progress" id="taskProgress"></div><div id="productList"><div class="empty">Loading...</div></div></div></section>
@@ -370,25 +370,47 @@ let withdrawMethod='';
 function updateWithdrawAmountLabels(){const cryptoLabel=document.getElementById('cryptoAmountLabel');if(cryptoLabel)cryptoLabel.textContent='Amount ('+(accountCurrency||'USDT')+')';updateBankAmountLabel()}
 function updateBankAmountLabel(){const code=document.getElementById('bankCurrency')?.value||accountCurrency||'USDT';const label=document.getElementById('bankAmountLabel');if(label)label.textContent='Amount ('+code+')';const hint=document.getElementById('bankAmountHint');if(hint)hint.textContent='';}
 async function loadWithdrawalSecurity(){return await api('/api/me/withdrawal-security')}
+let withdrawalPasswordVerified=false;
 async function selectWithdrawMethod(m){
- withdrawMethod=m;
+ withdrawMethod=m;withdrawalPasswordVerified=false;
+ const step=document.getElementById('withdrawalPasswordStep'),pass=document.getElementById('withdrawalPassword'),status=document.getElementById('withdrawalPasswordStatus');
+ if(step)step.style.display='block';if(pass)pass.value='';if(status)status.textContent='';
+ const btn=document.getElementById('confirmWithdrawalPasswordBtn');if(btn){btn.disabled=false;btn.textContent='Confirm'}
+ cryptoMethod.classList.toggle('selected',m==='crypto');bankMethod.classList.toggle('selected',m==='bank');
+ cryptoFields.style.display='none';bankFields.style.display='none';
  try{
   const sec=await loadWithdrawalSecurity();
-  if(!sec.withdrawalPasswordSet){openAccountDetail(m==='bank'?'bank':'withdrawPassword');return}
+  if(!sec.withdrawalPasswordSet){if(status)status.textContent='Please set a withdrawal password in Account first.';return}
   if(m==='bank'){
-   if(!(sec.bankAccounts||[]).length){openAccountDetail('bank');return}
    const sel=document.getElementById('withdrawBankAccount');
-   if(sel)sel.innerHTML=sec.bankAccounts.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.bankName)+' — '+esc(a.accountName)+' ('+esc(a.accountNumber)+')</option>').join('');
+   if(sel)sel.innerHTML=(sec.bankAccounts||[]).map(a=>'<option value="'+esc(a.id)+'">'+esc(a.bankName)+' — '+esc(a.accountName)+' ('+esc(a.accountNumber)+')</option>').join('')||'<option value="">No bank account bound — add a new account</option>';
   }
- }catch(e){return alert(e.message||'Unable to load withdrawal settings')}
- cryptoMethod.classList.toggle('selected',m==='crypto');bankMethod.classList.toggle('selected',m==='bank');
- cryptoFields.style.display=m==='crypto'?'block':'none';bankFields.style.display=m==='bank'?'block':'none';
- if(m==='bank'){const sel=document.getElementById('bankCurrency');if(sel)sel.value=currencyOptions.some(x=>x[0]===accountCurrency)?accountCurrency:'USDT';updateBankAmountLabel()}else updateWithdrawAmountLabels();
+ }catch(e){if(status)status.textContent=e.message||'Unable to load withdrawal settings'}
+}
+async function confirmWithdrawalPassword(){
+ const input=document.getElementById('withdrawalPassword'),btn=document.getElementById('confirmWithdrawalPasswordBtn'),status=document.getElementById('withdrawalPasswordStatus');
+ const password=input?.value||'';
+ if(!withdrawMethod)return showSuccessModal('Choose withdrawal method','Please choose Crypto or Bank.');
+ if(!password)return showSuccessModal('Withdrawal password required','Enter your withdrawal password to continue.');
+ if(btn){btn.disabled=true;btn.textContent='Loading...'}if(status)status.textContent='Loading... Checking withdrawal password';
+ try{
+  await api('/api/me/verify-withdrawal-password',{method:'POST',body:JSON.stringify({password})});
+  withdrawalPasswordVerified=true;
+  if(status)status.textContent='✓ Withdrawal password is correct.';
+  if(btn){btn.textContent='Confirmed';}
+  if(withdrawMethod==='crypto'){cryptoFields.style.display='block';bankFields.style.display='none';updateWithdrawAmountLabels()}
+  else{cryptoFields.style.display='none';bankFields.style.display='block';const sel=document.getElementById('bankCurrency');if(sel)sel.value=currencyOptions.some(x=>x[0]===accountCurrency)?accountCurrency:'USDT';updateBankAmountLabel()}
+  showSuccessModal('Password Verified','Your withdrawal password is correct. You can now enter your withdrawal information.');
+ }catch(e){
+  withdrawalPasswordVerified=false;if(status)status.textContent='✕ '+(e.message||'Incorrect withdrawal password');
+  if(btn){btn.disabled=false;btn.textContent='Confirm'}
+  showSuccessModal('Password Verification Failed',e.message||'Incorrect withdrawal password.');
+ }
 }
 async function submitWithdraw(){
  if(!withdrawMethod)return showSuccessModal('Choose withdrawal method','Please choose Crypto or Bank.');
  const passwordInput=document.getElementById('withdrawalPassword'),withdrawalPassword=passwordInput?.value||'';
- if(!withdrawalPassword)return showSuccessModal('Withdrawal password required','Enter your withdrawal password to continue.');
+ if(!withdrawalPasswordVerified||!withdrawalPassword)return showSuccessModal('Confirm withdrawal password','Please confirm your withdrawal password first.');
  let amount,details,currency,bankAccountId='';
  if(withdrawMethod==='crypto'){
   amount=Number(cryptoAmount.value);currency=String(document.getElementById('cryptoCurrency')?.value||accountCurrency||'USDT').toUpperCase();
@@ -408,7 +430,7 @@ async function submitWithdraw(){
  }catch(e){
   const msg=String(e.message||'Withdrawal request failed');
   showSuccessModal(/password|incorrect|invalid/i.test(msg)?'Incorrect withdrawal password':'Withdrawal failed',msg);
-  if(passwordInput)passwordInput.value='';
+  if(passwordInput)passwordInput.value='';withdrawalPasswordVerified=false;
  }
 }
 function closeInsufficientModal(){document.getElementById('insufficientModal')?.classList.remove('show')}
