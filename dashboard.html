@@ -190,9 +190,9 @@
 <script>
 const API='https://zonguru-jack-api.onrender.com';
 const token=()=>localStorage.getItem('zonguru_token')||'';
-async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(d.message||'Request failed');return d}
+async async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(d.message||'Request failed');return d}
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
-function showPage(id){document.body.classList.toggle('products-mode',id==='productsPage');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const page=document.getElementById(id);if(!page)return;page.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='depositPage')loadDepositAddresses();if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
+function showPage(id){if(id!=='withdrawPage'){const wp=document.getElementById('withdrawalPassword');if(wp)wp.value='';}document.body.classList.toggle('products-mode',id==='productsPage');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const page=document.getElementById(id);if(!page)return;page.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='depositPage')loadDepositAddresses();if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
 const currencyOptions=[
   ["USDT","₮","Tether"],
   ["MXN","$","Mexican Peso"],
@@ -385,7 +385,32 @@ async function selectWithdrawMethod(m){
  cryptoFields.style.display=m==='crypto'?'block':'none';bankFields.style.display=m==='bank'?'block':'none';
  if(m==='bank'){const sel=document.getElementById('bankCurrency');if(sel)sel.value=currencyOptions.some(x=>x[0]===accountCurrency)?accountCurrency:'USDT';updateBankAmountLabel()}else updateWithdrawAmountLabels();
 }
-async function submitWithdraw(){if(!withdrawMethod)return alert('Please choose Crypto or Bank.');const withdrawalPassword=document.getElementById('withdrawalPassword')?.value||'';if(!withdrawalPassword)return alert('Please enter your withdrawal password.');let amount,details,currency,bankAccountId='';if(withdrawMethod==='crypto'){amount=Number(cryptoAmount.value);currency=String(document.getElementById('cryptoCurrency')?.value||accountCurrency||'USDT').toUpperCase();details={walletAddress:walletAddress.value.trim(),network:walletNetwork.value.trim(),currency};if(!amount||!details.walletAddress)return alert('Please complete crypto details.')}else{currency=String(document.getElementById('bankCurrency')?.value||accountCurrency||'USDT').toUpperCase();amount=Number(bankAmount.value);bankAccountId=document.getElementById('withdrawBankAccount')?.value||'';details={currency,displayAmount:amount};if(!amount||!bankAccountId)return alert('Please select a saved bank account.')}try{await api('/api/withdrawals',{method:'POST',body:JSON.stringify({amount,currency,method:withdrawMethod,details,withdrawalPassword,bankAccountId})});if(withdrawMethod==='crypto'){document.getElementById('cryptoAmount').value='';document.getElementById('walletAddress').value='';document.getElementById('walletNetwork').value='';}else{document.getElementById('bankAmount').value='';}document.getElementById('withdrawalPassword').value='';showSuccessModal('Withdrawal Submitted','Withdrawal submit successful. '+amount+' '+currency+' has been deducted from your available balance and is waiting for admin review.',()=>{showPage('homePage');Promise.allSettled([loadTransactions(),loadUser()]);});}catch(e){alert(e.message)}}
+async async function submitWithdraw(){
+ if(!withdrawMethod)return showSuccessModal('Choose withdrawal method','Please choose Crypto or Bank.');
+ const passwordInput=document.getElementById('withdrawalPassword'),withdrawalPassword=passwordInput?.value||'';
+ if(!withdrawalPassword)return showSuccessModal('Withdrawal password required','Enter your withdrawal password to continue.');
+ let amount,details,currency,bankAccountId='';
+ if(withdrawMethod==='crypto'){
+  amount=Number(cryptoAmount.value);currency=String(document.getElementById('cryptoCurrency')?.value||accountCurrency||'USDT').toUpperCase();
+  details={walletAddress:walletAddress.value.trim(),network:walletNetwork.value.trim(),currency};
+  if(!amount||!details.walletAddress)return showSuccessModal('Missing information','Please complete the crypto withdrawal details.');
+ }else{
+  currency=String(document.getElementById('bankCurrency')?.value||accountCurrency||'USDT').toUpperCase();amount=Number(bankAmount.value);
+  bankAccountId=document.getElementById('withdrawBankAccount')?.value||'';details={currency,displayAmount:amount};
+  if(!amount||!bankAccountId)return showSuccessModal('Missing information','Please select a saved bank account and enter the amount.');
+ }
+ try{
+  await api('/api/withdrawals',{method:'POST',body:JSON.stringify({amount,currency,method:withdrawMethod,details,withdrawalPassword,bankAccountId})});
+  if(withdrawMethod==='crypto'){document.getElementById('cryptoAmount').value='';document.getElementById('walletAddress').value='';document.getElementById('walletNetwork').value='';}
+  else document.getElementById('bankAmount').value='';
+  passwordInput.value='';
+  showSuccessModal('Withdrawal Submitted','Your withdrawal request was submitted successfully and is waiting for admin review.',()=>{showPage('homePage');Promise.allSettled([loadTransactions(),loadUser()]);});
+ }catch(e){
+  const msg=String(e.message||'Withdrawal request failed');
+  showSuccessModal(/password|incorrect|invalid/i.test(msg)?'Incorrect withdrawal password':'Withdrawal failed',msg);
+  if(passwordInput)passwordInput.value='';
+ }
+}
 function closeInsufficientModal(){document.getElementById('insufficientModal')?.classList.remove('show')}
 function showInsufficientModal(d){
   const difference=Number(d?.difference||d?.shortfall||0),orderAmount=Number(d?.orderAmount||0),available=Number(d?.availableBalance||0),taskNo=Number(d?.taskNumber||0);
@@ -521,14 +546,15 @@ loadUser();showPage('accountDetailPage');applyLang();}async function renderBankB
    '<h3 style="margin-top:18px">＋ New account</h3><div class="form-group"><label>Bank Name</label><input id="bindBankName" autocomplete="off"></div><div class="form-group"><label>Account Name</label><input id="bindAccountName" autocomplete="off"></div><div class="form-group"><label>Account Number</label><input id="bindAccountNumber" autocomplete="off"></div><div class="form-group"><label>Additional Details (optional)</label><textarea id="bindBankDetails"></textarea></div><button class="primary" onclick="saveBankAccount()">Bind information</button>';
  }catch(e){box.innerHTML='<div class="notice">'+esc(e.message)+'</div>'}
 }
-async function saveWithdrawalPassword(continueToBank){
+async async function saveWithdrawalPassword(continueToBank){
  const password=document.getElementById('newWithdrawalPassword')?.value||'',confirm=document.getElementById('confirmWithdrawalPassword')?.value||'';
- if(password.length<6)return alert('Withdrawal password must be at least 6 characters.');
- if(password!==confirm)return alert('Withdrawal passwords do not match.');
+ if(password.length<6)return showSuccessModal('Password not saved','Withdrawal password must be at least 6 characters.');
+ if(password!==confirm)return showSuccessModal('Password not saved','The two passwords do not match.');
  try{
   await api('/api/me/withdrawal-password',{method:'POST',body:JSON.stringify({password,confirmPassword:confirm})});
-  if(continueToBank){renderBankBinding()}else{alert('Withdrawal password saved.');showPage('withdrawPage');selectWithdrawMethod(withdrawMethod||'crypto')}
- }catch(e){alert(e.message)}
+  showSuccessModal('Password saved','Your withdrawal password has been saved successfully.');
+  if(continueToBank){renderBankBinding()}else{showPage('withdrawPage');selectWithdrawMethod(withdrawMethod||'crypto')}
+ }catch(e){showSuccessModal('Unable to save password',e.message||'Please try again.')}
 }
 async function saveBankAccount(){
  const bankName=document.getElementById('bindBankName')?.value.trim()||'',accountName=document.getElementById('bindAccountName')?.value.trim()||'',accountNumber=document.getElementById('bindAccountNumber')?.value.trim()||'',additionalDetails=document.getElementById('bindBankDetails')?.value.trim()||'';
