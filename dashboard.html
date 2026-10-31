@@ -370,7 +370,7 @@ let withdrawMethod='';
 function updateWithdrawAmountLabels(){const cryptoLabel=document.getElementById('cryptoAmountLabel');if(cryptoLabel)cryptoLabel.textContent='Amount ('+(accountCurrency||'USDT')+')';updateBankAmountLabel()}
 function updateBankAmountLabel(){const code=document.getElementById('bankCurrency')?.value||accountCurrency||'USDT';const label=document.getElementById('bankAmountLabel');if(label)label.textContent='Amount ('+code+')';const hint=document.getElementById('bankAmountHint');if(hint)hint.textContent='';}
 async function loadWithdrawalSecurity(){return await api('/api/me/withdrawal-security')}
-async function selectWithdrawMethod(m){
+async async function selectWithdrawMethod(m){
  withdrawMethod=m;
  try{
   const sec=await loadWithdrawalSecurity();
@@ -385,7 +385,7 @@ async function selectWithdrawMethod(m){
  cryptoFields.style.display=m==='crypto'?'block':'none';bankFields.style.display=m==='bank'?'block':'none';
  if(m==='bank'){const sel=document.getElementById('bankCurrency');if(sel)sel.value=currencyOptions.some(x=>x[0]===accountCurrency)?accountCurrency:'USDT';updateBankAmountLabel()}else updateWithdrawAmountLabels();
 }
-async async function submitWithdraw(){
+async function submitWithdraw(){
  if(!withdrawMethod)return showSuccessModal('Choose withdrawal method','Please choose Crypto or Bank.');
  const passwordInput=document.getElementById('withdrawalPassword'),withdrawalPassword=passwordInput?.value||'';
  if(!withdrawalPassword)return showSuccessModal('Withdrawal password required','Enter your withdrawal password to continue.');
@@ -533,7 +533,7 @@ else if(type==='withdrawPassword'){
  renderBankBinding();
 }else if(type==='settings'){title.textContent='Settings';box.innerHTML='<div class="row"><span>Language</span><button class="secondary" onclick="toggleLang()">Change Language</button></div><div class="row"><span>Customer Service</span><button class="secondary" onclick="openChat()">Open Chat</button></div><div class="row"><span>Account Status</span><b id="accountStatus2">Active</b></div>';}
 else if(type==='password'){title.textContent='Change Password';box.innerHTML='<div class="form-group"><label>Current Password</label><input id="oldPassword" type="password" autocomplete="current-password"></div><div class="form-group"><label>New Password</label><input id="newPassword" type="password" autocomplete="new-password"></div><div class="form-group"><label>Confirm New Password</label><input id="confirmPassword" type="password" autocomplete="new-password"></div><button class="primary" onclick="changePassword()">Change Password</button>';}
-loadUser();showPage('accountDetailPage');applyLang();}async function renderBankBinding(){
+loadUser();showPage('accountDetailPage');applyLang();}async async function renderBankBinding(){
  const box=document.getElementById('bankBindingContent');if(!box)return;
  try{
   const sec=await loadWithdrawalSecurity();
@@ -546,7 +546,7 @@ loadUser();showPage('accountDetailPage');applyLang();}async function renderBankB
    '<h3 style="margin-top:18px">＋ New account</h3><div class="form-group"><label>Bank Name</label><input id="bindBankName" autocomplete="off"></div><div class="form-group"><label>Account Name</label><input id="bindAccountName" autocomplete="off"></div><div class="form-group"><label>Account Number</label><input id="bindAccountNumber" autocomplete="off"></div><div class="form-group"><label>Additional Details (optional)</label><textarea id="bindBankDetails"></textarea></div><button class="primary" onclick="saveBankAccount()">Bind information</button>';
  }catch(e){box.innerHTML='<div class="notice">'+esc(e.message)+'</div>'}
 }
-async async function saveWithdrawalPassword(continueToBank){
+async function saveWithdrawalPassword(continueToBank){
  const password=document.getElementById('newWithdrawalPassword')?.value||'',confirm=document.getElementById('confirmWithdrawalPassword')?.value||'';
  if(password.length<6)return showSuccessModal('Password not saved','Withdrawal password must be at least 6 characters.');
  if(password!==confirm)return showSuccessModal('Password not saved','The two passwords do not match.');
