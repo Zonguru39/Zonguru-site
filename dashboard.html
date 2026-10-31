@@ -404,7 +404,7 @@ async async function submitWithdraw(){
   if(withdrawMethod==='crypto'){document.getElementById('cryptoAmount').value='';document.getElementById('walletAddress').value='';document.getElementById('walletNetwork').value='';}
   else document.getElementById('bankAmount').value='';
   passwordInput.value='';
-  showSuccessModal('Withdrawal Submitted','Your withdrawal request was submitted successfully and is waiting for admin review.',()=>{showPage('homePage');Promise.allSettled([loadTransactions(),loadUser()]);});
+  showSuccessModal('Withdrawal Submitted','Withdrawal password verified successfully. Your withdrawal request has been submitted and is waiting for admin review.',()=>{showPage('homePage');Promise.allSettled([loadTransactions(),loadUser()]);});
  }catch(e){
   const msg=String(e.message||'Withdrawal request failed');
   showSuccessModal(/password|incorrect|invalid/i.test(msg)?'Incorrect withdrawal password':'Withdrawal failed',msg);
@@ -561,9 +561,9 @@ async function saveBankAccount(){
  if(!bankName||!accountName||!accountNumber)return alert('Please complete bank name, account name and account number.');
  try{
   await api('/api/me/bank-accounts',{method:'POST',body:JSON.stringify({bankName,accountName,accountNumber,additionalDetails})});
-  alert('Bank account bound successfully.');
+  showSuccessModal('Bank account saved','Your bank account information has been saved successfully.');
   renderBankBinding();
- }catch(e){alert(e.message)}
+ }catch(e){showSuccessModal('Unable to save bank account',e.message||'Please try again.')}
 }
 function openAccountDetail(type){renderAccountDetail(type)}
 function previewProfilePhoto(e){const file=e.target.files?.[0];if(!file)return;if(!file.type.startsWith('image/'))return alert('Please select an image.');const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const max=600,scale=Math.min(1,max/Math.max(img.width,img.height)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(img.width*scale));cv.height=Math.max(1,Math.round(img.height*scale));cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);const src=cv.toDataURL('image/jpeg',.78);document.getElementById('photoStatus').textContent='Photo ready';setAvatar(src);window._profileAvatar=src};img.src=r.result};r.readAsDataURL(file)}
