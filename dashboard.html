@@ -571,9 +571,41 @@ loadUser();showPage('accountDetailPage');applyLang();}async function renderBankB
    return;
   }
   const accounts=sec.bankAccounts||[];
-  box.innerHTML=(accounts.length?'<h3>Saved bank accounts</h3>'+accounts.map(a=>'<div class="txn"><b>'+esc(a.bankName)+'</b><div>'+esc(a.accountName)+' · '+esc(a.accountNumber)+'</div></div>').join(''):'<p style="color:#777">No bank account has been bound yet.</p>')+
-   '<h3 style="margin-top:18px">＋ New account</h3><div class="form-group"><label>Bank Name</label><input id="bindBankName" autocomplete="off"></div><div class="form-group"><label>Account Name</label><input id="bindAccountName" autocomplete="off"></div><div class="form-group"><label>Account Number</label><input id="bindAccountNumber" autocomplete="off"></div><div class="form-group"><label>Additional Details (optional)</label><textarea id="bindBankDetails"></textarea></div><button class="primary" onclick="saveBankAccount()">Bind information</button>';
+  const cards=accounts.map(a=>'<div class="txn bank-account-card" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="min-width:0;flex:1"><b>'+esc(a.bankName)+'</b><div>'+esc(a.accountName)+' · '+esc(a.accountNumber)+'</div>'+(a.additionalDetails?'<small style="color:#777">'+esc(a.additionalDetails)+'</small>':'')+'</div><button type="button" class="secondary" style="flex:0 0 auto;padding:9px 12px" aria-label="Edit bank account" onclick="editBankAccount('+JSON.stringify(String(a.id))+')">✎ Edit</button></div>').join('');
+  box.innerHTML=(accounts.length?'<h3>Saved bank accounts</h3>'+cards:'<p style="color:#777">No bank account has been bound yet.</p>')+
+   '<button type="button" class="secondary" style="width:100%;margin-top:18px" id="newBankAccountToggle" onclick="toggleNewBankAccount()">＋ New account</button>'+
+   '<div id="bankAccountForm" style="display:none;margin-top:16px"><h3 id="bankAccountFormTitle">New account</h3><div class="form-group"><label>Bank Name</label><input id="bindBankName" autocomplete="off"></div><div class="form-group"><label>Account Name</label><input id="bindAccountName" autocomplete="off"></div><div class="form-group"><label>Account Number</label><input id="bindAccountNumber" autocomplete="off"></div><div class="form-group"><label>Additional Details (optional)</label><textarea id="bindBankDetails"></textarea></div><div style="display:flex;gap:10px"><button type="button" class="secondary" style="flex:1" onclick="cancelBankAccountEdit()">Cancel</button><button type="button" class="primary" style="flex:1" id="saveBankAccountBtn" onclick="saveBankAccount()">Save information</button></div></div>';
  }catch(e){box.innerHTML='<div class="notice">'+esc(e.message)+'</div>'}
+}
+let editingBankAccountId='';
+function toggleNewBankAccount(){
+ editingBankAccountId='';
+ const form=document.getElementById('bankAccountForm');if(!form)return;
+ const open=form.style.display!=='block';form.style.display=open?'block':'none';
+ const title=document.getElementById('bankAccountFormTitle');if(title)title.textContent='New account';
+ const toggle=document.getElementById('newBankAccountToggle');if(toggle)toggle.textContent=open?'− Close':'＋ New account';
+ ['bindBankName','bindAccountName','bindAccountNumber','bindBankDetails'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+ const btn=document.getElementById('saveBankAccountBtn');if(btn)btn.textContent='Save information';
+}
+function cancelBankAccountEdit(){
+ const form=document.getElementById('bankAccountForm');if(form)form.style.display='none';
+ editingBankAccountId='';
+ const toggle=document.getElementById('newBankAccountToggle');if(toggle)toggle.textContent='＋ New account';
+}
+async function editBankAccount(id){
+ try{
+  const sec=await loadWithdrawalSecurity(),a=(sec.bankAccounts||[]).find(x=>String(x.id)===String(id));
+  if(!a)throw new Error('Saved bank account not found. Please refresh and try again.');
+  editingBankAccountId=String(id);
+  document.getElementById('bindBankName').value=a.bankName||'';
+  document.getElementById('bindAccountName').value=a.accountName||'';
+  document.getElementById('bindAccountNumber').value=a.accountNumber||'';
+  document.getElementById('bindBankDetails').value=a.additionalDetails||'';
+  document.getElementById('bankAccountFormTitle').textContent='Edit bank account';
+  document.getElementById('saveBankAccountBtn').textContent='Save changes';
+  document.getElementById('bankAccountForm').style.display='block';
+  document.getElementById('bankAccountForm').scrollIntoView({behavior:'smooth',block:'center'});
+ }catch(e){showSuccessModal('Unable to edit bank account',e.message||'Please try again.')}
 }
 async function saveWithdrawalPassword(continueToBank){
  const password=document.getElementById('newWithdrawalPassword')?.value||'',confirm=document.getElementById('confirmWithdrawalPassword')?.value||'';
@@ -587,11 +619,13 @@ async function saveWithdrawalPassword(continueToBank){
 }
 async function saveBankAccount(){
  const bankName=document.getElementById('bindBankName')?.value.trim()||'',accountName=document.getElementById('bindAccountName')?.value.trim()||'',accountNumber=document.getElementById('bindAccountNumber')?.value.trim()||'',additionalDetails=document.getElementById('bindBankDetails')?.value.trim()||'';
- if(!bankName||!accountName||!accountNumber)return alert('Please complete bank name, account name and account number.');
+ if(!bankName||!accountName||!accountNumber)return showSuccessModal('Information required','Please complete bank name, account name and account number.');
  try{
-  await api('/api/me/bank-accounts',{method:'POST',body:JSON.stringify({bankName,accountName,accountNumber,additionalDetails})});
-  showSuccessModal('Bank account saved','Your bank account information has been saved successfully.');
-  renderBankBinding();
+  const editing=!!editingBankAccountId;
+  await api(editing?'/api/me/bank-accounts/'+encodeURIComponent(editingBankAccountId):'/api/me/bank-accounts',{method:editing?'PATCH':'POST',body:JSON.stringify({bankName,accountName,accountNumber,additionalDetails})});
+  editingBankAccountId='';
+  await renderBankBinding();
+  showSuccessModal(editing?'Bank account updated':'Bank account saved',editing?'Your bank account information has been updated successfully.':'Your bank account information has been saved successfully.');
  }catch(e){showSuccessModal('Unable to save bank account',e.message||'Please try again.')}
 }
 function openAccountDetail(type){renderAccountDetail(type)}
