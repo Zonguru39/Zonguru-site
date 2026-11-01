@@ -19,6 +19,9 @@
 .success-modal.show{display:flex}
 .success-card{width:min(100%,360px);background:#fff;border-radius:20px;padding:28px 22px 20px;text-align:center;box-shadow:0 18px 55px rgba(0,0,0,.25)}
 .success-icon{width:58px;height:58px;margin:0 auto 12px;border-radius:50%;background:#eafaf0;color:#20a05a;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900}
+.success-modal.error .success-icon{background:#fdebed;color:#d92f3d}
+.success-modal.error .success-done{background:#d92f3d}
+.success-modal.error .success-title{color:#b42332}
 .success-title{font-size:21px;font-weight:900;color:#222;margin-bottom:9px}
 .success-text{font-size:15px;line-height:1.55;color:#555;margin-bottom:18px}
 .success-done{width:100%;border:0;border-radius:12px;padding:13px;background:#20a05a;color:#fff;font-weight:900;font-size:16px}
@@ -307,8 +310,12 @@ async function copyDepositAddress(){
 }
 function showSuccessModal(title,text,onDone){
   const m=document.getElementById('successModal');if(!m)return;
-  document.getElementById('successTitle').textContent=title||'Successful';
-  document.getElementById('successText').textContent=text||'Your request was submitted successfully.';
+  const isError=/(failed|incorrect|error|rejected|unable|invalid)/i.test(String(title||'')+' '+String(text||''));
+  const icon=m.querySelector('.success-icon');
+  m.classList.toggle('error',isError);
+  if(icon)icon.textContent=isError?'✕':'✓';
+  document.getElementById('successTitle').textContent=title||(isError?'Error':'Successful');
+  document.getElementById('successText').textContent=text||(isError?'Your request could not be completed.':'Your request was submitted successfully.');
   window._successDone=typeof onDone==='function'?onDone:null;
   m.classList.add('show');
 }
