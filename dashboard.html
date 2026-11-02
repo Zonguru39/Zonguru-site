@@ -179,6 +179,14 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 .announcement-title{font-size:21px;font-weight:900;margin:8px 42px 12px 0}
 .announcement-text{white-space:pre-wrap;line-height:1.55;color:#394150;font-size:15px}
 .announcement-image{display:block;width:100%;max-height:55vh;object-fit:contain;border-radius:12px;margin:12px 0;background:#f5f5f5}
+/* Keep announcements centered in the actual mobile viewport and fit the full poster */
+.announcement-overlay{position:fixed!important;inset:0!important;width:100vw;height:100vh;height:100dvh;display:none;align-items:center!important;justify-content:center!important;padding:12px!important;overflow:hidden!important}
+.announcement-overlay.show{display:flex!important}
+.announcement-card{width:min(100%,560px)!important;max-height:92vh!important;max-height:92dvh!important;overflow-y:auto!important;overscroll-behavior:contain;padding:18px!important;margin:auto!important}
+.announcement-image{width:100%!important;height:auto!important;max-height:64vh!important;max-height:64dvh!important;object-fit:contain!important;object-position:center!important;margin:12px auto!important}
+.announcement-close{position:sticky;float:right;top:0;margin-bottom:-36px}
+@media(max-width:600px){.announcement-overlay{padding:10px!important}.announcement-card{border-radius:18px;padding:16px!important}.announcement-title{font-size:19px}.announcement-image{max-height:66dvh!important}}
+
 .announcement-label{font-size:11px;font-weight:800;letter-spacing:1px;color:#e34d66;text-transform:uppercase}
 </style>
 </head>
@@ -1052,6 +1060,7 @@ async function checkAnnouncements(){
 function showNextAnnouncement(){
  const a=_pendingAnnouncements.shift();_currentAnnouncement=a||null;
  const overlay=document.getElementById('announcementOverlay');if(!overlay)return;
+ if(overlay.parentElement!==document.body)document.body.appendChild(overlay);
  if(!a){overlay.classList.remove('show');return}
  document.getElementById('announcementTitle').textContent=a.title||'Announcement';
  document.getElementById('announcementText').textContent=a.text||'';
