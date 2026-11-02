@@ -614,19 +614,19 @@ async function saveFirstWithdrawalPassword(){
  const confirmPassword=document.getElementById('confirmNewWithdrawalPassword')?.value||'';
  const btn=document.getElementById('saveFirstWithdrawalPasswordBtn');
  const status=document.getElementById('withdrawalPasswordStatus');
- if(password.length<6||password.length>128){if(status)status.textContent=t('Withdrawal password must be 6 to 128 characters.');return}
- if(password!==confirmPassword){if(status)status.textContent=t('New withdrawal passwords do not match.');return}
- if(btn){btn.disabled=true;btn.textContent=t('Saving...')}
+ if(password.length<6||password.length>128){if(status)status.textContent=T('Withdrawal password must be 6 to 128 characters.');return}
+ if(password!==confirmPassword){if(status)status.textContent=T('New withdrawal passwords do not match.');return}
+ if(btn){btn.disabled=true;btn.textContent=T('Saving...')} if(status)status.textContent=T('Saving...');
  try{
   await api('/api/me/withdrawal-password',{method:'POST',body:JSON.stringify({password,confirmPassword})});
   const input=document.getElementById('withdrawalPassword');if(input)input.value=password;
   const setup=document.getElementById('setWithdrawalPasswordBox'),verify=document.getElementById('verifyWithdrawalPasswordBox');
   if(setup)setup.style.display='none';if(verify)verify.style.display='block';
-  if(status)status.textContent=t('Withdrawal password saved. Please confirm to continue.');
+  if(status)status.textContent=T('Withdrawal password saved. Please confirm to continue.');
   await confirmWithdrawalPassword();
  }catch(e){
-  if(status)status.textContent=e.message||t('Unable to save withdrawal password.');
-  if(btn){btn.disabled=false;btn.textContent=t('Save Withdrawal Password')}
+  if(status)status.textContent=e.message||T('Unable to save withdrawal password.');
+  if(btn){btn.disabled=false;btn.textContent=T('Save Withdrawal Password')}
  }
 }
 async function confirmWithdrawalPassword(){
