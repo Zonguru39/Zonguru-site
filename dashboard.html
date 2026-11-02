@@ -171,6 +171,15 @@ body.dark-mode .vip-levels-sheet{background:#12171e;color:#edf1f5}
 body.dark-mode .vip-levels-card,body.dark-mode .vip-level-card{background:#1b222b;color:#edf1f5;border-color:#3b4653}
 body.dark-mode .vip-level-card h3,body.dark-mode .vip-level-card li{color:#e1e8ef}
 body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
+ 
+.announcement-overlay{display:none;position:fixed;inset:0;z-index:10050;background:rgba(10,15,25,.68);align-items:center;justify-content:center;padding:18px}
+.announcement-overlay.show{display:flex}
+.announcement-card{position:relative;width:min(100%,520px);max-height:88vh;overflow:auto;background:#fff;border-radius:20px;padding:22px;box-shadow:0 20px 70px #0005;color:#18212b}
+.announcement-close{position:absolute;right:10px;top:8px;width:36px;height:36px;border:0;border-radius:50%;background:#f1f2f4;color:#333;font-size:27px;line-height:1;z-index:2}
+.announcement-title{font-size:21px;font-weight:900;margin:8px 42px 12px 0}
+.announcement-text{white-space:pre-wrap;line-height:1.55;color:#394150;font-size:15px}
+.announcement-image{display:block;width:100%;max-height:55vh;object-fit:contain;border-radius:12px;margin:12px 0;background:#f5f5f5}
+.announcement-label{font-size:11px;font-weight:800;letter-spacing:1px;color:#e34d66;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -333,6 +342,15 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 </main>
 <nav class="bottom"><button class="nav-btn active" id="navHome" onclick="showPage('homePage')"><span class="nav-icon">⌂</span><span data-i18n="Home">Home</span></button><button class="nav-btn" id="navProducts" onclick="showPage('productsPage')"><span class="nav-icon">▣</span><span data-i18n="Products">Products</span></button><button class="nav-btn" id="navHistory" onclick="showPage('transactionsPage')"><span class="nav-icon">☷</span><span data-i18n="History">History</span></button><button class="nav-btn" id="navMessages" onclick="showPage('messagesPage')"><span class="nav-icon">✉</span><span data-i18n="Messages">Messages</span></button><button class="nav-btn" id="navAccount" onclick="showPage('accountPage')"><span class="nav-icon">♙</span><span data-i18n="Account">Account</span></button></nav>
 <div class="support-choice-overlay" id="supportChoice" onclick="if(event.target===this)closeSupportChoice()"><div class="support-choice-card"><button class="support-choice-close" type="button" onclick="closeSupportChoice()" aria-label="Close">×</button><h3 class="support-choice-title">Contact Customer Service</h3><p class="support-choice-sub">Choose how you would like to contact our support team.</p><button class="support-choice-option" id="telegramCsLink" type="button" onclick="chooseTelegramSupport(event)"><span class="support-choice-icon"><svg class="telegram-mark" viewBox="0 0 48 48" aria-label="Telegram logo"><circle cx="24" cy="24" r="23" fill="#229ED9"/><path d="M10.4 23.2 36.3 13.1c1.2-.4 2.2.3 1.8 2l-4.4 20.7c-.3 1.5-1.2 1.9-2.5 1.1l-7.2-5.3-3.5 3.4c-.4.4-.8.7-1.5.7l.5-7.3 13.3-12c.6-.5-.1-.8-.9-.3L15.5 26.3l-7-2.2c-1.5-.5-1.5-1.5 1.9-2.8Z" fill="#fff"/></svg></span><span><span class="support-choice-name">Telegram CS</span><span class="support-choice-detail">Open Telegram and message support</span></span></button><button class="support-choice-option" type="button" onclick="chooseInternalSupport()"><span class="support-choice-icon" style="font-size:30px">💬</span><span><span class="support-choice-name">Customer Service</span><span class="support-choice-detail">Chat directly on Zonguru</span></span></button></div></div><div class="chat" id="chat"><div class="chat-head"><b>💬 <span data-i18n="Customer Service">Customer Service</span></b><button class="chat-close" onclick="closeChat()">×</button></div><div class="chat-body" id="chatBody"><div class="msg admin">Hello! How can we help you?</div></div><div class="chat-input"><input id="chatInput" placeholder="Type your message..." data-i18n-placeholder="Type your message..." onkeydown="if(event.key==='Enter')sendChat()"><input id="chatImage" type="file" accept="image/*" style="display:none" onchange="sendChatImage()"><button class="chat-send" type="button" onclick="document.getElementById('chatImage').click()">📷</button><button class="chat-send" onclick="sendChat()" data-i18n="Send">Send</button></div></div>
+<div id="announcementOverlay" class="announcement-overlay" role="dialog" aria-modal="true" aria-label="Announcement">
+ <div class="announcement-card">
+  <button type="button" class="announcement-close" onclick="dismissCurrentAnnouncement()" aria-label="Close announcement">×</button>
+  <div class="announcement-label">Zonguru Announcement</div>
+  <h2 id="announcementTitle" class="announcement-title"></h2>
+  <img id="announcementImage" class="announcement-image" alt="Announcement image" style="display:none">
+  <div id="announcementText" class="announcement-text"></div>
+ </div>
+</div>
 <script>
 const API='https://zonguru-jack-api.onrender.com';
 const token=()=>localStorage.getItem('zonguru_token')||'';
@@ -1023,8 +1041,34 @@ function animateRealtimePreview(){
   }
   tick();setInterval(tick,1200);
 }
+let _pendingAnnouncements=[],_currentAnnouncement=null,_announcementLoading=false;
+async function checkAnnouncements(){
+ if(_announcementLoading||!token())return;
+ _announcementLoading=true;
+ try{const d=await api('/api/me/announcements');_pendingAnnouncements=d.announcements||[];showNextAnnouncement();}
+ catch(e){console.warn('Announcement check failed:',e.message)}
+ finally{_announcementLoading=false}
+}
+function showNextAnnouncement(){
+ const a=_pendingAnnouncements.shift();_currentAnnouncement=a||null;
+ const overlay=document.getElementById('announcementOverlay');if(!overlay)return;
+ if(!a){overlay.classList.remove('show');return}
+ document.getElementById('announcementTitle').textContent=a.title||'Announcement';
+ document.getElementById('announcementText').textContent=a.text||'';
+ const img=document.getElementById('announcementImage');
+ if(a.image){img.src=a.image;img.style.display='block'}else{img.removeAttribute('src');img.style.display='none'}
+ overlay.classList.add('show');
+}
+async function dismissCurrentAnnouncement(){
+ const a=_currentAnnouncement;if(!a)return;
+ const btn=document.querySelector('.announcement-close');if(btn)btn.disabled=true;
+ try{await api('/api/me/announcements/'+encodeURIComponent(a._id)+'/dismiss',{method:'POST',body:JSON.stringify({})});}
+ catch(e){console.warn('Announcement dismiss failed:',e.message)}
+ finally{if(btn)btn.disabled=false;showNextAnnouncement()}
+}
+
 document.getElementById('bankAmount')?.addEventListener('input',updateBankAmountLabel);
-document.addEventListener('DOMContentLoaded',()=>{applyDarkMode();loadTelegramSupportUrl();if(!token()){location.href='login.html';return}applyLang();window._profileAvatar=undefined;loadDepositAddresses();loadUser();loadTransactions();startRealtimeSync();animateRealtimePreview();checkChatNotice();setTimeout(checkChatNotice,1000)});
+document.addEventListener('DOMContentLoaded',()=>{applyDarkMode();loadTelegramSupportUrl();if(!token()){location.href='login.html';return}applyLang();window._profileAvatar=undefined;loadDepositAddresses();loadUser();setTimeout(checkAnnouncements,900);loadTransactions();startRealtimeSync();animateRealtimePreview();checkChatNotice();setTimeout(checkChatNotice,1000)});
 </script>
 </body></html>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
