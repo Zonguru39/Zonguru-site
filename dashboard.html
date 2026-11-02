@@ -150,13 +150,33 @@ body.dark-mode .page .card [style*="color: #222"],
 body.dark-mode .page .card [style*="color:#555"],
 body.dark-mode .page .card [style*="color: #555"]{color:#e6ebf1!important}
 
+
+.vip-badge{cursor:pointer;user-select:none}
+.vip-levels-modal{display:none;position:fixed;inset:0;z-index:1300;background:#0009;padding:14px;overflow-y:auto;align-items:flex-start;justify-content:center}
+.vip-levels-modal.open{display:flex}
+.vip-levels-sheet{width:min(100%,620px);margin:10px auto;background:#f4f5f7;color:#20242b;border-radius:18px;overflow:hidden;box-shadow:0 18px 60px #0005}
+.vip-levels-head{position:sticky;top:0;z-index:2;background:#a71932;color:#fff;padding:16px;display:flex;align-items:center;gap:14px;font-weight:900;font-size:18px}
+.vip-levels-head button{border:0;background:transparent;color:#fff;font-size:25px;line-height:1}
+.vip-level-card{margin:12px;padding:16px;border:1px solid #d7d9de;border-radius:15px;background:#fff;color:#20242b;display:grid;grid-template-columns:58px 1fr;gap:12px}
+.vip-level-icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(145deg,#ffe7a5,#d7a54a);display:flex;align-items:center;justify-content:center;font-size:30px}
+.vip-level-card h3{margin:2px 0 8px;font-size:17px}
+.vip-level-card .vip-deposit{font-weight:900;color:#c44b62;margin-bottom:10px}
+.vip-level-card ul{list-style:none;padding:0;margin:0;display:grid;gap:7px}
+.vip-level-card li{font-size:13px;line-height:1.45;color:#168db5}
+.vip-level-card li:before{content:'● ';color:#149fce}
+.vip-level-card.current{border:2px solid #d43d58;box-shadow:0 0 0 2px #d43d581c}
+.vip-current-tag{display:inline-block;margin-left:7px;padding:3px 7px;border-radius:5px;background:#b52640;color:#fff;font-size:11px;vertical-align:2px}
+body.dark-mode .vip-levels-sheet{background:#12171e;color:#edf1f5}
+body.dark-mode .vip-levels-card,body.dark-mode .vip-level-card{background:#1b222b;color:#edf1f5;border-color:#3b4653}
+body.dark-mode .vip-level-card h3,body.dark-mode .vip-level-card li{color:#e1e8ef}
+body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 </style>
 </head>
 <body>
 <div class="tools"><button class="tool" onclick="openChat()">💬 Customer Service<span class="chat-badge" id="chatBadge">0</span></button><div class="lang-wrap"><button class="tool" onclick="toggleLang()">🌐 Language</button><div class="lang-menu" id="langMenu"><button class="lang-item" onclick="setLang('en')">🇬🇧 English</button><button class="lang-item" onclick="setLang('es')">🇪🇸 Español</button><button class="lang-item" onclick="setLang('pt')">🇵🇹 Português</button><button class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</button><button class="lang-item" onclick="setLang('my')">🇲🇲 မြန်မာ</button><button class="lang-item" onclick="setLang('ur')">🇵🇰 اردو (Pakistan)</button></div></div></div>
 <header class="top"><div class="top-inner">
 <div class="topbar"><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-label="Zonguru logo"><defs><linearGradient id="zgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc542"/><stop offset=".52" stop-color="#ff7b19"/><stop offset="1" stop-color="#ff3e1d"/></linearGradient><linearGradient id="zgT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#35c6bd"/><stop offset="1" stop-color="#0796c7"/></linearGradient></defs><path d="M10 40C15 18 34 7 49 12c5 2 7 6 5 10-4 7-15 13-25 17-8 3-14 5-19 1Z" fill="url(#zgA)"/><path d="M33 31c7-3 15-8 19-15 7 6 9 15 5 25-3 8-10 13-18 15l-7-7c7-5 10-10 1-18Z" fill="url(#zgT)"/><path d="M36 38c6 3 11 7 13 13M40 31c7 3 12 6 15 12M44 24c6 2 11 5 15 10" fill="none" stroke="#087f91" stroke-width="3.2" stroke-linecap="round" opacity=".8"/></svg><span class="brand-word">ZONGURU</span></div><button class="top-menu" onclick="showPage('accountPage')">☰</button></div>
-<div class="profile-row"><div class="profile-main"><div class="avatar">👤</div><div><div class="welcome-name" id="welcome">Welcome</div><div class="subline" data-i18n="Customer account">Customer account</div></div></div><div class="vip-badge" id="topVipLevel">VIP 0</div></div>
+<div class="profile-row"><div class="profile-main"><div class="avatar">👤</div><div><div class="welcome-name" id="welcome">Welcome</div><div class="subline" data-i18n="Customer account">Customer account</div></div></div><button type="button" class="vip-badge" id="topVipLevel" onclick="openVipLevels()" aria-label="View VIP levels">VIP 0</button></div>
 <div class="stats"><div class="stat"><b id="topBalance">0.00</b><span data-i18n="Balance USDT">Balance USDT</span></div><div class="stat"><b id="frozenAmount">0.00</b><span data-i18n="Frozen Amount">Frozen Amount</span></div><div class="stat"><b id="trustScore">100</b><span data-i18n="Credit Score">Credit Score</span></div></div>
 </div></header>
 <main class="container">
@@ -289,7 +309,7 @@ body.dark-mode .page .card [style*="color: #555"]{color:#e6ebf1!important}
   <div id="accountDetailContent"></div>
 </div>
 </section>
-<div class="currency-modal" id="currencyModal" onclick="if(event.target===this)closeCurrencyPicker()"><div class="currency-sheet"><div class="currency-head"><b data-i18n="Select Currency">Select Currency</b><button type="button" onclick="closeCurrencyPicker()">×</button></div><p class="currency-note" data-i18n="Your account balance is stored in USDT. The selected currency is for display only.">Your account balance is stored in USDT. The selected currency is for display only.</p><div class="currency-list" id="currencyList"></div></div></div></main>
+<div class="vip-levels-modal" id="vipLevelsModal" role="dialog" aria-modal="true" aria-labelledby="vipLevelsTitle" onclick="if(event.target===this)closeVipLevels()"><div class="vip-levels-sheet"><div class="vip-levels-head"><button type="button" onclick="closeVipLevels()" aria-label="Back">‹</button><span id="vipLevelsTitle" data-i18n="VIP Levels">VIP Levels</span></div><div id="vipLevelsContent"></div></div></div><div class="currency-modal" id="currencyModal" onclick="if(event.target===this)closeCurrencyPicker()"><div class="currency-sheet"><div class="currency-head"><b data-i18n="Select Currency">Select Currency</b><button type="button" onclick="closeCurrencyPicker()">×</button></div><p class="currency-note" data-i18n="Your account balance is stored in USDT. The selected currency is for display only.">Your account balance is stored in USDT. The selected currency is for display only.</p><div class="currency-list" id="currencyList"></div></div></div></main>
 <div class="product-detail-modal" id="productDetailModal" onclick="if(event.target===this)closeProductDetail()"><div class="product-detail-sheet"><button type="button" class="secondary" onclick="closeProductDetail()" style="float:right">×</button><div id="productDetail"></div></div></div><div class="insufficient-modal" id="insufficientModal" role="dialog" aria-modal="true" aria-labelledby="insufficientTitle">
   <div class="insufficient-card">
     <div class="insufficient-icon">!</div>
@@ -317,6 +337,24 @@ const API='https://zonguru-jack-api.onrender.com';
 const token=()=>localStorage.getItem('zonguru_token')||'';
 async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(T(d.message||'Request failed'));return d}
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+
+const vipLevelRules=[
+ {level:1,deposit:100,profit:8,combo:48},
+ {level:2,deposit:800,profit:10,combo:60},
+ {level:3,deposit:2000,profit:12,combo:72},
+ {level:4,deposit:5000,profit:15,combo:90}
+];
+function openVipLevels(){
+ const modal=document.getElementById('vipLevelsModal'),box=document.getElementById('vipLevelsContent');
+ if(!modal||!box)return;
+ const current=Number(window._vipLevel||0);
+ box.innerHTML=vipLevelRules.map(v=>{
+  const isCurrent=current===v.level;
+  return '<article class="vip-level-card '+(isCurrent?'current':'')+'"><div class="vip-level-icon">👑</div><div><h3>VIP '+v.level+(isCurrent?'<span class="vip-current-tag">'+T('Current')+'</span>':'')+'</h3><div class="vip-deposit">'+v.deposit.toLocaleString()+' USDT</div><ul><li>'+T('5 orders per task')+'</li><li>'+T('Profit per order')+': '+v.profit+'%</li><li>'+T('Combo order reward')+': '+v.combo+'%</li></ul></div></article>';
+ }).join('');
+ modal.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeVipLevels(){const modal=document.getElementById('vipLevelsModal');if(modal)modal.classList.remove('open');document.body.style.overflow='';}
 function applyDarkMode(){
  const enabled=localStorage.getItem('zonguru_dark_mode')==='on';
  document.body.classList.toggle('dark-mode',enabled);
@@ -935,6 +973,8 @@ const darkModeTranslations={
  ur:{'Dark Mode':'ڈارک موڈ','Turn dark appearance on or off':'ڈارک تھیم آن یا آف کریں','ON':'آن','OFF':'آف'}
 };
 Object.keys(darkModeTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},darkModeTranslations[lang]);});
+const vipLevelTranslations={"en":{"VIP Levels":"VIP Levels","Current":"Current","5 orders per task":"5 orders per task","Profit per order":"Profit per order","Combo order reward":"Combo order reward"},"es":{"VIP Levels":"Niveles VIP","Current":"Actual","5 orders per task":"5 pedidos por tarea","Profit per order":"Ganancia por pedido","Combo order reward":"Recompensa por pedido combinado"},"pt":{"VIP Levels":"Níveis VIP","Current":"Atual","5 orders per task":"5 pedidos por tarefa","Profit per order":"Lucro por pedido","Combo order reward":"Recompensa de pedido combinado"},"ar":{"VIP Levels":"مستويات VIP","Current":"الحالي","5 orders per task":"5 طلبات لكل مهمة","Profit per order":"الربح لكل طلب","Combo order reward":"مكافأة الطلب المدمج"},"my":{"VIP Levels":"VIP အဆင့်များ","Current":"လက်ရှိ","5 orders per task":"Task တစ်ခုလျှင် Order ၅ ခု","Profit per order":"Order တစ်ခု၏ အမြတ်","Combo order reward":"Combo Order အမြတ်"},"ur":{"VIP Levels":"VIP لیولز","Current":"موجودہ","5 orders per task":"ہر ٹاسک میں 5 آرڈرز","Profit per order":"فی آرڈر منافع","Combo order reward":"کمبو آرڈر کا انعام"}};
+Object.keys(vipLevelTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},vipLevelTranslations[lang]);});
 function T(key){const l=localStorage.getItem('zonguru_lang')||'en';return (tr[l]&&tr[l][key])||key;}
 
 function applyLang(){const l=localStorage.getItem('zonguru_lang')||'en',d=tr[l]||tr.en;document.querySelectorAll('[data-i18n]').forEach(e=>{if(d[e.dataset.i18n])e.textContent=d[e.dataset.i18n]});document.querySelectorAll('[data-i18n-placeholder]').forEach(e=>{if(d[e.dataset.i18nPlaceholder])e.placeholder=d[e.dataset.i18nPlaceholder]});document.querySelectorAll('[data-i18n-title]').forEach(e=>{if(d[e.dataset.i18nTitle])e.title=d[e.dataset.i18nTitle]});const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>{const raw=n.nodeValue,trim=raw.trim();if(d[trim]&&trim){n.nodeValue=raw.replace(trim,d[trim])}});document.documentElement.dir=l==='ar'?'rtl':'ltr'}function toggleLang(){langMenu.classList.toggle('show')}function setLang(l){localStorage.setItem('zonguru_lang',l);location.reload()}document.addEventListener('click',e=>{if(!document.querySelector('.lang-wrap').contains(e.target))langMenu.classList.remove('show')});
