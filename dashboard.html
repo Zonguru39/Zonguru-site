@@ -164,6 +164,7 @@ body.dark-mode .page .card [style*="color: #555"]{color:#e6ebf1!important}
 .vip-level-card ul{list-style:none;padding:0;margin:0;display:grid;gap:7px}
 .vip-level-card li{font-size:13px;line-height:1.45;color:#168db5}
 .vip-level-card li:before{content:'● ';color:#149fce}
+.vip-level-action{margin-top:13px;min-width:120px;padding:10px 18px;border:0;border-radius:9px;font-size:14px;font-weight:900}.vip-level-action.upgrade{background:#b51f3a;color:#fff;cursor:pointer}.vip-level-action.upgraded{background:#168b59;color:#fff;cursor:default;opacity:1}
 .vip-level-card.current{border:2px solid #d43d58;box-shadow:0 0 0 2px #d43d581c}
 .vip-current-tag{display:inline-block;margin-left:7px;padding:3px 7px;border-radius:5px;background:#b52640;color:#fff;font-size:11px;vertical-align:2px}
 body.dark-mode .vip-levels-sheet{background:#12171e;color:#edf1f5}
@@ -350,10 +351,11 @@ function openVipLevels(){
  const current=Number(window._vipLevel||0);
  box.innerHTML=vipLevelRules.map(v=>{
   const isCurrent=current===v.level;
-  return '<article class="vip-level-card '+(isCurrent?'current':'')+'"><div class="vip-level-icon">👑</div><div><h3>VIP '+v.level+(isCurrent?'<span class="vip-current-tag">'+T('Current')+'</span>':'')+'</h3><div class="vip-deposit">'+v.deposit.toLocaleString()+' USDT</div><ul><li>'+T('5 orders per task')+'</li><li>'+T('Profit per order')+': '+v.profit+'%</li><li>'+T('Combo order reward')+': '+v.combo+'%</li></ul></div></article>';
+  return '<article class="vip-level-card '+(isCurrent?'current':'')+'"><div class="vip-level-icon">👑</div><div><h3>VIP '+v.level+(isCurrent?'<span class="vip-current-tag">'+T('Current')+'</span>':'')+'</h3><div class="vip-deposit">'+v.deposit.toLocaleString()+' USDT</div><ul><li>'+T('5 orders per task')+'</li><li>'+T('Profit per order')+': '+v.profit+'%</li><li>'+T('Combo order reward')+': '+v.combo+'%</li></ul><button type="button" class="vip-level-action '+(isCurrent?'upgraded':'upgrade')+'" '+(isCurrent?'disabled aria-disabled="true"':'onclick="goToVipDeposit()"')+'>'+(isCurrent?T('Upgraded'):T('Upgrade'))+'</button></div></article>';
  }).join('');
  modal.classList.add('open');document.body.style.overflow='hidden';
 }
+function goToVipDeposit(){closeVipLevels();showPage('depositPage');}
 function closeVipLevels(){const modal=document.getElementById('vipLevelsModal');if(modal)modal.classList.remove('open');document.body.style.overflow='';}
 function applyDarkMode(){
  const enabled=localStorage.getItem('zonguru_dark_mode')==='on';
@@ -973,7 +975,7 @@ const darkModeTranslations={
  ur:{'Dark Mode':'ڈارک موڈ','Turn dark appearance on or off':'ڈارک تھیم آن یا آف کریں','ON':'آن','OFF':'آف'}
 };
 Object.keys(darkModeTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},darkModeTranslations[lang]);});
-const vipLevelTranslations={"en":{"VIP Levels":"VIP Levels","Current":"Current","5 orders per task":"5 orders per task","Profit per order":"Profit per order","Combo order reward":"Combo order reward"},"es":{"VIP Levels":"Niveles VIP","Current":"Actual","5 orders per task":"5 pedidos por tarea","Profit per order":"Ganancia por pedido","Combo order reward":"Recompensa por pedido combinado"},"pt":{"VIP Levels":"Níveis VIP","Current":"Atual","5 orders per task":"5 pedidos por tarefa","Profit per order":"Lucro por pedido","Combo order reward":"Recompensa de pedido combinado"},"ar":{"VIP Levels":"مستويات VIP","Current":"الحالي","5 orders per task":"5 طلبات لكل مهمة","Profit per order":"الربح لكل طلب","Combo order reward":"مكافأة الطلب المدمج"},"my":{"VIP Levels":"VIP အဆင့်များ","Current":"လက်ရှိ","5 orders per task":"Task တစ်ခုလျှင် Order ၅ ခု","Profit per order":"Order တစ်ခု၏ အမြတ်","Combo order reward":"Combo Order အမြတ်"},"ur":{"VIP Levels":"VIP لیولز","Current":"موجودہ","5 orders per task":"ہر ٹاسک میں 5 آرڈرز","Profit per order":"فی آرڈر منافع","Combo order reward":"کمبو آرڈر کا انعام"}};
+const vipLevelTranslations={"en":{"VIP Levels":"VIP Levels","Current":"Current","5 orders per task":"5 orders per task","Profit per order":"Profit per order","Combo order reward":"Combo order reward","Upgraded":"Upgraded","Upgrade":"Upgrade"},"es":{"VIP Levels":"Niveles VIP","Current":"Actual","5 orders per task":"5 pedidos por tarea","Profit per order":"Ganancia por pedido","Combo order reward":"Recompensa por pedido combinado","Upgraded":"Mejorado","Upgrade":"Actualizar"},"pt":{"VIP Levels":"Níveis VIP","Current":"Atual","5 orders per task":"5 pedidos por tarefa","Profit per order":"Lucro por pedido","Combo order reward":"Recompensa de pedido combinado","Upgraded":"Atualizado","Upgrade":"Atualizar"},"ar":{"VIP Levels":"مستويات VIP","Current":"الحالي","5 orders per task":"5 طلبات لكل مهمة","Profit per order":"الربح لكل طلب","Combo order reward":"مكافأة الطلب المدمج","Upgraded":"تمت الترقية","Upgrade":"ترقية"},"my":{"VIP Levels":"VIP အဆင့်များ","Current":"လက်ရှိ","5 orders per task":"Task တစ်ခုလျှင် Order ၅ ခု","Profit per order":"Order တစ်ခု၏ အမြတ်","Combo order reward":"Combo Order အမြတ်","Upgraded":"အဆင့်မြှင့်ပြီး","Upgrade":"အဆင့်မြှင့်ရန်"},"ur":{"VIP Levels":"VIP لیولز","Current":"موجودہ","5 orders per task":"ہر ٹاسک میں 5 آرڈرز","Profit per order":"فی آرڈر منافع","Combo order reward":"کمبو آرڈر کا انعام","Upgraded":"اپ گریڈ ہو گیا","Upgrade":"اپ گریڈ کریں"}};
 Object.keys(vipLevelTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},vipLevelTranslations[lang]);});
 function T(key){const l=localStorage.getItem('zonguru_lang')||'en';return (tr[l]&&tr[l][key])||key;}
 
