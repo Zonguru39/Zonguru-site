@@ -189,7 +189,40 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 
 .announcement-label{font-size:11px;font-weight:800;letter-spacing:1px;color:#e34d66;text-transform:uppercase}
 </style>
-</head>
+<style id="zonguru-events-redesign">
+/* Mint, icon-led styling inspired by the supplied reference screen. */
+.quick-grid-five .quick{padding:8px 2px 6px;border-radius:16px;background:linear-gradient(180deg,#f3fffc,#e7f8f4);border:1px solid #d7eee8}
+.quick-grid-five .quick-icon{width:48px;height:48px;border-radius:50%;background:#fff!important;color:#55b6a7!important;box-shadow:0 3px 12px #3b9e8d18;font-size:23px}
+.quick-grid-five .quick span{color:#23443f;font-weight:700;font-size:11px}
+.quick-grid-five .q1,.quick-grid-five .q2,.quick-grid-five .q3,.quick-grid-five .q4,.quick-grid-five .q5{background:#fff!important}
+#depositPage>.card,#withdrawPage>.card,#aboutPage>.card{border:1px solid #d9eee9;background:linear-gradient(180deg,#f5fffc,#eaf9f6);box-shadow:0 8px 22px #1d655312;border-radius:20px;color:#173d38}
+#depositPage .section-title,#withdrawPage .section-title,#aboutPage .section-title{color:#173d38}
+#depositPage .notice,#withdrawPage .notice{background:#fff;border:1px solid #d9eee9;border-radius:14px;color:#42635e;padding:13px}
+#depositPage .method,#withdrawPage .method{border:1px solid #cce8e1;background:#fff;border-radius:16px;color:#287f73;box-shadow:0 3px 10px #24685a0c}
+#depositPage .method.selected,#withdrawPage .method.selected{border:2px solid #53b7a7;background:#e7faf5}
+#depositPage .primary,#withdrawPage .primary{background:linear-gradient(135deg,#48b8a7,#2f9e90);border-radius:14px}
+#aboutPage .card{background:#f1fffb!important}
+.salary-card{padding:18px!important;overflow:hidden;background:#fff!important;color:#18251f!important}
+.salary-banner{text-align:center;padding:12px 8px 18px;background:radial-gradient(circle at 10% 0%,#e6f8f1,transparent 38%),#fff;border-bottom:2px dotted #80944c}
+.salary-brand{font-size:25px;letter-spacing:2px;font-weight:900;color:#263b34}
+.salary-heading{font-size:29px;font-weight:900;color:#121a17;margin-top:14px}
+.salary-subtitle{font-size:12px;color:#718078;margin-top:3px}
+.salary-row{display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:center;padding:16px 2px;border-bottom:2px dotted #a2ad7b}
+.salary-row h3{font-size:15px;margin:0 0 8px;text-align:center;color:#111;font-weight:900}
+.salary-row b{color:#626b66;font-size:17px}
+.salary-row p{margin:7px 0 0;display:flex;align-items:center;gap:12px}
+.salary-row strong{font-size:23px;color:#111}
+.salary-illustration{width:62px;height:62px;border-radius:50%;background:#d8f3e9;color:#347e68;display:grid;place-items:center;font-size:35px}
+.salary-coin{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#3ba88c;color:#fff;font-size:22px;font-weight:900}
+.salary-total{text-align:center;padding:19px 8px;font-size:17px;font-weight:800;color:#1c241e;line-height:1.6}
+.salary-total strong{display:block;font-size:23px}
+.salary-link{margin:8px auto 3px;padding:10px;border:1px solid #8b978d;text-align:center;font-weight:800;max-width:300px;overflow-wrap:anywhere}
+.salary-link a{color:#1c574e;text-decoration:underline}
+.salary-explanation{background:#f5fffc!important;border:1px solid #d5eee7!important;color:#24423c}
+.salary-explanation p{line-height:1.65;margin:10px 0;color:#34564f}
+.salary-total-text{font-size:17px;font-weight:800}
+.salary-disclaimer{font-size:12px!important;color:#6b7772!important;border-top:1px solid #d8e9e4;padding-top:12px}
+</style></head>
 <body>
 <div class="tools"><button class="tool" onclick="openChat()">💬 Customer Service<span class="chat-badge" id="chatBadge">0</span></button><div class="lang-wrap"><button class="tool" onclick="toggleLang()">🌐 Language</button><div class="lang-menu" id="langMenu"><button class="lang-item" onclick="setLang('en')">🇬🇧 English</button><button class="lang-item" onclick="setLang('es')">🇪🇸 Español</button><button class="lang-item" onclick="setLang('pt')">🇵🇹 Português</button><button class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</button><button class="lang-item" onclick="setLang('my')">🇲🇲 မြန်မာ</button><button class="lang-item" onclick="setLang('ur')">🇵🇰 اردو (Pakistan)</button></div></div></div>
 <header class="top"><div class="top-inner">
@@ -208,7 +241,7 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 <div class="card"><div class="quick-grid quick-grid-five">
 <button class="quick" onclick="showPage('depositPage')"><div class="quick-icon q1">▣</div><span data-i18n="Deposit">Deposit</span></button>
 <button class="quick" onclick="showPage('withdrawPage')"><div class="quick-icon q2">▥</div><span data-i18n="Withdraw">Withdraw</span></button>
-<button class="quick" onclick="showPage('messagesPage')"><div class="quick-icon q3">✉</div><span data-i18n="Messages">Messages</span></button>
+<button class="quick" onclick="showPage('eventsPage')"><div class="quick-icon q3">▦</div><span data-i18n="Events">Events</span></button>
 <button class="quick" onclick="showPage('teamPage')"><div class="quick-icon q4">●●</div><span data-i18n="Invite Friends">Invite Friends</span></button>
 <button class="quick" onclick="showPage('aboutPage')"><div class="quick-icon q5">ⓘ</div><span data-i18n="About Us">About Us</span></button>
 </div></div>
@@ -225,6 +258,24 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 <div class="realtime-box dark"><h3 data-i18n="Platform Promotion Optimization Quantity">Platform Promotion Optimization Quantity</h3><small>Animated preview</small><div class="live-value" id="rtPromo">98.00K</div><div class="realtime-chart"><svg viewBox="0 0 300 80" preserveAspectRatio="none"><path d="M0 66 C30 80 42 25 75 50 S115 61 145 39 S185 30 210 65 S255 72 275 42 S292 15 300 8 L300 80 L0 80 Z" fill="currentColor"/></svg></div></div>
 </div></div>
 </section>
+<section class="page" id="eventsPage"><div class="card salary-card">
+<div class="salary-banner"><div class="salary-brand">ZONGURU</div><div class="salary-heading">Salary List</div><div class="salary-subtitle">Completion rewards schedule</div></div>
+<div class="salary-rows">
+<div class="salary-row"><div class="salary-illustration">▤</div><div><h3>COMPLETE FOR 2 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$200</strong></p></div></div>
+<div class="salary-row"><div class="salary-illustration">▧</div><div><h3>COMPLETE FOR 5 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$500</strong></p></div></div>
+<div class="salary-row"><div class="salary-illustration">▣</div><div><h3>COMPLETE FOR 15 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$1,500</strong></p></div></div>
+<div class="salary-row"><div class="salary-illustration">▤</div><div><h3>COMPLETE FOR 30 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$3,800</strong></p></div></div>
+</div><div class="salary-total">The total monthly salary is <strong>💵 $5,500</strong></div>
+<div class="salary-link">🌐 <a href="https://www.zonguru39.vip" target="_blank" rel="noopener">www.zonguru39.vip</a></div>
+</div>
+<div class="card salary-explanation"><h2 class="section-title">Salary Information</h2>
+<p><b>2 days:</b> Complete the required activity for 2 days — listed salary: <b>$200</b>.</p>
+<p><b>5 days:</b> Complete the required activity for 5 days — listed salary: <b>$500</b>.</p>
+<p><b>15 days:</b> Complete the required activity for 15 days — listed salary: <b>$1,500</b>.</p>
+<p><b>30 days:</b> Complete the required activity for 30 days — listed salary: <b>$3,800</b>.</p>
+<p class="salary-total-text">The image lists a total monthly salary of <b>$5,500</b>.</p>
+<p class="salary-disclaimer">This is the schedule shown in the supplied graphic. It is not a guarantee of earnings or payment; eligibility, conditions and actual payouts must be confirmed through the platform's official terms.</p>
+</div></section>
 <section class="page" id="depositPage"><div class="card">
 <h2 class="section-title" data-i18n="Deposit">Deposit</h2>
 <div class="notice" data-i18n="Choose your deposit method.">Choose your deposit method.</div>
