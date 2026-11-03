@@ -258,24 +258,7 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 <div class="realtime-box dark"><h3 data-i18n="Platform Promotion Optimization Quantity">Platform Promotion Optimization Quantity</h3><small>Animated preview</small><div class="live-value" id="rtPromo">98.00K</div><div class="realtime-chart"><svg viewBox="0 0 300 80" preserveAspectRatio="none"><path d="M0 66 C30 80 42 25 75 50 S115 61 145 39 S185 30 210 65 S255 72 275 42 S292 15 300 8 L300 80 L0 80 Z" fill="currentColor"/></svg></div></div>
 </div></div>
 </section>
-<section class="page" id="eventsPage"><div class="card salary-card">
-<div class="salary-banner"><div class="salary-brand">ZONGURU</div><div class="salary-heading">Salary List</div><div class="salary-subtitle">Completion rewards schedule</div></div>
-<div class="salary-rows">
-<div class="salary-row"><div class="salary-illustration">▤</div><div><h3>COMPLETE FOR 2 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$200</strong></p></div></div>
-<div class="salary-row"><div class="salary-illustration">▧</div><div><h3>COMPLETE FOR 5 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$500</strong></p></div></div>
-<div class="salary-row"><div class="salary-illustration">▣</div><div><h3>COMPLETE FOR 15 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$1,500</strong></p></div></div>
-<div class="salary-row"><div class="salary-illustration">▤</div><div><h3>COMPLETE FOR 30 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$3,800</strong></p></div></div>
-</div><div class="salary-total">The total monthly salary is <strong>💵 $5,500</strong></div>
-<div class="salary-link">🌐 <a href="https://www.zonguru39.vip" target="_blank" rel="noopener">www.zonguru39.vip</a></div>
-</div>
-<div class="card salary-explanation"><h2 class="section-title">Salary Information</h2>
-<p><b>2 days:</b> Complete the required activity for 2 days — listed salary: <b>$200</b>.</p>
-<p><b>5 days:</b> Complete the required activity for 5 days — listed salary: <b>$500</b>.</p>
-<p><b>15 days:</b> Complete the required activity for 15 days — listed salary: <b>$1,500</b>.</p>
-<p><b>30 days:</b> Complete the required activity for 30 days — listed salary: <b>$3,800</b>.</p>
-<p class="salary-total-text">The image lists a total monthly salary of <b>$5,500</b>.</p>
-<p class="salary-disclaimer">This is the schedule shown in the supplied graphic. It is not a guarantee of earnings or payment; eligibility, conditions and actual payouts must be confirmed through the platform's official terms.</p>
-</div></section>
+<section class="page" id="eventsPage"><div id="eventsDynamicContent"><div class="card salary-card"><div class="salary-banner"><div class="salary-brand">ZONGURU</div><div class="salary-heading">Salary List</div><div class="salary-subtitle">Completion rewards schedule</div></div><div class="salary-rows"><div class="salary-row"><div class="salary-illustration">▤</div><div><h3>COMPLETE FOR 2 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$200</strong></p></div></div><div class="salary-row"><div class="salary-illustration">▧</div><div><h3>COMPLETE FOR 5 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$500</strong></p></div></div><div class="salary-row"><div class="salary-illustration">▣</div><div><h3>COMPLETE FOR 15 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$1,500</strong></p></div></div><div class="salary-row"><div class="salary-illustration">▤</div><div><h3>COMPLETE FOR 30 DAYS</h3><b>Salary</b><p><span class="salary-coin">$</span> <strong>$3,800</strong></p></div></div></div><div class="salary-total">The total monthly salary is <strong>💵 $5,500</strong></div><div class="salary-link">🌐 <a href="https://www.zonguru39.vip" target="_blank" rel="noopener">www.zonguru39.vip</a></div></div><div class="card salary-explanation"><h2 class="section-title">Salary Information</h2><p><b>2 days:</b> Complete the required activity for 2 days — listed salary: <b>$200</b>.</p><p><b>5 days:</b> Complete the required activity for 5 days — listed salary: <b>$500</b>.</p><p><b>15 days:</b> Complete the required activity for 15 days — listed salary: <b>$1,500</b>.</p><p><b>30 days:</b> Complete the required activity for 30 days — listed salary: <b>$3,800</b>.</p><p class="salary-total-text">The image lists a total monthly salary of <b>$5,500</b>.</p></div></div></section>
 <section class="page" id="depositPage"><div class="card">
 <h2 class="section-title" data-i18n="Deposit">Deposit</h2>
 <div class="notice" data-i18n="Choose your deposit method.">Choose your deposit method.</div>
@@ -412,6 +395,21 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 </div>
 <script>
 const API='https://zonguru-jack-api.onrender.com';
+function escapeEventHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function loadEventsContent(){
+ const host=document.getElementById('eventsDynamicContent');if(!host)return;
+ try{
+  const r=await fetch(API+'/api/public/events',{cache:'no-store'}),data=await r.json();
+  if(!r.ok||data.success!==true)throw Error(data.message||'Unable to load Events');
+  const e=data.event||{},title=String(e.title||'Salary List'),lines=String(e.text||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  let html='<div class="card salary-card"><div class="salary-banner"><div class="salary-brand">ZONGURU</div><div class="salary-heading">'+escapeEventHtml(title)+'</div><div class="salary-subtitle">Events</div></div>';
+  if(e.image)html+='<img src="'+escapeEventHtml(e.image)+'" alt="Events image" style="display:block;width:100%;height:auto;object-fit:contain;border-radius:12px;margin:12px auto">';
+  html+='<div class="salary-link">🌐 <a href="https://www.zonguru39.vip" target="_blank" rel="noopener">www.zonguru39.vip</a></div></div>';
+  if(lines.length)html+='<div class="card salary-explanation"><h2 class="section-title">'+escapeEventHtml(title)+'</h2>'+lines.map(line=>'<p>'+escapeEventHtml(line)+'</p>').join('')+'</div>';
+  host.innerHTML=html;
+ }catch(e){console.warn('Events content load failed:',e.message)}
+}
+
 const token=()=>localStorage.getItem('zonguru_token')||'';
 async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(T(d.message||'Request failed'));return d}
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
@@ -453,7 +451,7 @@ function toggleDarkMode(){
  localStorage.setItem('zonguru_dark_mode',enabled?'off':'on');
  applyDarkMode();
 }
-function showPage(id){if(id!=='withdrawPage'){const wp=document.getElementById('withdrawalPassword');if(wp)wp.value='';}document.body.classList.toggle('products-mode',id==='productsPage');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const page=document.getElementById(id);if(!page)return;page.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='depositPage')loadDepositAddresses();if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
+function showPage(id){if(id!=='withdrawPage'){const wp=document.getElementById('withdrawalPassword');if(wp)wp.value='';}document.body.classList.toggle('products-mode',id==='productsPage');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const page=document.getElementById(id);if(!page)return;page.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='depositPage')loadDepositAddresses();if(id==='eventsPage')loadEventsContent();if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
 const currencyOptions=[
   ["USDT","₮","Tether"],
   ["MXN","$","Mexican Peso"],
