@@ -211,6 +211,23 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 .salary-explanation p{line-height:1.65;margin:10px 0;color:#34564f}
 .salary-total-text{font-size:17px;font-weight:800}
 .salary-disclaimer{font-size:12px!important;color:#6b7772!important;border-top:1px solid #d8e9e4;padding-top:12px}
+
+/* Bank-account delete confirmation follows the selected appearance */
+.delete-bank-confirm-card{width:100%;max-width:420px;box-sizing:border-box;background:#fff!important;color:#202938!important;border:1px solid #e2e6ec;border-radius:22px;padding:24px;box-shadow:0 18px 50px #0003}
+.delete-bank-confirm-card h3{margin:0 0 12px;color:#202938!important;font-size:21px;font-weight:800}
+.delete-bank-confirm-card p{line-height:1.65;margin:0 0 22px;color:#4b5563!important}
+.delete-bank-confirm-actions{display:flex;gap:10px}
+.delete-bank-confirm-actions button{flex:1;min-width:0;border:0;border-radius:13px;padding:14px 10px;font:inherit;font-weight:800;cursor:pointer}
+.delete-bank-cancel{background:#f1f3f6!important;color:#273244!important;border:1px solid #d9dee6!important}
+.delete-bank-confirm{background:#ed4762!important;color:#fff!important}
+.delete-bank-confirm:disabled{opacity:.65;cursor:wait}
+body.dark-mode #deleteBankConfirmModal .delete-bank-confirm-card{background:#1b2028!important;color:#edf0f4!important;border-color:#394352!important;box-shadow:0 18px 50px #0008}
+body.dark-mode #deleteBankConfirmModal .delete-bank-confirm-card h3{color:#f4f6f8!important}
+body.dark-mode #deleteBankConfirmModal .delete-bank-confirm-card p{color:#cbd3de!important}
+body.dark-mode #deleteBankConfirmModal .delete-bank-cancel{background:#303946!important;color:#f1f4f8!important;border-color:#4a5665!important}
+body.dark-mode #deleteBankConfirmModal .delete-bank-confirm{background:#ed4762!important;color:#fff!important}
+@media(max-width:420px){.delete-bank-confirm-card{padding:20px}.delete-bank-confirm-actions{gap:8px}.delete-bank-confirm-actions button{padding:13px 6px;font-size:14px}}
+
 </style></head>
 <body>
 <div class="tools"><button class="tool" onclick="openChat()">💬 Customer Service<span class="chat-badge" id="chatBadge">0</span></button><div class="lang-wrap"><button class="tool" onclick="toggleLang()">🌐 Language</button><div class="lang-menu" id="langMenu"><button class="lang-item" onclick="setLang('en')">🇬🇧 English</button><button class="lang-item" onclick="setLang('es')">🇪🇸 Español</button><button class="lang-item" onclick="setLang('pt')">🇵🇹 Português</button><button class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</button><button class="lang-item" onclick="setLang('my')">🇲🇲 မြန်မာ</button><button class="lang-item" onclick="setLang('ur')">🇵🇰 اردو (Pakistan)</button></div></div></div>
@@ -886,7 +903,7 @@ const bankDeleteTranslations={en:{title:'Delete bank account?',message:'Are you 
 function confirmDeleteBankAccount(id){
  const lang=localStorage.getItem('zonguru_lang')||'en',t=bankDeleteTranslations[lang]||bankDeleteTranslations.en;
  const modal=document.createElement('div');modal.id='deleteBankConfirmModal';modal.style.cssText='position:fixed;inset:0;z-index:10050;background:#0009;display:flex;align-items:center;justify-content:center;padding:20px';
- modal.innerHTML='<div style="width:100%;max-width:420px;background:var(--card-bg,#202630);color:var(--text-color,inherit);border:1px solid #59616e;border-radius:18px;padding:22px;box-shadow:0 18px 50px #0005"><h3 style="margin:0 0 12px">'+t.title+'</h3><p style="line-height:1.6;margin:0 0 22px">'+t.message+'</p><div style="display:flex;gap:10px"><button type="button" class="secondary" style="flex:1" id="cancelDeleteBank">'+t.cancel+'</button><button type="button" class="primary" style="flex:1" id="confirmDeleteBank">'+t.confirm+'</button></div></div>';
+ modal.innerHTML='<div class="delete-bank-confirm-card"><h3>'+t.title+'</h3><p>'+t.message+'</p><div class="delete-bank-confirm-actions"><button type="button" class="delete-bank-cancel" id="cancelDeleteBank">'+t.cancel+'</button><button type="button" class="delete-bank-confirm" id="confirmDeleteBank">'+t.confirm+'</button></div></div>';
  document.body.appendChild(modal);
  modal.querySelector('#cancelDeleteBank').onclick=()=>modal.remove();
  modal.querySelector('#confirmDeleteBank').onclick=async()=>{const btn=modal.querySelector('#confirmDeleteBank');btn.disabled=true;try{await api('/api/me/bank-accounts/'+encodeURIComponent(id),{method:'DELETE'});modal.remove();await renderBankBinding();showSuccessModal(t.done,'')}catch(e){btn.disabled=false;showSuccessModal(t.error,e.message||t.error)}};
