@@ -274,9 +274,32 @@ body.dark-mode .spin-history-meta{color:#d0bc8d}
 body.dark-mode .spin-celebration-card{background:#fff!important;color:#17212d!important}
 @media(max-width:380px){.spin-celebration-body{padding:15px}.spin-prize-art{height:195px}.spin-phone-pair{transform:scale(.88)}}
 
+
+.tools{display:flex;align-items:center;gap:8px}
+.tools .tool.icon-tool{position:relative;min-width:42px;width:42px;height:42px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:20px;border-radius:12px}
+.tools .lang-wrap{position:relative}
+.notification-panel{display:none;position:fixed;z-index:100000;top:66px;right:12px;width:min(390px,calc(100vw - 24px));max-height:72vh;overflow:hidden;background:#fff;color:#17212b;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 18px 55px #0003}
+.notification-panel.show{display:flex;flex-direction:column}
+.notification-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e5e7eb}
+.notification-head button{background:none;color:#087f91;font-size:12px;padding:6px}
+.notification-items{overflow:auto;padding:8px 12px;min-height:70px}
+.notification-item{padding:11px 10px;border-bottom:1px solid #edf0f2;border-radius:9px;cursor:pointer}
+.notification-item.unread{background:#effaf8}
+.notification-item b{display:block;font-size:13px;margin-bottom:4px}
+.notification-item p{font-size:12px;margin:0 0 5px;line-height:1.45;overflow-wrap:anywhere}
+.notification-item small{font-size:10px;color:#78838d}
+.notification-security-warning{padding:12px 15px;background:#fff7ed;color:#9a3412;border-top:1px solid #fed7aa;font-size:12px;line-height:1.5}
+.notification-badge{position:absolute;right:-5px;top:-6px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#e11d48;color:#fff;font-size:11px;font-weight:800;line-height:19px;text-align:center;border:2px solid #fff}
+body.dark-mode .notification-panel{background:#20252c;color:#f5f7fa;border-color:#454c55}
+body.dark-mode .notification-head,body.dark-mode .notification-item{border-color:#454c55}
+body.dark-mode .notification-item.unread{background:#263a3b}
+body.dark-mode .notification-security-warning{background:#3b2c1d;color:#fed7aa;border-color:#704b2a}
+@media(max-width:520px){.notification-panel{top:62px;right:8px;width:calc(100vw - 16px)}}
+
 </style></head>
 <body>
-<div class="tools"><button class="tool" onclick="openChat()">💬 Customer Service<span class="chat-badge" id="chatBadge">0</span></button><div class="lang-wrap"><button class="tool" onclick="toggleLang()">🌐 Language</button><div class="lang-menu" id="langMenu"><button class="lang-item" onclick="setLang('en')">🇬🇧 English</button><button class="lang-item" onclick="setLang('es')">🇪🇸 Español</button><button class="lang-item" onclick="setLang('pt')">🇵🇹 Português</button><button class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</button><button class="lang-item" onclick="setLang('my')">🇲🇲 မြန်မာ</button><button class="lang-item" onclick="setLang('ur')">🇵🇰 اردو (Pakistan)</button></div></div></div>
+<div class="tools"><button class="tool icon-tool" onclick="openChat()" aria-label="Customer Service" title="Customer Service">💬<span class="chat-badge" id="chatBadge">0</span></button><div class="lang-wrap"><button class="tool icon-tool" onclick="toggleLang()" aria-label="Language" title="Language">🌐</button><div class="lang-menu" id="langMenu"><button class="lang-item" onclick="setLang('en')">🇬🇧 English</button><button class="lang-item" onclick="setLang('es')">🇪🇸 Español</button><button class="lang-item" onclick="setLang('pt')">🇵🇹 Português</button><button class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</button><button class="lang-item" onclick="setLang('my')">🇲🇲 မြန်မာ</button><button class="lang-item" onclick="setLang('ur')">🇵🇰 اردو (Pakistan)</button></div></div><button class="tool icon-tool notification-bell" id="notificationBell" type="button" onclick="toggleNotifications()" aria-label="Notifications" title="Notifications">🔔<span class="notification-badge" id="notificationBadge" style="display:none">0</span></button></div>
+<div class="notification-panel" id="notificationPanel" aria-hidden="true"><div class="notification-head"><b data-i18n="Notifications">Notifications</b><button type="button" onclick="markAllNotificationsRead()" data-i18n="Mark all read">Mark all read</button></div><div id="notificationItems" class="notification-items"><div class="empty" data-i18n="Loading notifications">Loading notifications...</div></div><div class="notification-security-warning" data-i18n="loginSecurityWarning">If this login was not made by you, change your account password immediately.</div></div>
 <header class="top"><div class="top-inner">
 <div class="topbar"><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-label="Zonguru logo"><defs><linearGradient id="zgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc542"/><stop offset=".52" stop-color="#ff7b19"/><stop offset="1" stop-color="#ff3e1d"/></linearGradient><linearGradient id="zgT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#35c6bd"/><stop offset="1" stop-color="#0796c7"/></linearGradient></defs><path d="M10 40C15 18 34 7 49 12c5 2 7 6 5 10-4 7-15 13-25 17-8 3-14 5-19 1Z" fill="url(#zgA)"/><path d="M33 31c7-3 15-8 19-15 7 6 9 15 5 25-3 8-10 13-18 15l-7-7c7-5 10-10 1-18Z" fill="url(#zgT)"/><path d="M36 38c6 3 11 7 13 13M40 31c7 3 12 6 15 12M44 24c6 2 11 5 15 10" fill="none" stroke="#087f91" stroke-width="3.2" stroke-linecap="round" opacity=".8"/></svg><span class="brand-word">ZONGURU</span></div><button class="top-menu" onclick="showPage('accountPage')">☰</button></div>
 <div class="profile-row"><div class="profile-main"><div class="avatar">👤</div><div><div class="welcome-name" id="welcome">Welcome</div><div class="subline" data-i18n="Customer account">Customer account</div></div></div><button type="button" class="vip-badge" id="topVipLevel" onclick="openVipLevels()" aria-label="View VIP levels">VIP 0</button></div>
@@ -477,6 +500,49 @@ async function loadEventsContent(){
   host.innerHTML=html;
  }catch(e){console.warn('Events content load failed:',e.message)}
 }
+
+
+let notificationsOpen=false,notificationsLoading=false;
+function toggleNotifications(){
+ const panel=document.getElementById('notificationPanel');if(!panel)return;
+ notificationsOpen=!notificationsOpen;panel.classList.toggle('show',notificationsOpen);panel.setAttribute('aria-hidden',String(!notificationsOpen));
+ if(notificationsOpen)loadNotifications();
+}
+function updateNotificationBadge(count){
+ const badge=document.getElementById('notificationBadge');if(!badge)return;
+ const n=Math.max(0,Number(count||0));badge.textContent=n>99?'99+':String(n);badge.style.display=n?'block':'none';
+}
+function notificationTime(value){try{return new Date(value).toLocaleString()}catch(e){return ''}}
+async function loadNotifications(){
+ if(notificationsLoading||!token())return;notificationsLoading=true;
+ const host=document.getElementById('notificationItems');
+ try{
+  const data=await api('/api/me/notifications');const rows=data.notifications||[];
+  updateNotificationBadge(data.unreadCount??rows.filter(x=>!x.read).length);
+  if(host)host.innerHTML=rows.length?rows.map(n=>{
+   const m=n.metadata||{};
+   let details='';
+   if(n.type==='login_security')details='<p><b>'+esc(T('Device'))+':</b> '+esc(m.device||'Unknown')+'</p><p><b>'+esc(T('IP address'))+':</b> '+esc(m.ip||'Unknown')+'</p>';
+   if(Number(m.creditedUSDT)>0)details+='<p><b>'+esc(T('Credited'))+':</b> '+esc(Number(m.creditedUSDT).toFixed(2))+' USDT</p>';
+   return '<div class="notification-item '+(n.read?'':'unread')+'" data-notification-id="'+esc(n._id)+'"><b>'+esc(T(n.title||'Notifications'))+'</b><p>'+esc(n.text||'')+'</p>'+details+'<small>'+esc(notificationTime(n.createdAt))+'</small></div>';
+  }).join(''):'<div class="empty">'+esc(T('No notifications yet'))+'</div>';
+ }catch(e){if(host)host.innerHTML='<div class="empty">'+esc(e.message||T('Notifications'))+'</div>'}
+ finally{notificationsLoading=false}
+}
+async function markNotificationRead(id){
+ try{await api('/api/me/notifications/'+encodeURIComponent(id)+'/read',{method:'POST',body:JSON.stringify({})});loadNotifications();}
+ catch(e){console.warn('Notification read failed',e.message)}
+}
+async function markAllNotificationsRead(){
+ try{await api('/api/me/notifications/read-all',{method:'POST',body:JSON.stringify({})});loadNotifications();}
+ catch(e){console.warn('Mark all notifications read failed',e.message)}
+}
+document.addEventListener('click',function(e){
+ const item=e.target.closest&&e.target.closest('[data-notification-id]');
+ if(item)markNotificationRead(item.getAttribute('data-notification-id'));
+ const panel=document.getElementById('notificationPanel'),bell=document.getElementById('notificationBell');
+ if(notificationsOpen&&panel&&!panel.contains(e.target)&&bell&&!bell.contains(e.target)){notificationsOpen=false;panel.classList.remove('show');panel.setAttribute('aria-hidden','true')}
+});
 
 const token=()=>localStorage.getItem('zonguru_token')||'';
 async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(T(d.message||'Request failed'));return d}
@@ -1240,6 +1306,17 @@ const eventsButtonTranslations={
 };
 Object.keys(eventsButtonTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},eventsButtonTranslations[lang]);});
 
+
+const notificationTranslations={
+ en:{'Notifications':'Notifications','Mark all read':'Mark all read','Loading notifications':'Loading notifications...','No notifications yet':'No notifications yet','New login':'New login','Deposit approved':'Deposit approved','Withdrawal approved':'Withdrawal approved','Withdrawal rejected':'Withdrawal rejected','Deposit rejected':'Deposit rejected','Lucky Spin result':'Lucky Spin result','Device':'Device','IP address':'IP address','loginSecurityWarning':'If this login was not made by you, change your account password immediately.','Credited':'Credited'},
+ es:{'Notifications':'Notificaciones','Mark all read':'Marcar todo como leído','Loading notifications':'Cargando notificaciones...','No notifications yet':'Aún no hay notificaciones','New login':'Nuevo inicio de sesión','Deposit approved':'Depósito aprobado','Withdrawal approved':'Retiro aprobado','Withdrawal rejected':'Retiro rechazado','Deposit rejected':'Depósito rechazado','Lucky Spin result':'Resultado de Lucky Spin','Device':'Dispositivo','IP address':'Dirección IP','loginSecurityWarning':'Si no fuiste tú quien inició sesión, cambia la contraseña de tu cuenta inmediatamente.','Credited':'Acreditado'},
+ pt:{'Notifications':'Notificações','Mark all read':'Marcar todas como lidas','Loading notifications':'Carregando notificações...','No notifications yet':'Ainda não há notificações','New login':'Novo login','Deposit approved':'Depósito aprovado','Withdrawal approved':'Saque aprovado','Withdrawal rejected':'Saque rejeitado','Deposit rejected':'Depósito rejeitado','Lucky Spin result':'Resultado do Lucky Spin','Device':'Dispositivo','IP address':'Endereço IP','loginSecurityWarning':'Se não foi você que entrou, altere imediatamente a senha da sua conta.','Credited':'Creditado'},
+ ar:{'Notifications':'الإشعارات','Mark all read':'تحديد الكل كمقروء','Loading notifications':'جارٍ تحميل الإشعارات...','No notifications yet':'لا توجد إشعارات','New login':'تسجيل دخول جديد','Deposit approved':'تمت الموافقة على الإيداع','Withdrawal approved':'تمت الموافقة على السحب','Withdrawal rejected':'تم رفض السحب','Deposit rejected':'تم رفض الإيداع','Lucky Spin result':'نتيجة Lucky Spin','Device':'الجهاز','IP address':'عنوان IP','loginSecurityWarning':'إذا لم تكن أنت من سجّل الدخول، فغيّر كلمة مرور حسابك فورًا.','Credited':'تمت إضافة'},
+ my:{'Notifications':'အသိပေးချက်များ','Mark all read':'အားလုံးဖတ်ပြီးဟု မှတ်သားရန်','Loading notifications':'အသိပေးချက်များ ဖွင့်နေသည်...','No notifications yet':'အသိပေးချက် မရှိသေးပါ','New login':'အကောင့် Login ဝင်မှုအသစ်','Deposit approved':'Deposit လက်ခံပြီးပါပြီ','Withdrawal approved':'Withdrawal လက်ခံပြီးပါပြီ','Withdrawal rejected':'Withdrawal ပယ်ချခံရပါသည်','Deposit rejected':'Deposit ပယ်ချခံရပါသည်','Lucky Spin result':'Lucky Spin ရလဒ်','Device':'စက်အမျိုးအစား','IP address':'IP လိပ်စာ','loginSecurityWarning':'ဤ Login ဝင်သူသည် သင်မဟုတ်ပါက သင့်အကောင့်စကားဝှက်ကို ချက်ချင်းပြောင်းလဲပါ။','Credited':'ထည့်သွင်းပြီး'},
+ ur:{'Notifications':'اطلاعات','Mark all read':'سب کو پڑھا ہوا نشان زد کریں','Loading notifications':'اطلاعات لوڈ ہو رہی ہیں...','No notifications yet':'ابھی کوئی اطلاع نہیں','New login':'نیا لاگ اِن','Deposit approved':'ڈپازٹ منظور ہو گیا','Withdrawal approved':'رقم نکلوانا منظور ہو گیا','Withdrawal rejected':'رقم نکلوانے کی درخواست مسترد','Deposit rejected':'ڈپازٹ مسترد ہو گیا','Lucky Spin result':'لکی اسپن کا نتیجہ','Device':'ڈیوائس','IP address':'آئی پی ایڈریس','loginSecurityWarning':'اگر یہ لاگ اِن آپ نے نہیں کیا تو فوراً اپنے اکاؤنٹ کا پاس ورڈ تبدیل کریں۔','Credited':'جمع شدہ'}
+};
+Object.keys(notificationTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},notificationTranslations[lang]);});
+
 function T(key){const l=localStorage.getItem('zonguru_lang')||'en';return (tr[l]&&tr[l][key])||key;}
 
 function applyLang(){const l=localStorage.getItem('zonguru_lang')||'en',d=tr[l]||tr.en;document.querySelectorAll('[data-i18n]').forEach(e=>{if(d[e.dataset.i18n])e.textContent=d[e.dataset.i18n]});document.querySelectorAll('[data-i18n-placeholder]').forEach(e=>{if(d[e.dataset.i18nPlaceholder])e.placeholder=d[e.dataset.i18nPlaceholder]});document.querySelectorAll('[data-i18n-title]').forEach(e=>{if(d[e.dataset.i18nTitle])e.title=d[e.dataset.i18nTitle]});const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>{const raw=n.nodeValue,trim=raw.trim();if(d[trim]&&trim){n.nodeValue=raw.replace(trim,d[trim])}});document.documentElement.dir=l==='ar'?'rtl':'ltr'}function toggleLang(){langMenu.classList.toggle('show')}function setLang(l){localStorage.setItem('zonguru_lang',l);location.reload()}document.addEventListener('click',e=>{if(!document.querySelector('.lang-wrap').contains(e.target))langMenu.classList.remove('show')});
@@ -1314,7 +1391,7 @@ async function dismissCurrentAnnouncement(){
 }
 
 document.getElementById('bankAmount')?.addEventListener('input',updateBankAmountLabel);
-document.addEventListener('DOMContentLoaded',()=>{applyDarkMode();loadTelegramSupportUrl();if(!token()){location.href='login.html';return}applyLang();window._profileAvatar=undefined;loadDepositAddresses();loadUser();if(sessionStorage.getItem('zonguru_show_announcements_after_login')==='1'){sessionStorage.removeItem('zonguru_show_announcements_after_login');setTimeout(checkAnnouncements,900);}loadTransactions();startRealtimeSync();animateRealtimePreview();checkChatNotice();setTimeout(checkChatNotice,1000)});
+document.addEventListener('DOMContentLoaded',()=>{applyDarkMode();loadTelegramSupportUrl();if(!token()){location.href='login.html';return}applyLang();window._profileAvatar=undefined;loadNotifications();setInterval(()=>{if(!document.hidden&&token())loadNotifications()},30000);loadDepositAddresses();loadUser();if(sessionStorage.getItem('zonguru_show_announcements_after_login')==='1'){sessionStorage.removeItem('zonguru_show_announcements_after_login');setTimeout(checkAnnouncements,900);}loadTransactions();startRealtimeSync();animateRealtimePreview();checkChatNotice();setTimeout(checkChatNotice,1000)});
 </script>
 </body></html>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
