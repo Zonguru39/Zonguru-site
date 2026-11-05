@@ -1169,8 +1169,11 @@ document.getElementById(
 
     event.preventDefault();
 
-    chatOverlay.classList.add(
-      "open"
+    // Password recovery is handled only by the official Telegram support team.
+    window.open(
+      "https://t.me/Zonguru_support",
+      "_blank",
+      "noopener,noreferrer"
     );
 
   };
