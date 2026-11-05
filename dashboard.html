@@ -1230,6 +1230,16 @@ const ticketPurchaseTranslations={
  pt:{'Not enough tickets':'Bilhetes insuficientes','You can purchase one ticket for:':'Você pode comprar um bilhete por:','Buy Tickets':'Comprar bilhetes','Cancel':'Cancelar'}
 };
 Object.keys(ticketPurchaseTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},ticketPurchaseTranslations[lang])});
+const eventsButtonTranslations={
+ en:{'Events':'Events'},
+ es:{'Events':'Eventos'},
+ pt:{'Events':'Eventos'},
+ ar:{'Events':'الأحداث'},
+ my:{'Events':'ပွဲအစီအစဉ်များ'},
+ ur:{'Events':'ایونٹس'}
+};
+Object.keys(eventsButtonTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},eventsButtonTranslations[lang]);});
+
 function T(key){const l=localStorage.getItem('zonguru_lang')||'en';return (tr[l]&&tr[l][key])||key;}
 
 function applyLang(){const l=localStorage.getItem('zonguru_lang')||'en',d=tr[l]||tr.en;document.querySelectorAll('[data-i18n]').forEach(e=>{if(d[e.dataset.i18n])e.textContent=d[e.dataset.i18n]});document.querySelectorAll('[data-i18n-placeholder]').forEach(e=>{if(d[e.dataset.i18nPlaceholder])e.placeholder=d[e.dataset.i18nPlaceholder]});document.querySelectorAll('[data-i18n-title]').forEach(e=>{if(d[e.dataset.i18nTitle])e.title=d[e.dataset.i18nTitle]});const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>{const raw=n.nodeValue,trim=raw.trim();if(d[trim]&&trim){n.nodeValue=raw.replace(trim,d[trim])}});document.documentElement.dir=l==='ar'?'rtl':'ltr'}function toggleLang(){langMenu.classList.toggle('show')}function setLang(l){localStorage.setItem('zonguru_lang',l);location.reload()}document.addEventListener('click',e=>{if(!document.querySelector('.lang-wrap').contains(e.target))langMenu.classList.remove('show')});
