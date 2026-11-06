@@ -156,8 +156,10 @@ h1{
 }
 
 .phone-login-fields{display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px}
-.phone-login-fields select,.phone-login-fields input{width:100%;min-width:0}
-@media(max-width:420px){.phone-login-fields{grid-template-columns:132px minmax(0,1fr);gap:6px}}
+.phone-login-fields select,.phone-login-fields input{width:100%;min-width:0;height:52px;padding:13px;border:1px solid #ddd;border-radius:11px;font-size:15px;background:#fff;outline:none}
+.phone-login-fields select:focus,.phone-login-fields input:focus{border-color:#7657d9;box-shadow:0 0 0 3px #7657d91a}
+.phone-login-example{font-size:12px;color:#888;margin-top:5px}
+@media(max-width:520px){.phone-login-fields{grid-template-columns:1fr 1.15fr;gap:8px}}
 
 label{
   display:block;
@@ -445,7 +447,7 @@ input:focus{
     class="message">
   </div>
 
-  <form id="loginForm">
+  <form id="loginForm" novalidate>
 
     <div class="login-method-tabs" role="group" aria-label="Choose login method">
       <button type="button" class="login-method-tab active" id="emailLoginTab" aria-pressed="true">Email or Username</button>
@@ -849,6 +851,8 @@ function setLoginMode(mode){
 
   input.value = "";
   phoneInput.value = "";
+  input.required = loginMode === "email";
+  phoneInput.required = loginMode === "phone";
   emailField.style.display = loginMode === "email" ? "" : "none";
   phoneField.style.display = loginMode === "phone" ? "" : "none";
   label.textContent = t.emailUsername || "Email or Username";
@@ -864,6 +868,16 @@ function setLoginMode(mode){
 
 document.getElementById("emailLoginTab").addEventListener("click", () => setLoginMode("email"));
 document.getElementById("phoneLoginTab").addEventListener("click", () => setLoginMode("phone"));
+function updatePhoneLoginExample(){
+  const code=document.getElementById("loginCountryCode");
+  const selected=code.options[code.selectedIndex];
+  const example=selected?.getAttribute("data-ex")||"";
+  document.getElementById("phoneLoginExample").textContent=
+    "Example: "+code.value+(example?" "+example:"");
+  document.getElementById("phoneLoginNumber").placeholder=example||"Enter your phone number";
+}
+document.getElementById("loginCountryCode").addEventListener("change",updatePhoneLoginExample);
+updatePhoneLoginExample();
 
 function changeLanguage(lang){
 
