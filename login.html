@@ -126,6 +126,34 @@ h1{
   margin-bottom:18px;
 }
 
+.login-method-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:0 0 20px;
+}
+.login-method-tab{
+  min-height:46px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  background:#f8f7fb;
+  color:#5b5268;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+  padding:9px 8px;
+}
+.login-method-tab.active{
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);
+  border-color:#6d28d9;
+  color:#fff;
+  box-shadow:0 5px 14px rgba(91,33,182,.2);
+}
+.login-method-tab:focus-visible{
+  outline:3px solid rgba(124,58,237,.25);
+  outline-offset:2px;
+}
+
 label{
   display:block;
   margin-bottom:8px;
@@ -414,6 +442,11 @@ input:focus{
 
   <form id="loginForm">
 
+    <div class="login-method-tabs" role="group" aria-label="Choose login method">
+      <button type="button" class="login-method-tab active" id="emailLoginTab" aria-pressed="true">Email or Username</button>
+      <button type="button" class="login-method-tab" id="phoneLoginTab" aria-pressed="false">Phone</button>
+    </div>
+
     <div class="form-group">
 
       <label id="usernameLabel">
@@ -557,6 +590,10 @@ const translations = {
     subtitle:"Login to your Zonguru account",
     username:"Username",
     usernamePlaceholder:"Enter your username",
+    emailUsername:"Email or Username",
+    emailUsernamePlaceholder:"Enter your email or username",
+    phone:"Phone number",
+    phonePlaceholder:"Enter your phone number",
     password:"Password",
     passwordPlaceholder:"Enter your password",
     forgot:"Forgot password?",
@@ -575,6 +612,10 @@ const translations = {
     subtitle:"Inicia sesión en tu cuenta de Zonguru",
     username:"Nombre de usuario",
     usernamePlaceholder:"Introduce tu nombre de usuario",
+    emailUsername:"Correo o nombre de usuario",
+    emailUsernamePlaceholder:"Introduce tu correo o nombre de usuario",
+    phone:"Número de teléfono",
+    phonePlaceholder:"Introduce tu número de teléfono",
     password:"Contraseña",
     passwordPlaceholder:"Introduce tu contraseña",
     forgot:"¿Olvidaste tu contraseña?",
@@ -593,6 +634,10 @@ const translations = {
     subtitle:"Entre na sua conta Zonguru",
     username:"Nome de usuário",
     usernamePlaceholder:"Digite seu nome de usuário",
+    emailUsername:"E-mail ou nome de usuário",
+    emailUsernamePlaceholder:"Digite seu e-mail ou nome de usuário",
+    phone:"Número de telefone",
+    phonePlaceholder:"Digite seu número de telefone",
     password:"Senha",
     passwordPlaceholder:"Digite sua senha",
     forgot:"Esqueceu sua senha?",
@@ -611,6 +656,10 @@ const translations = {
     subtitle:"သင့် Zonguru အကောင့်သို့ ဝင်ရောက်ပါ",
     username:"အသုံးပြုသူအမည်",
     usernamePlaceholder:"အသုံးပြုသူအမည် ထည့်ပါ",
+    emailUsername:"Email သို့မဟုတ် Username",
+    emailUsernamePlaceholder:"Email သို့မဟုတ် Username ထည့်ပါ",
+    phone:"ဖုန်းနံပါတ်",
+    phonePlaceholder:"ဖုန်းနံပါတ် ထည့်ပါ",
     password:"စကားဝှက်",
     passwordPlaceholder:"စကားဝှက် ထည့်ပါ",
     forgot:"စကားဝှက် မေ့နေပါသလား?",
@@ -629,6 +678,10 @@ const translations = {
     subtitle:"قم بتسجيل الدخول إلى حساب Zonguru",
     username:"اسم المستخدم",
     usernamePlaceholder:"أدخل اسم المستخدم",
+    emailUsername:"البريد الإلكتروني أو اسم المستخدم",
+    emailUsernamePlaceholder:"أدخل البريد الإلكتروني أو اسم المستخدم",
+    phone:"رقم الهاتف",
+    phonePlaceholder:"أدخل رقم الهاتف",
     password:"كلمة المرور",
     passwordPlaceholder:"أدخل كلمة المرور",
     forgot:"هل نسيت كلمة المرور؟",
@@ -771,6 +824,33 @@ document.onclick =
    CHANGE LANGUAGE
 ========================= */
 
+let loginMode = "email";
+
+function setLoginMode(mode){
+  loginMode = mode === "phone" ? "phone" : "email";
+  const input = document.getElementById("username");
+  const label = document.getElementById("usernameLabel");
+  const emailTab = document.getElementById("emailLoginTab");
+  const phoneTab = document.getElementById("phoneLoginTab");
+  const lang = localStorage.getItem("zonguru_lang") || "en";
+  const t = translations[lang] || translations.en;
+
+  input.value = "";
+  input.type = loginMode === "phone" ? "tel" : "text";
+  input.inputMode = loginMode === "phone" ? "tel" : "text";
+  input.autocomplete = loginMode === "phone" ? "tel" : "username";
+  label.textContent = loginMode === "phone" ? (t.phone || "Phone number") : (t.emailUsername || "Email or Username");
+  input.placeholder = loginMode === "phone" ? (t.phonePlaceholder || "Enter your phone number") : (t.emailUsernamePlaceholder || "Enter your email or username");
+
+  emailTab.classList.toggle("active", loginMode === "email");
+  phoneTab.classList.toggle("active", loginMode === "phone");
+  emailTab.setAttribute("aria-pressed", String(loginMode === "email"));
+  phoneTab.setAttribute("aria-pressed", String(loginMode === "phone"));
+}
+
+document.getElementById("emailLoginTab").addEventListener("click", () => setLoginMode("email"));
+document.getElementById("phoneLoginTab").addEventListener("click", () => setLoginMode("phone"));
+
 function changeLanguage(lang){
 
   const t =
@@ -790,7 +870,7 @@ function changeLanguage(lang){
   document.getElementById(
     "usernameLabel"
   ).textContent =
-    t.username;
+    loginMode === "phone" ? (t.phone || "Phone number") : (t.emailUsername || "Email or Username");
 
   document.getElementById(
     "passwordLabel"
@@ -800,7 +880,7 @@ function changeLanguage(lang){
   document.getElementById(
     "username"
   ).placeholder =
-    t.usernamePlaceholder;
+    loginMode === "phone" ? (t.phonePlaceholder || "Enter your phone number") : (t.emailUsernamePlaceholder || "Enter your email or username");
 
   document.getElementById(
     "password"
@@ -1069,6 +1149,7 @@ document.getElementById(
 
             body:JSON.stringify({
               username:username,
+              loginType:loginMode,
               password:password
             })
           }
