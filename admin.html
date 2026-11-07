@@ -36,7 +36,10 @@ main{padding:0 12px 30px}.card{background:#fff;border-radius:15px;padding:15px;m
 <div id="app" class="hidden">
 <header>
   <div><h1>Zonguru Admin</h1><div class="sub">Connected</div></div>
-  <button class="logout" onclick="logout()">Logout</button>
+  <div class="actions" style="align-items:center">
+    <button class="secondary" onclick="showTab('activity')" aria-label="Registration and login notifications">🔔 <span id="activityCount" class="pill">0</span></button>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
 </header>
 
 <nav class="tabs">
@@ -45,6 +48,7 @@ main{padding:0 12px 30px}.card{background:#fff;border-radius:15px;padding:15px;m
   <button class="tab" data-tab="products" onclick="showTab('products')">Products</button>
   <button class="tab" data-tab="messages" onclick="showTab('messages')">Customer Service</button>
   <button class="tab" data-tab="audits" onclick="showTab('audits')">Audit Logs</button>
+  <button class="tab" data-tab="activity" onclick="showTab('activity')">Register / Login</button>
 </nav>
 
 <main>
@@ -87,6 +91,13 @@ main{padding:0 12px 30px}.card{background:#fff;border-radius:15px;padding:15px;m
 <section id="auditsSection" class="card hidden">
 <h3>Audit Logs</h3><div id="auditsNotice"></div>
 <div class="tablewrap"><table><thead><tr><th>Action</th><th>Admin</th><th>Target</th><th>Details</th><th>Date</th></tr></thead><tbody id="auditsBody"></tbody></table></div>
+</section>
+<section id="activitySection" class="card hidden">
+<h3>New User Registration & Login</h3>
+<p class="muted">Register / Login history with IP address, browser and device information.</p>
+<div class="actions"><button class="secondary" onclick="loadActivity()">Refresh</button></div>
+<div id="activityNotice"></div>
+<div class="tablewrap"><table><thead><tr><th>Event</th><th>Username</th><th>Email</th><th>Phone</th><th>IP Address</th><th>Device / Browser</th><th>Date & Time</th></tr></thead><tbody id="activityBody"></tbody></table></div>
 </section>
 </main>
 </div>
@@ -146,7 +157,7 @@ async function login(){
  }catch(e){note('loginNotice',e.message)}
 }
 function logout(){localStorage.removeItem('zonguru_admin_token');token='';location.reload()}
-function start(){document.getElementById('loginPage').classList.add('hidden');document.getElementById('app').classList.remove('hidden');loadUsers()}
+function start(){document.getElementById('loginPage').classList.add('hidden');document.getElementById('app').classList.remove('hidden');loadUsers();loadActivity()}
 function showTab(tab){
  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
  document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));
@@ -156,6 +167,7 @@ function showTab(tab){
  if(tab==='products')loadProducts();
  if(tab==='messages')loadChatUsers();
  if(tab==='audits')loadAudits();
+ if(tab==='activity')loadActivity();
 }
 
 async function loadUsers(){
@@ -271,6 +283,19 @@ async function sendReply(){
  const text=document.getElementById('chatInput').value.trim();if(!text)return;
  try{await api('/api/admin/chat/'+id(selectedUser)+'/reply',{method:'POST',body:JSON.stringify({text})});document.getElementById('chatInput').value='';await loadConversation()}
  catch(e){alert(e.message)}
+}
+async function loadActivity(){
+ try{
+  const d=await api('/api/admin/activity');
+  const rows=d.activities||[];
+  document.getElementById('activityCount').textContent=String(rows.length);
+  document.getElementById('activityBody').innerHTML=rows.map(a=>`<tr>
+   <td><span class="pill ${a.eventType==='register'?'green':'red'}">${a.eventType==='register'?'New Register':'New Login'}</span></td>
+   <td><b>${esc(a.username||'-')}</b></td><td>${esc(a.email||'-')}</td><td>${esc(a.phone||'-')}</td>
+   <td>${esc(a.ip||'-')}</td><td style="max-width:260px;white-space:normal">${esc(a.device||'Unknown device')}</td>
+   <td>${a.createdAt?new Date(a.createdAt).toLocaleString():'-'}</td>
+  </tr>`).join('')||'<tr><td colspan="7">No registration or login activity yet</td></tr>';
+ }catch(e){note('activityNotice',e.message)}
 }
 async function loadAudits(){
  try{const d=await api('/api/admin/audits');const arr=d.audits||d.logs||d.data||[];document.getElementById('auditsBody').innerHTML=arr.map(a=>`<tr><td>${esc(a.action)}</td><td>${esc(a.admin||a.username||'-')}</td><td>${esc(a.target||a.targetId||'-')}</td><td>${esc(a.details||a.description||'-')}</td><td>${a.createdAt?new Date(a.createdAt).toLocaleString():'-'}</td></tr>`).join('')||'<tr><td colspan="5">No audit logs</td></tr>'}
