@@ -793,9 +793,9 @@ function fillMaxWithdrawAmount(method){
  }
  const code=normCurrency(document.getElementById('bankCurrency')?.value||accountCurrency||'USDT');
  const rate=code==='USDT'?1:Number(currencyRates[code]||1);
- const amount=balance*rate;
+ const amount=Math.floor((balance*rate+Number.EPSILON)*100)/100;
  const input=document.getElementById('bankAmount');
- if(input)input.value=Number(amount.toFixed(2)).toString();
+ if(input)input.value=amount.toFixed(2);
 }
 async function loadWithdrawalSecurity(){return await api('/api/me/withdrawal-security')}
 let withdrawalPasswordVerified=false;
