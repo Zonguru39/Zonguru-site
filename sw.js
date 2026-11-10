@@ -1,5 +1,5 @@
-const CACHE="zonguru-v3";
-const CORE=["/Zonguru-site/","/Zonguru-site/index.html","/Zonguru-site/login.html","/Zonguru-site/register.html","/Zonguru-site/manifest.json"];
+const CACHE="zonguru-v4";
+const CORE=["/Zonguru-site/","/Zonguru-site/index.html","/Zonguru-site/login.html","/Zonguru-site/register.html","/Zonguru-site/manifest.json","/Zonguru-site/branding.js"];
 self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith("zonguru-")&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener("fetch",e=>{
