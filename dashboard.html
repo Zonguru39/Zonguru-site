@@ -296,7 +296,8 @@ body.dark-mode .notification-item.unread{background:#263a3b}
 body.dark-mode .notification-security-warning{background:#3b2c1d;color:#fed7aa;border-color:#704b2a}
 @media(max-width:520px){.notification-panel{top:62px;right:8px;width:calc(100vw - 16px)}}
 
-</style></head>
+</style><script src="./branding.js?v=1" defer></script>
+</head>
 <body>
 <div class="tools"><button class="tool icon-tool" onclick="openChat()" aria-label="Customer Service" title="Customer Service">💬<span class="chat-badge" id="chatBadge">0</span></button><div class="lang-wrap"><button class="tool icon-tool" onclick="toggleLang()" aria-label="Language" title="Language">🌐</button><div class="lang-menu" id="langMenu"><button class="lang-item" onclick="setLang('en')">🇬🇧 English</button><button class="lang-item" onclick="setLang('es')">🇪🇸 Español</button><button class="lang-item" onclick="setLang('pt')">🇵🇹 Português</button><button class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</button><button class="lang-item" onclick="setLang('my')">🇲🇲 မြန်မာ</button><button class="lang-item" onclick="setLang('ur')">🇵🇰 اردو (Pakistan)</button></div></div><button class="tool icon-tool notification-bell" id="notificationBell" type="button" onclick="toggleNotifications()" aria-label="Notifications" title="Notifications">🔔<span class="notification-badge" id="notificationBadge" style="display:none">0</span></button></div>
 <div class="notification-panel" id="notificationPanel" aria-hidden="true"><div class="notification-head"><b data-i18n="Notifications">Notifications</b><button type="button" onclick="markAllNotificationsRead()" data-i18n="Mark all read">Mark all read</button></div><div id="notificationItems" class="notification-items"><div class="empty" data-i18n="Loading notifications">Loading notifications...</div></div></div>
