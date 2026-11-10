@@ -1039,7 +1039,6 @@ async function loadLiveActivities(){
   const ticker=document.getElementById('liveActivityTicker');
   if(ticker)ticker.style.display=data.enabled===false?'none':'';
   const speed=Math.max(30,Math.min(300,Number(data.speedSeconds||120)));
-  track.style.animationDuration=speed+'s';
   const items=Array.isArray(data.activities)?data.activities:[];
   if(!items.length){track.innerHTML='<span class="live-activity-message">Congratulations! Stay tuned for new activities.</span>';track.style.animation='none';return;}
   const render=items.map(item=>{
@@ -1051,6 +1050,7 @@ async function loadLiveActivities(){
   }).join('');
   track.innerHTML=render+render;
   track.style.animation='';
+  track.style.animationDuration=speed+'s';
  }catch(e){
   track.innerHTML='<span class="live-activity-message">Activity updates are temporarily unavailable.</span>';
   track.style.animation='none';
