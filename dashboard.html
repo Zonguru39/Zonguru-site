@@ -208,7 +208,7 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 .live-activity-head{display:flex;align-items:center;gap:8px;margin-bottom:9px;font-size:12px;font-weight:900;letter-spacing:.7px}
 .live-activity-pulse{width:8px;height:8px;border-radius:50%;background:#41e0a0;box-shadow:0 0 0 4px #41e0a022;flex:none}
 .live-activity-window{width:100%;overflow:hidden;white-space:nowrap;position:relative}
-.live-activity-track{display:flex;width:max-content;align-items:center;gap:26px;will-change:transform;animation:zgActivityLeft 90s linear infinite}
+.live-activity-track{display:flex;width:max-content;align-items:center;gap:26px;will-change:transform;animation:zgActivityLeft 30s linear infinite}
 .live-activity-window:hover .live-activity-track{animation-play-state:paused}
 .live-activity-group{display:flex;align-items:center;gap:9px;white-space:nowrap;flex:none;font-size:12px}
 .live-activity-phone{font-weight:900;color:#fff;letter-spacing:.2px}
@@ -1038,7 +1038,7 @@ async function loadLiveActivities(){
   if(!response.ok||data.success===false)throw new Error('Unable to load activities');
   const ticker=document.getElementById('liveActivityTicker');
   if(ticker)ticker.style.display=data.enabled===false?'none':'';
-  const speed=Math.max(30,Math.min(300,Number(data.speedSeconds||90)));
+  const speed=Math.max(15,Math.min(45,Number(data.speedSeconds||30)));
   track.style.animationDuration=speed+'s';
   const items=Array.isArray(data.activities)?data.activities:[];
   if(!items.length){track.innerHTML='<span class="live-activity-message">Congratulations! Stay tuned for new activities.</span>';track.style.animation='none';return;}
