@@ -214,7 +214,7 @@ body.dark-mode .vip-level-card .vip-deposit{color:#ff8da0}
 .live-activity-phone{font-weight:900;color:#fff;letter-spacing:.2px}
 .live-activity-message{color:#e2edf7}
 .live-activity-amount{font-weight:900;color:#72edb5}
-.live-activity-promo{display:inline-block;padding:2px 5px;border-radius:5px;background:#f6d365;color:#493500;font-size:9px;font-weight:900;letter-spacing:.4px}
+.live-activity-promo{display:inline-block;padding:2px 5px;border-radius:5px;background:#f6d365;color:#493500;font-size:9px;font-weight:900;letter-spacing:.4px}\n.live-activity-demo{display:inline-block;padding:2px 5px;border-radius:5px;background:#ffd166;color:#382400;font-size:9px;font-weight:900;letter-spacing:.5px;border:1px solid #ffe6a3}
 .live-activity-separator{color:#8eb4c9;font-size:16px}
 @keyframes zgActivityLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 body.dark-mode .live-activity{background:linear-gradient(110deg,#0c1c2c,#123d4a);box-shadow:0 7px 20px #0003}
@@ -1045,7 +1045,7 @@ async function loadLiveActivities(){
    const phone=esc(item.phone||'******');
    const message=esc(item.message||'Congratulations!');
    const amount=esc(item.displayAmount||'');
-   const promo=item.kind==='promotion'?'<small class="live-activity-promo">PROMO</small>':'';
+   const promo=item.kind==='promotion'?'<small class="live-activity-promo">PROMO</small>':item.kind==='demo'?'<small class="live-activity-demo">DEMO</small>':'';
    return '<span class="live-activity-group"><b class="live-activity-phone">'+phone+'</b>'+promo+'<span class="live-activity-message">'+message+'</span><b class="live-activity-amount">'+amount+'</b><span class="live-activity-separator">•</span></span>';
   }).join('');
   track.innerHTML=render+render;
