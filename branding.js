@@ -8,6 +8,7 @@
   const originalAttributes = new WeakMap();
   const originalImageSources = new WeakMap();
   const originalSvgDisplay = new WeakMap();
+  const originalBrandNameMarkup = new WeakMap();
   const originalTitle = document.title;
 
   let currentName = DEFAULT_NAME;
@@ -66,6 +67,21 @@
       // Empty-element text is handled by the normal text walker when it is added.
     }
     updateAttributes(start);
+  }
+
+  function updateBrandNameElements(root) {
+    const elements = [];
+    if (root && root.nodeType === 1 && root.matches('.brand-name')) elements.push(root);
+    if (root && root.querySelectorAll) elements.push(...root.querySelectorAll('.brand-name'));
+    elements.forEach((element) => {
+      if (!originalBrandNameMarkup.has(element)) originalBrandNameMarkup.set(element, element.innerHTML);
+      const original = originalBrandNameMarkup.get(element);
+      if (currentName === DEFAULT_NAME) {
+        if (element.innerHTML !== original) element.innerHTML = original;
+      } else if (element.textContent !== currentName || element.children.length) {
+        element.textContent = currentName;
+      }
+    });
   }
 
   function updateLogos(root) {
@@ -142,6 +158,7 @@
 
   function applyBranding() {
     updateText(document.body);
+    updateBrandNameElements(document);
     updateLogos(document);
     updateBrowserBranding();
   }
@@ -177,6 +194,7 @@
               if (node.nodeType === 3) updateTextNode(node);
               else if (node.nodeType === 1) {
                 updateText(node);
+                updateBrandNameElements(node);
                 updateLogos(node);
               }
             });
