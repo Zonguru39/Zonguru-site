@@ -1045,7 +1045,7 @@ async function loadLiveActivities(){
    const phone=esc(item.phone||'******');
    const message=esc(item.message||'Congratulations!');
    const amount=esc(item.displayAmount||'');
-   const promo=item.kind==='promotion'?'<small class="live-activity-promo">PROMO</small>';
+   const promo=item.kind==='promotion'?'<small class="live-activity-promo">PROMO</small>':'';
    return '<span class="live-activity-group"><b class="live-activity-phone">'+phone+'</b>'+promo+'<span class="live-activity-message">'+message+'</span><b class="live-activity-amount">'+amount+'</b><span class="live-activity-separator">•</span></span>';
   }).join('');
   track.innerHTML=render+render;
