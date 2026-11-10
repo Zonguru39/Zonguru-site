@@ -1038,7 +1038,7 @@ async function loadLiveActivities(){
   if(!response.ok||data.success===false)throw new Error('Unable to load activities');
   const ticker=document.getElementById('liveActivityTicker');
   if(ticker)ticker.style.display=data.enabled===false?'none':'';
-  const speed=Math.max(15,Math.min(45,Number(data.speedSeconds||30)));
+  const speed=Math.max(30,Math.min(300,Number(data.speedSeconds||120)));
   track.style.animationDuration=speed+'s';
   const items=Array.isArray(data.activities)?data.activities:[];
   if(!items.length){track.innerHTML='<span class="live-activity-message">Congratulations! Stay tuned for new activities.</span>';track.style.animation='none';return;}
