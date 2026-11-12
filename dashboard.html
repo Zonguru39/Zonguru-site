@@ -693,6 +693,7 @@ function showVipChannelLockModal(mode){
 function closeVipChannelLockModal(){const modal=document.getElementById('vipChannelLockModal');if(modal)modal.classList.remove('show')}
 function setVipChannelLockMessage(message){const el=document.getElementById('vipChannelLockMessage');if(el)el.textContent=message||''}
 async function openVipChannel(){
+ if(sessionStorage.getItem('zonguru_vip_channel_token')){showPage('vipChannelPage');return;}
  try{const status=await api('/api/me/vip-channel/status');showVipChannelLockModal(status.hasPin?'verify':'setup');}
  catch(e){if(typeof showToast==='function')showToast(e.message||T('Unable to open VIP Channel'));else alert(e.message||T('Unable to open VIP Channel'))}
 }
