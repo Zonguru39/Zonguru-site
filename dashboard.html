@@ -313,6 +313,57 @@ body.dark-mode .notification-item.unread{background:#263a3b}
 body.dark-mode .notification-security-warning{background:#3b2c1d;color:#fed7aa;border-color:#704b2a}
 @media(max-width:520px){.notification-panel{top:62px;right:8px;width:calc(100vw - 16px)}}
 
+
+/* VIP Channel Girl — isolated black and gold theme */
+body.vip-channel-mode{background:#0b0b0b!important;color:#f1dfb9!important;padding-bottom:0!important}
+body.vip-channel-mode .top,body.vip-channel-mode .tools,body.vip-channel-mode .bottom{display:none!important}
+body.vip-channel-mode .container{max-width:none;padding:0 12px}
+body.vip-channel-mode .vip-channel-page.active{display:block;min-height:100vh;padding:0 0 92px;background:radial-gradient(ellipse at top,#211b10 0%,#0b0b0b 48%,#050505 100%);color:#f1dfb9}
+.vip-channel-shell{max-width:760px;margin:0 auto;padding:0 2px 24px}
+.vc-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 2px 12px;border-bottom:1px solid #493a20;color:#e5c27d}
+.vc-topbar strong{font-size:18px;letter-spacing:.3px}
+.vc-topbar button,.vc-search-row button{border:1px solid #5c4827;background:#17130d;color:#e7c887;border-radius:11px;min-width:42px;height:40px;font-size:20px}
+.vc-search-row{display:flex;gap:8px;margin:12px 0}
+.vc-search-row input{flex:1;min-width:0;background:#171717;border:1px solid #59482c;border-radius:13px;color:#f5e6c8;padding:12px 14px;font-size:14px;outline:none}
+.vc-search-row input::placeholder{color:#9a8b70}
+.vc-tabs{display:flex;gap:9px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.vc-tabs button{flex:0 0 auto;border:1px solid #59472a;border-radius:999px;padding:8px 15px;background:#17130d;color:#c6b28a;font-weight:700}
+.vc-tabs button.active{background:linear-gradient(135deg,#a77b36,#e2c17a);border-color:#e5c77e;color:#17110a}
+.vc-banner-track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:2px 0 12px}
+.vc-banner-card{position:relative;flex:0 0 100%;height:190px;border:1px solid #6b5128;border-radius:15px;overflow:hidden;background:linear-gradient(120deg,#352515,#0b0b0b);scroll-snap-align:center}
+.vc-banner-card img{width:100%;height:100%;object-fit:cover;display:block}
+.vc-banner-overlay{position:absolute;inset:auto 0 0;padding:28px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#f8e4b7}
+.vc-banner-overlay strong{display:block;font-size:18px}
+.vc-banner-overlay span{display:block;margin-top:3px;font-size:12px;color:#e2c78e}
+.vc-empty-banner{height:150px;border:1px dashed #66502a;border-radius:15px;background:linear-gradient(120deg,#21190e,#101010);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#d7b56f;margin-bottom:12px}
+.vc-empty-banner strong{font-size:22px}.vc-empty-banner span{font-size:12px;color:#a99a7c;margin-top:7px}
+.vc-entries{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 18px}
+.vc-entry{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px 8px 13px;border:1px solid #5b4829;border-radius:12px;background:linear-gradient(135deg,#1c1a16,#0f0f0f);color:#e8d0a0;text-align:left}
+.vc-entry strong{font-size:14px;line-height:1.35}
+.vc-entry img{width:62px;height:58px;flex:0 0 62px;object-fit:cover;border-radius:8px;background:#27221a}
+.vc-gallery-heading{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 10px;color:#e6c27d}
+.vc-gallery-heading strong{font-size:17px}.vc-gallery-heading span{font-size:12px;color:#988666}
+.vc-gallery{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.vc-gallery-card{min-width:0;border:1px solid #4c3d25;border-radius:12px;overflow:hidden;background:#141414;color:#eee0c4}
+.vc-gallery-card img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;background:#211d17}
+.vc-gallery-card strong{display:block;padding:9px 9px 3px;font-size:13px;line-height:1.35}
+.vc-gallery-card small{display:block;padding:0 9px 10px;color:#aa9a7b;font-size:11px;line-height:1.4}
+.vc-empty{grid-column:1/-1;padding:26px 14px;text-align:center;color:#9f9073;border:1px dashed #554326;border-radius:12px;background:#13110e;font-size:13px}
+.vc-bottom-nav{position:fixed;z-index:1001;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(4,4,4,.96);border-top:1px solid #5a4525;box-shadow:0 -8px 24px #0009}
+.vc-bottom-nav button{border:0;background:transparent;color:#a99a7e;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.vc-bottom-nav button span{font-size:23px;line-height:1}
+.vc-bottom-nav button.active{color:#e5bd69;font-weight:800}
+.vc-lock-overlay{display:none;position:fixed;z-index:2147482000;inset:0;background:rgba(0,0,0,.82);align-items:center;justify-content:center;padding:20px}
+.vc-lock-overlay.show{display:flex}
+.vc-lock-card{width:min(100%,390px);border:1px solid #80602d;border-radius:20px;padding:24px 20px;background:linear-gradient(145deg,#211a10,#090909 70%);box-shadow:0 20px 70px #000;color:#f2dfb7;text-align:center}
+.vc-lock-icon{width:66px;height:66px;margin:0 auto 13px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#755323,#251a0b);border:1px solid #d4ad61;font-size:30px}
+.vc-lock-card h3{margin:0 0 8px;color:#edcf8c;font-size:20px}
+.vc-lock-card p{margin:0 0 16px;color:#bca982;font-size:13px;line-height:1.55}
+.vc-lock-card input{width:100%;margin:7px 0;padding:13px 12px;border:1px solid #69512c;border-radius:11px;background:#090909;color:#fff;text-align:center;letter-spacing:8px;font-size:21px}
+.vc-lock-card button{width:100%;border:0;border-radius:12px;padding:13px;margin-top:9px;background:linear-gradient(135deg,#a47730,#e6c77d);color:#1b1307;font-size:15px;font-weight:900}
+.vc-lock-card .vc-lock-cancel{background:#201a11;border:1px solid #5b4829;color:#d9c18e}
+.vc-lock-message{min-height:20px;margin-top:9px;color:#ffb3a2;font-size:12px}
+@media(max-width:380px){.vc-banner-card{height:160px}.vc-entry img{width:54px;height:54px;flex-basis:54px}.vc-entry{padding-left:9px}.vc-entry strong{font-size:12px}}
 </style><script src="./branding.js?v=1" defer></script>
 </head>
 <body>
@@ -345,6 +396,10 @@ body.dark-mode .notification-security-warning{background:#3b2c1d;color:#fed7aa;b
 </div></div>
 <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px"><strong style="font-size:16px;display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="font-size:27px;line-height:1">🎡</span><span data-i18n="Lucky Spin">Lucky Spin</span></strong><button type="button" class="secondary" onclick="showPage('luckySpinPage')" style="white-space:nowrap;padding:10px 16px;border-radius:12px" data-i18n="Open Wheel">Open Wheel ›</button></div>
 <div class="card vip-home-link" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px"><strong style="font-size:16px">👑 VIP Level</strong><button type="button" class="secondary" onclick="showPage('vipPage')" style="white-space:nowrap;padding:10px 16px;border-radius:12px">View More ›</button></div>
+<div class="card vip-channel-entry-card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border:1px solid #b18a4b;background:linear-gradient(135deg,#17130d,#302211);color:#e8cf98">
+ <strong style="font-size:16px;display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="font-size:25px">👩</span><span data-i18n="VIP Channel Girl">VIP Channel Girl</span></strong>
+ <button type="button" onclick="openVipChannel()" style="white-space:nowrap;padding:10px 16px;border-radius:12px;border:1px solid #c59d57;background:linear-gradient(135deg,#9b702f,#e0bd73);color:#1b1308;font-weight:900" data-i18n="Open Channel">Open Channel ›</button>
+</div>
 <div class="card"><h2 class="section-title" data-i18n="Total Profit">Total Profit</h2><div class="profit-grid">
 <div class="profit-box"><b><span id="profit">0.00 MXN</span></b><span data-i18n="Today Profit">Today Profit</span></div>
 <div class="profit-box"><b id="securityProfit">0.00 MXN</b><span data-i18n="Secure Profit">Secure Profit</span></div>
@@ -409,6 +464,51 @@ body.dark-mode .notification-security-warning{background:#3b2c1d;color:#fed7aa;b
 <div id="bankFields" style="display:none"><div class="form-group"><label data-i18n="Withdrawal Currency">Withdrawal Currency</label><select id="bankCurrency" onchange="updateBankAmountLabel()"><option value="USDT">₮ USDT</option><option value="MXN">🇲🇽 MXN</option><option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option><option value="GBP">🇬🇧 GBP</option><option value="CAD">🇨🇦 CAD</option><option value="AUD">🇦🇺 AUD</option><option value="JPY">🇯🇵 JPY</option><option value="CNY">🇨🇳 CNY</option><option value="SGD">🇸🇬 SGD</option><option value="THB">🇹🇭 THB</option><option value="MYR">🇲🇾 MYR</option><option value="BRL">🇧🇷 BRL</option><option value="INR">🇮🇳 INR</option><option value="EGP">🇪🇬 EGP — Egyptian Pound</option><option value="ARS">🇦🇷 ARS — Argentine Peso</option><option value="PKR">🇵🇰 PKR — Pakistani Rupee</option></select></div><div class="form-group"><label id="bankAmountLabel" data-i18n="Amount">Amount (USDT)</label><div class="amount-input-row"><input id="bankAmount" type="number" min="0" step="0.01" placeholder="Enter amount" data-i18n-placeholder="Enter amount"><button type="button" class="max-amount-btn" onclick="fillMaxWithdrawAmount('bank')" data-i18n="Max">Max</button></div></div><div class="form-group"><label data-i18n="Saved Bank Account">Saved Bank Account</label><select id="withdrawBankAccount"></select><button type="button" class="secondary" style="margin-top:8px" onclick="openAccountDetail('bankAdd')">＋ New account</button></div><button class="primary" onclick="submitWithdraw()"><span data-i18n="Submit Withdrawal">Submit Withdrawal</span></button></div></div></div></section>
 <section class="page" id="luckySpinPage"><div class="card" style="text-align:center"><button class="secondary" type="button" onclick="showPage('homePage')" style="float:left" data-i18n="Back">‹ Back</button><h2 class="section-title" style="clear:both;padding-top:12px" data-i18n="Lucky Spin">🎡 Lucky Spin</h2><p data-i18n="Use your free tickets to spin. Complete every 5 orders to earn 1 ticket.">Use your free tickets to spin. Complete every 5 orders to earn 1 ticket.</p><div id="spinTicketCount" style="font-weight:800;font-size:18px;margin:12px 0" data-i18n="Free tickets:">Free tickets: —</div><div class="lucky-wheel-wrap"><div class="lucky-wheel-pointer">▼</div><div id="luckyWheel" class="lucky-wheel"><span class="wheel-label wl1">$10</span><span class="wheel-label wl2">$50</span><span class="wheel-label wl3">$1,000</span><span class="wheel-label wl4"><span class="iphone-prize-icon" aria-hidden="true">📱</span><span data-i18n="iPhone 18 Pro Max">iPhone 18 Pro Max</span></span><span class="wheel-label wl5" data-i18n="No Rewards">No Rewards</span><span class="wheel-label wl6" data-i18n="5 Tickets">5 Tickets</span></div><div class="wheel-center" data-i18n="SPIN">SPIN</div></div><button id="luckySpinButton" class="primary" type="button" onclick="spinLuckyWheel()" style="margin-top:22px;width:100%" data-i18n="Spin Now">Spin Now</button><div id="luckySpinResult" role="status" style="margin-top:14px;font-weight:700"></div><div class="lucky-spin-help" style="margin-top:20px;padding:16px;border-radius:14px;background:rgba(55,125,110,.10);text-align:left;line-height:1.65"><strong data-i18n="How to Get Free Spin Tickets">🎟️ How to Get Free Spin Tickets</strong><p style="margin:8px 0">• <span data-i18n="Complete 5 orders to receive 1 free spin ticket. Every additional 5 completed orders earns 1 more ticket.">Complete 5 orders to receive 1 free spin ticket. Every additional 5 completed orders earns 1 more ticket.</span></p><p style="margin:8px 0">• <span data-i18n="Your available tickets are shown above. Each spin uses 1 ticket.">Your available tickets are shown above. Each spin uses 1 ticket.</span></p><p style="margin:8px 0">• <span data-i18n="If you have completed 5 orders but your ticket has not appeared, please contact Customer Service with your account details so the team can check your order and ticket record.">If you have completed 5 orders but your ticket has not appeared, please contact Customer Service with your account details so the team can check your order and ticket record.</span></p><p style="margin:8px 0">• <span data-i18n="Tickets are free and are not guaranteed simply by contacting support. Please do not share your password or withdrawal password with anyone.">Tickets are free and are not guaranteed simply by contacting support. Please do not share your password or withdrawal password with anyone.</span></p><p style="margin:10px 0 0"><a href="https://t.me/Zonguru_support" target="_blank" rel="noopener noreferrer" style="font-weight:800;color:#238b78;text-decoration:underline">Contact Customer Service</a></p></div></div></section>
 <section class="page" id="vipPage"><div class="card"><button class="secondary" type="button" onclick="showPage('homePage')" style="margin-bottom:14px">‹ Back to Home</button><h2 class="section-title">VIP Levels</h2><div id="vipPageContent"></div></div></section>
+
+<section class="page vip-channel-page" id="vipChannelPage">
+ <div class="vip-channel-shell">
+  <header class="vc-topbar">
+   <button type="button" onclick="showPage('homePage')" aria-label="Back to Home">‹</button>
+   <strong>👑 <span data-i18n="VIP Channel Girl">VIP Channel Girl</span></strong>
+   <button type="button" onclick="lockVipChannel()" aria-label="Lock VIP Channel">🔒</button>
+  </header>
+  <div class="vc-search-row"><input id="vipChannelSearch" type="search" placeholder="Search" data-i18n-placeholder="Search VIP Channel" oninput="renderVipChannelContent()"><button type="button" onclick="loadVipChannelContent()" aria-label="Refresh VIP Channel">↻</button></div>
+  <div class="vc-tabs">
+   <button type="button" class="active" data-vc-filter="all" onclick="setVipChannelFilter('all')" data-i18n="Recommended">Recommended</button>
+   <button type="button" data-vc-filter="hot" onclick="setVipChannelFilter('hot')" data-i18n="Hot">Hot</button>
+   <button type="button" data-vc-filter="gallery" onclick="setVipChannelFilter('gallery')" data-i18n="Gallery">Gallery</button>
+  </div>
+  <div id="vipChannelBanners"><div class="vc-empty-banner"><strong>ZONGURU VIP</strong><span>VIP Channel banner images will appear here</span></div></div>
+  <div id="vipChannelEntries" class="vc-entries"></div>
+  <div class="vc-gallery-heading"><strong data-i18n="Popular Picks">Popular Picks</strong><span data-i18n="Updated by Admin">Updated by Admin</span></div>
+  <div id="vipChannelGallery" class="vc-gallery"><div class="vc-empty" data-i18n="No pictures have been added yet.">No pictures have been added yet.</div></div>
+ </div>
+ <nav class="vc-bottom-nav" aria-label="VIP Channel navigation">
+  <button type="button" data-vc-nav="all" onclick="setVipChannelFilter('all')"><span>♥</span><small data-i18n="Favorites">Favorites</small></button>
+  <button type="button" data-vc-nav="hot" onclick="setVipChannelFilter('hot')"><span>♧</span><small data-i18n="Hot">Hot</small></button>
+  <button type="button" class="active" data-vc-nav="home" onclick="showPage('vipChannelPage')"><span>⌂</span><small data-i18n="Home">Home</small></button>
+  <button type="button" data-vc-nav="messages" onclick="showPage('messagesPage')"><span>☷</span><small data-i18n="Messages">Messages</small></button>
+  <button type="button" data-vc-nav="my" onclick="showPage('accountPage')"><span>♙</span><small data-i18n="My Account">My Account</small></button>
+ </nav>
+</section>
+<div id="vipChannelLockModal" class="vc-lock-overlay" role="dialog" aria-modal="true" aria-labelledby="vipChannelLockTitle">
+ <div class="vc-lock-card">
+  <div class="vc-lock-icon">🔐</div>
+  <h3 id="vipChannelLockTitle" data-i18n="VIP Channel Lock">VIP Channel Lock</h3>
+  <p id="vipChannelLockDescription" data-i18n="Create a private 6-digit PIN to protect this page.">Create a private 6-digit PIN to protect this page.</p>
+  <div id="vipChannelPinSetup">
+   <input id="vipChannelPinNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="Create 6-digit PIN" data-i18n-placeholder="Create 6-digit PIN">
+   <input id="vipChannelPinConfirm" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="Confirm 6-digit PIN" data-i18n-placeholder="Confirm 6-digit PIN">
+   <button type="button" onclick="setupVipChannelLock()" data-i18n="Save Lock">Save Lock</button>
+  </div>
+  <div id="vipChannelPinVerify" style="display:none">
+   <input id="vipChannelPinExisting" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="Enter 6-digit PIN" data-i18n-placeholder="Enter 6-digit PIN">
+   <button type="button" onclick="verifyVipChannelLock()" data-i18n="Unlock Channel">Unlock Channel</button>
+  </div>
+  <div id="vipChannelLockMessage" class="vc-lock-message" role="status"></div>
+  <button type="button" class="vc-lock-cancel" onclick="closeVipChannelLockModal()" data-i18n="Cancel">Cancel</button>
+ </div>
+</div>
 <section class="page" id="productsPage"><div class="card"><h2 class="section-title" data-i18n="Products">Products</h2><div class="vip-panel"><div class="vip-title">Nivel de miembro / Member Level</div><div class="vip-level" id="productVipLevel">VIP 0</div><div class="vip-stats"><div><b id="vipCompleted">0</b><span>Completado</span></div><div><b id="vipTotal">5</b><span>Pedidos</span></div><div><b id="vipIncomplete">5</b><span>Incompleto</span></div></div></div><div id="taskSummary" style="font-weight:700">Task 0/5</div><div class="task-progress" id="taskProgress"></div><div id="productList"><div class="empty">Loading...</div></div></div></section>
 <section class="page" id="transactionsPage"><div class="card"><h2 class="section-title" data-i18n="History">History</h2><div class="history-filters" style="display:flex;gap:8px;overflow-x:auto;margin:0 0 16px;padding:2px 0 4px"><button class="history-filter selected" id="historyAll" onclick="setHistoryFilter('all')" data-i18n="All">All</button><button class="history-filter" id="historyDeposit" onclick="setHistoryFilter('deposit')" data-i18n="Deposit">Deposit</button><button class="history-filter" id="historyWithdrawal" onclick="setHistoryFilter('withdrawal')" data-i18n="Withdrawal">Withdrawal</button><button class="history-filter" id="historyOrder" onclick="setHistoryFilter('order')" data-i18n="Order History">Order History</button><button class="history-filter" id="historySpin" onclick="loadSpinHistory(true)" data-i18n="Spin History">Spin History</button></div><div id="transactionList"><div class="empty">Loading...</div></div><div id="orderHistoryList" style="display:none"><div class="empty">Loading orders...</div></div><div id="spinHistoryList" style="display:none;margin-top:12px"></div></div></section>
 <section class="page" id="messagesPage"><div class="card"><h2 class="section-title" data-i18n="Messages">Messages</h2><div id="messageList"><div class="empty">Loading...</div></div></div></section>
@@ -578,6 +678,85 @@ document.addEventListener('click',function(e){
 const token=()=>localStorage.getItem('zonguru_token')||'';
 async function api(path,opt={}){opt.headers=opt.headers||{};opt.headers['Content-Type']='application/json';if(token())opt.headers.Authorization='Bearer '+token();const r=await fetch(API+path,opt);const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw Error(T(d.message||'Request failed'));return d}
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+
+let vipChannelItems=[],vipChannelFilter='all';
+function showVipChannelLockModal(mode){
+ const modal=document.getElementById('vipChannelLockModal');if(!modal)return;
+ const setup=mode==='setup';document.getElementById('vipChannelPinSetup').style.display=setup?'block':'none';document.getElementById('vipChannelPinVerify').style.display=setup?'none':'block';
+ document.getElementById('vipChannelLockTitle').textContent=T(setup?'Set VIP Channel Lock':'Unlock VIP Channel');
+ document.getElementById('vipChannelLockDescription').textContent=T(setup?'Create a private 6-digit PIN to protect this page.':'Enter your 6-digit PIN to open the VIP Channel.');
+ document.getElementById('vipChannelLockMessage').textContent='';
+ ['vipChannelPinNew','vipChannelPinConfirm','vipChannelPinExisting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+ modal.classList.add('show');
+ setTimeout(()=>{const el=document.getElementById(setup?'vipChannelPinNew':'vipChannelPinExisting');if(el)el.focus()},80);
+}
+function closeVipChannelLockModal(){const modal=document.getElementById('vipChannelLockModal');if(modal)modal.classList.remove('show')}
+function setVipChannelLockMessage(message){const el=document.getElementById('vipChannelLockMessage');if(el)el.textContent=message||''}
+async function openVipChannel(){
+ try{const status=await api('/api/me/vip-channel/status');showVipChannelLockModal(status.hasPin?'verify':'setup');}
+ catch(e){if(typeof showToast==='function')showToast(e.message||T('Unable to open VIP Channel'));else alert(e.message||T('Unable to open VIP Channel'))}
+}
+function enterVipChannel(data){
+ if(!data?.channelToken)throw Error('The VIP Channel unlock token was not returned.');
+ sessionStorage.setItem('zonguru_vip_channel_token',data.channelToken);
+ closeVipChannelLockModal();showPage('vipChannelPage');
+}
+async function setupVipChannelLock(){
+ const pin=document.getElementById('vipChannelPinNew').value,confirmPin=document.getElementById('vipChannelPinConfirm').value;
+ if(!/^\d{6}$/.test(pin)){setVipChannelLockMessage(T('PIN must contain exactly 6 digits.'));return}
+ if(pin!==confirmPin){setVipChannelLockMessage(T('The PIN entries do not match.'));return}
+ try{const data=await api('/api/me/vip-channel/pin/setup',{method:'POST',body:JSON.stringify({pin})});enterVipChannel(data)}
+ catch(e){setVipChannelLockMessage(e.message||T('Unable to save lock.'))}
+}
+async function verifyVipChannelLock(){
+ const pin=document.getElementById('vipChannelPinExisting').value;
+ if(!/^\d{6}$/.test(pin)){setVipChannelLockMessage(T('Enter your 6-digit PIN.'));return}
+ try{const data=await api('/api/me/vip-channel/pin/verify',{method:'POST',body:JSON.stringify({pin})});enterVipChannel(data)}
+ catch(e){setVipChannelLockMessage(e.message||T('Incorrect PIN.'))}
+}
+function lockVipChannel(){sessionStorage.removeItem('zonguru_vip_channel_token');vipChannelItems=[];showPage('homePage')}
+async function vipChannelApi(path){
+ const headers={'Content-Type':'application/json','Authorization':'Bearer '+token(),'X-Vip-Channel-Token':sessionStorage.getItem('zonguru_vip_channel_token')||''};
+ const response=await fetch(API+path,{method:'GET',headers,cache:'no-store'}),data=await response.json().catch(()=>({}));
+ if(!response.ok||data.success===false)throw Error(data.message||T('Request failed'));
+ return data;
+}
+async function loadVipChannelContent(){
+ try{const data=await vipChannelApi('/api/me/vip-channel/content');vipChannelItems=Array.isArray(data.items)?data.items:[];renderVipChannelContent()}
+ catch(e){
+  if(/lock expired|unlock again|invalid or expired token/i.test(String(e.message||''))){sessionStorage.removeItem('zonguru_vip_channel_token');openVipChannel();return}
+  const gallery=document.getElementById('vipChannelGallery');if(gallery)gallery.innerHTML='<div class="vc-empty">'+esc(e.message||T('Unable to load VIP Channel content.'))+'</div>';
+ }
+}
+function setVipChannelFilter(filter){
+ vipChannelFilter=filter||'all';
+ document.querySelectorAll('[data-vc-filter]').forEach(button=>button.classList.toggle('active',button.dataset.vcFilter===vipChannelFilter));
+ document.querySelectorAll('[data-vc-nav]').forEach(button=>button.classList.toggle('active',(vipChannelFilter==='all'&&button.dataset.vcNav==='home')||(vipChannelFilter==='hot'&&button.dataset.vcNav==='hot')));
+ renderVipChannelContent();
+}
+function openVipChannelEntry(title){
+ const search=document.getElementById('vipChannelSearch');if(search)search.value=title||'';
+ setVipChannelFilter('gallery');
+}
+function renderVipChannelContent(){
+ const search=String(document.getElementById('vipChannelSearch')?.value||'').trim().toLowerCase();
+ const matches=item=>!search||String(item.title||'').toLowerCase().includes(search)||String(item.caption||'').toLowerCase().includes(search);
+ const banners=vipChannelItems.filter(x=>x.type==='banner'&&matches(x));
+ const entries=vipChannelFilter==='gallery'?[]:vipChannelItems.filter(x=>x.type==='entry'&&matches(x));
+ let gallery=vipChannelItems.filter(x=>x.type==='gallery'&&matches(x));
+ if(vipChannelFilter==='hot')gallery=gallery.slice().sort((a,b)=>Number(b.sortOrder||0)-Number(a.sortOrder||0));
+ if(vipChannelFilter==='all'||vipChannelFilter==='hot'||vipChannelFilter==='gallery'){}
+ const bannerHost=document.getElementById('vipChannelBanners');
+ if(bannerHost)bannerHost.innerHTML=banners.length?'<div class="vc-banner-track">'+banners.map(item=>'<article class="vc-banner-card"><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><div class="vc-banner-overlay"><strong>'+esc(item.title)+'</strong><span>'+esc(item.caption||'')+'</span></div></article>').join('')+'</div>':'<div class="vc-empty-banner"><strong>ZONGURU VIP</strong><span>'+esc(T('Banner images will appear here when added by Admin.'))+'</span></div>';
+ const entryHost=document.getElementById('vipChannelEntries');
+ if(entryHost)entryHost.innerHTML=entries.length?entries.map(item=>'<button type="button" class="vc-entry" onclick="openVipChannelEntry(\''+esc(item.title).replace(/'/g,'&#39;')+'\')"><strong>'+esc(item.title)+'</strong><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"></button>').join(''):'';
+ const galleryHost=document.getElementById('vipChannelGallery');
+ if(galleryHost){
+  if(gallery.length)galleryHost.innerHTML=gallery.map(item=>'<article class="vc-gallery-card"><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><strong>'+esc(item.title)+'</strong><small>'+esc(item.caption||'')+'</small></article>').join('');
+  else galleryHost.innerHTML='<div class="vc-empty">'+esc(T('No pictures have been added yet.'))+'</div>';
+ }
+}
+
 let luckySpinRotation=0,luckySpinBusy=false;
 async function loadLuckySpinTickets(){const box=document.getElementById('spinTicketCount');if(!box)return;const btn=document.getElementById('luckySpinButton');try{const d=await api('/api/me/lucky-spin/tickets');box.textContent=T('Free tickets:')+' '+Number(d.freeTickets||0);if(btn)btn.disabled=false}catch(e){box.textContent=T('Unable to load tickets');if(btn)btn.disabled=false}}
 async function spinLuckyWheel(){if(luckySpinBusy)return;const btn=document.getElementById('luckySpinButton'),result=document.getElementById('luckySpinResult'),wheel=document.getElementById('luckyWheel'),ticketBox=document.getElementById('spinTicketCount');result.style.color='';luckySpinBusy=true;btn.disabled=true;result.textContent=T('Checking tickets…');try{const ticketData=await api('/api/me/lucky-spin/tickets');const available=Number(ticketData.freeTickets||0);ticketBox.textContent=T('Free tickets:')+' '+available;if(available<1){result.textContent='';result.style.color='#ffb454';showTicketPurchaseModal();return;}result.style.color='';result.textContent=T('Spinning…');const d=await api('/api/me/lucky-spin/spin',{method:'POST',body:JSON.stringify({})});const id=String(d.prize&&d.prize.id||'');const labels={usd10:'$10',usd50:'$50',usd1000:'$1,000',iphone18promax:'iPhone 18 Pro Max',no_reward:'No Rewards',five_tickets:'5 Tickets'};if(!d.spinId||!Object.prototype.hasOwnProperty.call(labels,id))throw Error('Spin result could not be verified. Please contact Customer Service before spinning again.');const expected={usd10:10,usd50:50,usd1000:1000};if(Object.prototype.hasOwnProperty.call(expected,id)&&Number(d.creditedUSDT)!==expected[id])throw Error('Prize was recorded but the USDT credit could not be verified. Please contact Customer Service.');const idx=['usd10','usd50','usd1000','iphone18promax','no_reward','five_tickets'].indexOf(id),center=idx*60+30;const target=((360-center)%360+360)%360;const current=((luckySpinRotation%360)+360)%360;const delta=((target-current+360)%360)+360*6;luckySpinRotation+=delta;wheel.style.transform='rotate('+luckySpinRotation+'deg)';await new Promise(resolve=>setTimeout(resolve,4300));const extra=id==='iphone18promax'?T('Please contact Customer Service to arrange delivery.'):id==='five_tickets'?T('5 free tickets added. You can spin 5 more times.'):'';result.textContent=T('Result:')+' '+T(labels[id])+(Number(d.creditedUSDT||0)>0?' — '+Number(d.creditedUSDT).toFixed(2)+' '+T('USDT credited to your balance.'):'')+extra;ticketBox.textContent=T('Free tickets:')+' '+Number(d.freeTickets||0);showSpinPrizeNotice(d);await loadUser();await loadSpinHistory(false)}catch(e){result.textContent=T(e.message||'Spin failed');await loadLuckySpinTickets()}finally{luckySpinBusy=false;btn.disabled=false}}
@@ -624,7 +803,27 @@ function toggleDarkMode(){
  localStorage.setItem('zonguru_dark_mode',enabled?'off':'on');
  applyDarkMode();
 }
-function showPage(id){if(id!=='withdrawPage'){const wp=document.getElementById('withdrawalPassword');if(wp)wp.value='';}document.body.classList.toggle('products-mode',id==='productsPage');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const page=document.getElementById(id);if(!page)return;page.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));if(id==='homePage')navHome.classList.add('active');if(id==='vipPage')renderVipLevelsInto(document.getElementById('vipPageContent'));if(id==='luckySpinPage')loadLuckySpinTickets();if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}if(id==='depositPage')loadDepositAddresses();if(id==='eventsPage')loadEventsContent();if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');if(id==='teamPage')loadTeam();scrollTo(0,0)}
+function showPage(id){
+ if(id==='vipChannelPage'&&!sessionStorage.getItem('zonguru_vip_channel_token')){openVipChannel();return;}
+ if(id!=='withdrawPage'){const wp=document.getElementById('withdrawalPassword');if(wp)wp.value='';}
+ document.body.classList.toggle('products-mode',id==='productsPage');
+ document.body.classList.toggle('vip-channel-mode',id==='vipChannelPage');
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ const page=document.getElementById(id);if(!page)return;page.classList.add('active');
+ document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+ if(id==='homePage')navHome.classList.add('active');
+ if(id==='vipPage')renderVipLevelsInto(document.getElementById('vipPageContent'));
+ if(id==='luckySpinPage')loadLuckySpinTickets();
+ if(id==='vipChannelPage')loadVipChannelContent();
+ if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}
+ if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}
+ if(id==='depositPage')loadDepositAddresses();
+ if(id==='eventsPage')loadEventsContent();
+ if(id==='messagesPage'){navMessages.classList.add('active');loadMessages()}
+ if(id==='accountPage'||id==='accountDetailPage')navAccount.classList.add('active');
+ if(id==='teamPage')loadTeam();
+ scrollTo(0,0);
+}
 const currencyOptions=[
   ["USDT","₮","Tether"],
   ["MXN","$","Mexican Peso"],
@@ -1440,6 +1639,17 @@ const passwordPageTranslations={
  ur:{"Password Change":"پاس ورڈ تبدیل کریں","Current Password":"موجودہ پاس ورڈ","New Password":"نیا پاس ورڈ","Login Password":"لاگ اِن پاس ورڈ","Confirm New Password":"نئے پاس ورڈ کی تصدیق کریں","Change Login Password":"لاگ اِن پاس ورڈ تبدیل کریں","Withdrawal Password":"رقم نکلوانے کا پاس ورڈ","Change the password used to confirm bank and crypto withdrawals.":"بینک اور کرپٹو رقم نکلوانے کی تصدیق کے لیے استعمال ہونے والا پاس ورڈ تبدیل کریں۔","Current Withdrawal Password":"موجودہ رقم نکلوانے کا پاس ورڈ","New Withdrawal Password":"نیا رقم نکلوانے کا پاس ورڈ","Confirm New Withdrawal Password":"نئے رقم نکلوانے کے پاس ورڈ کی تصدیق کریں","Change Withdrawal Password":"رقم نکلوانے کا پاس ورڈ تبدیل کریں"}
 };
 Object.keys(passwordPageTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},passwordPageTranslations[lang]);});
+
+const vipChannelTranslations={
+ en:{"VIP Channel Girl":"VIP Channel Girl","Open Channel":"Open Channel ›","VIP Channel Lock":"VIP Channel Lock","Create a private 6-digit PIN to protect this page.":"Create a private 6-digit PIN to protect this page.","Enter your 6-digit PIN to open the VIP Channel.":"Enter your 6-digit PIN to open the VIP Channel.","Set VIP Channel Lock":"Set VIP Channel Lock","Unlock VIP Channel":"Unlock VIP Channel","Create 6-digit PIN":"Create 6-digit PIN","Confirm 6-digit PIN":"Confirm 6-digit PIN","Enter 6-digit PIN":"Enter 6-digit PIN","Save Lock":"Save Lock","Unlock Channel":"Unlock Channel","PIN must contain exactly 6 digits.":"PIN must contain exactly 6 digits.","The PIN entries do not match.":"The PIN entries do not match.","Enter your 6-digit PIN.":"Enter your 6-digit PIN.","Unable to save lock.":"Unable to save lock.","Incorrect PIN.":"Incorrect PIN.","Unable to open VIP Channel":"Unable to open VIP Channel","Unable to load VIP Channel content.":"Unable to load VIP Channel content.","Banner images will appear here when added by Admin.":"Banner images will appear here when added by Admin.","Search VIP Channel":"Search VIP Channel","Recommended":"Recommended","Hot":"Hot","Gallery":"Gallery","Popular Picks":"Popular Picks","Updated by Admin":"Updated by Admin","No pictures have been added yet.":"No pictures have been added yet.","Favorites":"Favorites","My Account":"My Account","Cancel":"Cancel"},
+ my:{"VIP Channel Girl":"VIP Channel Girl","Open Channel":"Channel ဖွင့်ရန် ›","VIP Channel Lock":"VIP Channel Lock","Create a private 6-digit PIN to protect this page.":"ဒီ Page ကို ကာကွယ်ရန် ကိုယ်ပိုင် PIN ဂဏန်း ၆ လုံး သတ်မှတ်ပါ။","Enter your 6-digit PIN to open the VIP Channel.":"VIP Channel ဖွင့်ရန် PIN ဂဏန်း ၆ လုံး ထည့်ပါ။","Set VIP Channel Lock":"VIP Channel Lock သတ်မှတ်ရန်","Unlock VIP Channel":"VIP Channel ဖွင့်ရန်","Create 6-digit PIN":"PIN ဂဏန်း ၆ လုံး ဖန်တီးပါ","Confirm 6-digit PIN":"PIN ဂဏန်း ၆ လုံး အတည်ပြုပါ","Enter 6-digit PIN":"PIN ဂဏန်း ၆ လုံး ထည့်ပါ","Save Lock":"Lock သိမ်းရန်","Unlock Channel":"Channel ဖွင့်ရန်","PIN must contain exactly 6 digits.":"PIN သည် ဂဏန်း ၆ လုံး တိတိ ဖြစ်ရပါမည်။","The PIN entries do not match.":"PIN နှစ်ခု မကိုက်ညီပါ။","Enter your 6-digit PIN.":"PIN ဂဏန်း ၆ လုံး ထည့်ပါ။","Unable to save lock.":"Lock သိမ်း၍ မရပါ။","Incorrect PIN.":"PIN မှားယွင်းနေပါသည်။","Unable to open VIP Channel":"VIP Channel ဖွင့်၍ မရပါ။","Unable to load VIP Channel content.":"VIP Channel အကြောင်းအရာများ ဖွင့်၍ မရပါ။","Banner images will appear here when added by Admin.":"Admin မှ Banner ပုံထည့်ပြီးနောက် ဒီနေရာတွင် ပြသပါမည်။","Search VIP Channel":"VIP Channel ရှာရန်","Recommended":"အကြံပြုထားသည်","Hot":"လူကြိုက်များ","Gallery":"ဓာတ်ပုံများ","Popular Picks":"လူကြိုက်များသော ပုံများ","Updated by Admin":"Admin မှ ပြင်ဆင်ထားသည်","No pictures have been added yet.":"ပုံများ မထည့်ရသေးပါ။","Favorites":"အကြိုက်ဆုံး","My Account":"ကျွန်ုပ်၏အကောင့်","Cancel":"မလုပ်တော့ပါ"},
+ es:{"VIP Channel Girl":"Canal VIP","Open Channel":"Abrir canal ›","VIP Channel Lock":"Bloqueo del canal VIP","Recommended":"Recomendado","Hot":"Popular","Gallery":"Galería","Popular Picks":"Selección popular","Favorites":"Favoritos","My Account":"Mi cuenta","Cancel":"Cancelar"},
+ pt:{"VIP Channel Girl":"Canal VIP","Open Channel":"Abrir canal ›","VIP Channel Lock":"Bloqueio do canal VIP","Recommended":"Recomendado","Hot":"Popular","Gallery":"Galeria","Popular Picks":"Destaques","Favorites":"Favoritos","My Account":"Minha conta","Cancel":"Cancelar"},
+ zh:{"VIP Channel Girl":"VIP 女士频道","Open Channel":"进入频道 ›","VIP Channel Lock":"VIP 频道锁","Recommended":"推荐","Hot":"热门","Gallery":"图片库","Popular Picks":"热门精选","Favorites":"收藏","My Account":"我的"},
+ ar:{"VIP Channel Girl":"قناة VIP","Open Channel":"افتح القناة ›","VIP Channel Lock":"قفل قناة VIP","Recommended":"موصى به","Hot":"الأكثر رواجًا","Gallery":"المعرض","Popular Picks":"اختيارات شائعة","Favorites":"المفضلة","My Account":"حسابي","Cancel":"إلغاء"},
+ ur:{"VIP Channel Girl":"VIP چینل","Open Channel":"چینل کھولیں ›","VIP Channel Lock":"VIP چینل لاک","Recommended":"تجویز کردہ","Hot":"مقبول","Gallery":"گیلری","Popular Picks":"مقبول انتخاب","Favorites":"پسندیدہ","My Account":"میرا اکاؤنٹ","Cancel":"منسوخ"}
+};
+Object.keys(vipChannelTranslations).forEach(lang=>{tr[lang]=Object.assign({},tr[lang]||{},vipChannelTranslations[lang]);});
 function T(key){const l=localStorage.getItem('zonguru_lang')||'en';return (tr[l]&&tr[l][key])||key;}
 
 function applyLang(){const l=localStorage.getItem('zonguru_lang')||'en',d=tr[l]||tr.en;document.querySelectorAll('[data-i18n]').forEach(e=>{if(d[e.dataset.i18n])e.textContent=d[e.dataset.i18n]});document.querySelectorAll('[data-i18n-placeholder]').forEach(e=>{if(d[e.dataset.i18nPlaceholder])e.placeholder=d[e.dataset.i18nPlaceholder]});document.querySelectorAll('[data-i18n-title]').forEach(e=>{if(d[e.dataset.i18nTitle])e.title=d[e.dataset.i18nTitle]});const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>{const raw=n.nodeValue,trim=raw.trim();if(d[trim]&&trim){n.nodeValue=raw.replace(trim,d[trim])}});document.documentElement.dir=l==='ar'?'rtl':'ltr'}function toggleLang(){langMenu.classList.toggle('show')}function setLang(l){localStorage.setItem('zonguru_lang',l);location.reload()}document.addEventListener('click',e=>{if(!document.querySelector('.lang-wrap').contains(e.target))langMenu.classList.remove('show')});
