@@ -484,7 +484,7 @@ body.vip-channel-mode .vip-channel-page.active{display:block;min-height:100vh;pa
    <button type="button" data-vc-filter="gallery" onclick="setVipChannelFilter('gallery')" data-i18n="Gallery">Gallery</button>
   </div>
   <div id="vipChannelBanners"><div class="vc-empty-banner"><strong>ZONGURU VIP</strong><span>VIP Channel banner images will appear here</span></div></div>
-  <div class="vc-user-row"><strong id="vipChannelUsername">VIP Member</strong><select id="vipChannelLanguage" aria-label="VIP Channel language" onchange="setVipChannelLanguage(this.value)"><option value="en">🇬🇧 English</option><option value="es">🇪🇸 Español</option><option value="pt">🇵🇹 Português</option><option value="ar">🇸🇦 العربية</option><option value="my">🇲🇲 မြန်မာ</option><option value="ur">🇵🇰 اردو</option></select></div>
+  <div class="vc-user-row"><strong id="vipChannelUsername">VIP Member</strong><select id="vipChannelLanguage" aria-label="VIP Channel language" onchange="setVipChannelLanguage(this.value)"><option value="en">🇬🇧 English</option><option value="zh">🇨🇳 中文</option><option value="es">🇪🇸 Español</option><option value="pt">🇵🇹 Português</option><option value="ar">🇸🇦 العربية</option><option value="my">🇲🇲 မြန်မာ</option><option value="ur">🇵🇰 اردو</option></select></div>
   <div id="vipChannelEntries" class="vc-entries"></div>
   <div class="vc-gallery-heading"><strong data-i18n="Popular Picks">Popular Picks</strong><span data-i18n="Updated by Admin">Updated by Admin</span></div>
   <div id="vipChannelGallery" class="vc-gallery"><div class="vc-empty" data-i18n="No pictures have been added yet.">No pictures have been added yet.</div></div>
@@ -740,10 +740,10 @@ function syncVipChannelProfile(){
  const name=document.getElementById('vipChannelUsername');
  if(name)name.textContent=String(user.username||user.email||T('VIP Member'));
  const language=document.getElementById('vipChannelLanguage');
- if(language){const current=localStorage.getItem('zonguru_lang')||'en';language.value=['en','es','pt','ar','my','ur'].includes(current)?current:'en';}
+ if(language){const current=localStorage.getItem('zonguru_lang')||'en';language.value=['en','zh','es','pt','ar','my','ur'].includes(current)?current:'en';}
 }
 function setVipChannelLanguage(language){
- const supported=['en','es','pt','ar','my','ur'];
+ const supported=['en','zh','es','pt','ar','my','ur'];
  if(!supported.includes(language))return;
  localStorage.setItem('zonguru_lang',language);
  applyLang();
