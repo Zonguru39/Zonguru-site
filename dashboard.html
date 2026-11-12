@@ -731,10 +731,27 @@ async function loadVipChannelContent(){
   const gallery=document.getElementById('vipChannelGallery');if(gallery)gallery.innerHTML='<div class="vc-empty">'+esc(T(e.message||'Unable to load VIP Channel content.'))+'</div>';
  }
 }
+function vipChannelFavoriteStorageKey(){
+ let user={};try{user=JSON.parse(localStorage.getItem('zonguru_user')||'{}')}catch(e){}
+ const identity=String(user._id||user.id||user.username||'account').toLowerCase().replace(/[^a-z0-9_-]/g,'_');
+ return 'zonguru_vip_channel_favorites_'+identity;
+}
+function getVipChannelFavoriteIds(){
+ try{const value=JSON.parse(localStorage.getItem(vipChannelFavoriteStorageKey())||'[]');return new Set(Array.isArray(value)?value.map(String):[])}catch(e){return new Set()}
+}
+function toggleVipChannelFavorite(id){
+ const favorites=getVipChannelFavoriteIds(),key=String(id);
+ if(favorites.has(key))favorites.delete(key);else favorites.add(key);
+ localStorage.setItem(vipChannelFavoriteStorageKey(),JSON.stringify(Array.from(favorites)));
+ renderVipChannelContent();
+}
 function setVipChannelFilter(filter){
  vipChannelFilter=filter||'all';
  document.querySelectorAll('[data-vc-filter]').forEach(button=>button.classList.toggle('active',button.dataset.vcFilter===vipChannelFilter));
- document.querySelectorAll('[data-vc-nav]').forEach(button=>button.classList.toggle('active',(vipChannelFilter==='all'&&button.dataset.vcNav==='home')||(vipChannelFilter==='hot'&&button.dataset.vcNav==='hot')));
+ document.querySelectorAll('[data-vc-nav]').forEach(button=>{
+  const active=(vipChannelFilter==='all'&&button.dataset.vcNav==='home')||(vipChannelFilter==='hot'&&button.dataset.vcNav==='hot')||(vipChannelFilter==='favorites'&&button.dataset.vcNav==='favorites');
+  button.classList.toggle('active',active);
+ });
  renderVipChannelContent();
 }
 function openVipChannelEntry(title){
@@ -744,19 +761,24 @@ function openVipChannelEntry(title){
 function renderVipChannelContent(){
  const search=String(document.getElementById('vipChannelSearch')?.value||'').trim().toLowerCase();
  const matches=item=>!search||String(item.title||'').toLowerCase().includes(search)||String(item.caption||'').toLowerCase().includes(search);
- const banners=vipChannelItems.filter(x=>x.type==='banner'&&matches(x));
- const entries=vipChannelFilter==='gallery'?[]:vipChannelItems.filter(x=>x.type==='entry'&&matches(x));
+ const favorites=getVipChannelFavoriteIds(),isFavorite=item=>favorites.has(String(item.id));
+ const banners=vipChannelFilter==='favorites'?[]:vipChannelItems.filter(x=>x.type==='banner'&&matches(x));
+ const entries=(vipChannelFilter==='gallery'||vipChannelFilter==='favorites')?[]:vipChannelItems.filter(x=>x.type==='entry'&&matches(x));
  let gallery=vipChannelItems.filter(x=>x.type==='gallery'&&matches(x));
+ if(vipChannelFilter==='favorites')gallery=gallery.filter(isFavorite);
  if(vipChannelFilter==='hot')gallery=gallery.slice().sort((a,b)=>Number(b.sortOrder||0)-Number(a.sortOrder||0));
- if(vipChannelFilter==='all'||vipChannelFilter==='hot'||vipChannelFilter==='gallery'){}
  const bannerHost=document.getElementById('vipChannelBanners');
- if(bannerHost)bannerHost.innerHTML=banners.length?'<div class="vc-banner-track">'+banners.map(item=>'<article class="vc-banner-card"><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><div class="vc-banner-overlay"><strong>'+esc(item.title)+'</strong><span>'+esc(item.caption||'')+'</span></div></article>').join('')+'</div>':'<div class="vc-empty-banner"><strong>ZONGURU VIP</strong><span>'+esc(T('Banner images will appear here when added by Admin.'))+'</span></div>';
+ if(bannerHost)bannerHost.style.display=vipChannelFilter==='favorites'?'none':'block';
+ if(bannerHost&&vipChannelFilter!=='favorites')bannerHost.innerHTML=banners.length?'<div class="vc-banner-track">'+banners.map(item=>'<article class="vc-banner-card"><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><div class="vc-banner-overlay"><strong>'+esc(item.title)+'</strong><span>'+esc(item.caption||'')+'</span></div></article>').join('')+'</div>':'<div class="vc-empty-banner"><strong>ZONGURU VIP</strong><span>'+esc(T('Banner images will appear here when added by Admin.'))+'</span></div>';
  const entryHost=document.getElementById('vipChannelEntries');
- if(entryHost)entryHost.innerHTML=entries.length?entries.map(item=>'<button type="button" class="vc-entry" onclick="openVipChannelEntry(\''+esc(item.title).replace(/'/g,'&#39;')+'\')"><strong>'+esc(item.title)+'</strong><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"></button>').join(''):'';
+ if(entryHost)entryHost.style.display=vipChannelFilter==='favorites'?'none':'grid';
+ if(entryHost&&vipChannelFilter!=='favorites')entryHost.innerHTML=entries.length?entries.map(item=>'<button type="button" class="vc-entry" onclick="openVipChannelEntry(\\''+esc(item.title).replace(/'/g,'&#39;')+'\\')"><strong>'+esc(item.title)+'</strong><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"></button>').join(''):'';
+ const heading=document.querySelector('.vc-gallery-heading');
+ if(heading)heading.querySelector('strong').textContent=T(vipChannelFilter==='favorites'?'Favorites':'Popular Picks');
  const galleryHost=document.getElementById('vipChannelGallery');
  if(galleryHost){
-  if(gallery.length)galleryHost.innerHTML=gallery.map(item=>'<article class="vc-gallery-card"><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><strong>'+esc(item.title)+'</strong><small>'+esc(item.caption||'')+'</small></article>').join('');
-  else galleryHost.innerHTML='<div class="vc-empty">'+esc(T('No pictures have been added yet.'))+'</div>';
+  if(gallery.length)galleryHost.innerHTML=gallery.map(item=>'<article class="vc-gallery-card"><button type="button" class="vc-favorite-btn'+(isFavorite(item)?' active':'')+'" aria-label="'+esc(T(isFavorite(item)?'Remove from Favorites':'Add to Favorites'))+'" title="'+esc(T(isFavorite(item)?'Remove from Favorites':'Add to Favorites'))+'" onclick="toggleVipChannelFavorite(\\''+esc(item.id)+'\\')">'+(isFavorite(item)?'♥':'♡')+'</button><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><strong>'+esc(item.title)+'</strong><small>'+esc(item.caption||'')+'</small></article>').join('');
+  else galleryHost.innerHTML='<div class="vc-empty">'+esc(T(vipChannelFilter==='favorites'?'No favorites yet.':'No pictures have been added yet.'))+'</div>';
  }
 }
 
