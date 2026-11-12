@@ -326,6 +326,9 @@ body.vip-channel-mode .vip-channel-page.active{display:block;min-height:100vh;pa
 .vc-search-row{display:flex;gap:8px;margin:12px 0}
 .vc-search-row input{flex:1;min-width:0;background:#171717;border:1px solid #59482c;border-radius:13px;color:#f5e6c8;padding:12px 14px;font-size:14px;outline:none}
 .vc-search-row input::placeholder{color:#9a8b70}
+.vc-user-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 10px;color:#f0d5a0}
+.vc-user-row strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:16px}
+.vc-user-row select{max-width:140px;border:1px solid #70552d;border-radius:10px;background:#17130d;color:#e7c887;padding:9px 11px;font-size:13px}
 .vc-tabs{display:flex;gap:9px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
 .vc-tabs button{flex:0 0 auto;border:1px solid #59472a;border-radius:999px;padding:8px 15px;background:#17130d;color:#c6b28a;font-weight:700}
 .vc-tabs button.active{background:linear-gradient(135deg,#a77b36,#e2c17a);border-color:#e5c77e;color:#17110a}
@@ -481,6 +484,7 @@ body.vip-channel-mode .vip-channel-page.active{display:block;min-height:100vh;pa
    <button type="button" data-vc-filter="gallery" onclick="setVipChannelFilter('gallery')" data-i18n="Gallery">Gallery</button>
   </div>
   <div id="vipChannelBanners"><div class="vc-empty-banner"><strong>ZONGURU VIP</strong><span>VIP Channel banner images will appear here</span></div></div>
+  <div class="vc-user-row"><strong id="vipChannelUsername">VIP Member</strong><select id="vipChannelLanguage" aria-label="VIP Channel language" onchange="setVipChannelLanguage(this.value)"><option value="en">🇬🇧 English</option><option value="es">🇪🇸 Español</option><option value="pt">🇵🇹 Português</option><option value="ar">🇸🇦 العربية</option><option value="my">🇲🇲 မြန်မာ</option><option value="ur">🇵🇰 اردو</option></select></div>
   <div id="vipChannelEntries" class="vc-entries"></div>
   <div class="vc-gallery-heading"><strong data-i18n="Popular Picks">Popular Picks</strong><span data-i18n="Updated by Admin">Updated by Admin</span></div>
   <div id="vipChannelGallery" class="vc-gallery"><div class="vc-empty" data-i18n="No pictures have been added yet.">No pictures have been added yet.</div></div>
@@ -731,6 +735,21 @@ async function loadVipChannelContent(){
   const gallery=document.getElementById('vipChannelGallery');if(gallery)gallery.innerHTML='<div class="vc-empty">'+esc(T(e.message||'Unable to load VIP Channel content.'))+'</div>';
  }
 }
+function syncVipChannelProfile(){
+ let user={};try{user=JSON.parse(localStorage.getItem('zonguru_user')||'{}')}catch(e){}
+ const name=document.getElementById('vipChannelUsername');
+ if(name)name.textContent=String(user.username||user.email||'VIP Member');
+ const language=document.getElementById('vipChannelLanguage');
+ if(language){const current=localStorage.getItem('zonguru_lang')||'en';language.value=['en','es','pt','ar','my','ur'].includes(current)?current:'en';}
+}
+function setVipChannelLanguage(language){
+ const supported=['en','es','pt','ar','my','ur'];
+ if(!supported.includes(language))return;
+ localStorage.setItem('zonguru_lang',language);
+ applyLang();
+ syncVipChannelProfile();
+ renderVipChannelContent();
+}
 function vipChannelFavoriteStorageKey(){
  let user={};try{user=JSON.parse(localStorage.getItem('zonguru_user')||'{}')}catch(e){}
  const identity=String(user._id||user.id||user.username||'account').toLowerCase().replace(/[^a-z0-9_-]/g,'_');
@@ -844,7 +863,7 @@ function showPage(id){
  if(id==='homePage')navHome.classList.add('active');
  if(id==='vipPage')renderVipLevelsInto(document.getElementById('vipPageContent'));
  if(id==='luckySpinPage')loadLuckySpinTickets();
- if(id==='vipChannelPage')loadVipChannelContent();
+ if(id==='vipChannelPage'){syncVipChannelProfile();loadVipChannelContent();}
  if(id==='productsPage'){navProducts.classList.add('active');loadProducts()}
  if(id==='transactionsPage'){navHistory.classList.add('active');loadTransactions()}
  if(id==='depositPage')loadDepositAddresses();
