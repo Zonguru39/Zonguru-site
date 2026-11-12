@@ -772,13 +772,18 @@ function renderVipChannelContent(){
  if(bannerHost&&vipChannelFilter!=='favorites')bannerHost.innerHTML=banners.length?'<div class="vc-banner-track">'+banners.map(item=>'<article class="vc-banner-card"><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><div class="vc-banner-overlay"><strong>'+esc(item.title)+'</strong><span>'+esc(item.caption||'')+'</span></div></article>').join('')+'</div>':'<div class="vc-empty-banner"><strong>ZONGURU VIP</strong><span>'+esc(T('Banner images will appear here when added by Admin.'))+'</span></div>';
  const entryHost=document.getElementById('vipChannelEntries');
  if(entryHost)entryHost.style.display=vipChannelFilter==='favorites'?'none':'grid';
- if(entryHost&&vipChannelFilter!=='favorites')entryHost.innerHTML=entries.length?entries.map(item=>'<button type="button" class="vc-entry" onclick="openVipChannelEntry(\\''+esc(item.title).replace(/'/g,'&#39;')+'\\')"><strong>'+esc(item.title)+'</strong><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"></button>').join(''):'';
+ if(entryHost&&vipChannelFilter!=='favorites'){
+  entryHost.innerHTML=entries.length?entries.map(item=>'<button type="button" class="vc-entry" data-vc-entry="'+esc(item.title)+'"><strong>'+esc(item.title)+'</strong><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"></button>').join(''):'';
+  entryHost.querySelectorAll('[data-vc-entry]').forEach(button=>button.addEventListener('click',()=>openVipChannelEntry(button.dataset.vcEntry)));
+ }
  const heading=document.querySelector('.vc-gallery-heading');
  if(heading)heading.querySelector('strong').textContent=T(vipChannelFilter==='favorites'?'Favorites':'Popular Picks');
  const galleryHost=document.getElementById('vipChannelGallery');
  if(galleryHost){
-  if(gallery.length)galleryHost.innerHTML=gallery.map(item=>'<article class="vc-gallery-card"><button type="button" class="vc-favorite-btn'+(isFavorite(item)?' active':'')+'" aria-label="'+esc(T(isFavorite(item)?'Remove from Favorites':'Add to Favorites'))+'" title="'+esc(T(isFavorite(item)?'Remove from Favorites':'Add to Favorites'))+'" onclick="toggleVipChannelFavorite(\\''+esc(item.id)+'\\')">'+(isFavorite(item)?'♥':'♡')+'</button><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><strong>'+esc(item.title)+'</strong><small>'+esc(item.caption||'')+'</small></article>').join('');
-  else galleryHost.innerHTML='<div class="vc-empty">'+esc(T(vipChannelFilter==='favorites'?'No favorites yet.':'No pictures have been added yet.'))+'</div>';
+  if(gallery.length){
+   galleryHost.innerHTML=gallery.map(item=>'<article class="vc-gallery-card"><button type="button" class="vc-favorite-btn'+(isFavorite(item)?' active':'')+'" data-vc-favorite="'+esc(item.id)+'" aria-label="'+esc(T(isFavorite(item)?'Remove from Favorites':'Add to Favorites'))+'" title="'+esc(T(isFavorite(item)?'Remove from Favorites':'Add to Favorites'))+'">'+(isFavorite(item)?'♥':'♡')+'</button><img src="'+esc(item.image)+'" alt="'+esc(item.title)+'"><strong>'+esc(item.title)+'</strong><small>'+esc(item.caption||'')+'</small></article>').join('');
+   galleryHost.querySelectorAll('[data-vc-favorite]').forEach(button=>button.addEventListener('click',()=>toggleVipChannelFavorite(button.dataset.vcFavorite)));
+  }else galleryHost.innerHTML='<div class="vc-empty">'+esc(T(vipChannelFilter==='favorites'?'No favorites yet.':'No pictures have been added yet.'))+'</div>';
  }
 }
 
